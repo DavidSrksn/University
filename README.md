@@ -18,4 +18,4 @@ Technopark project
 
 
 #План приложения
-![План приложения](https://user-images.githubusercontent.com/47701346/66225689-ac0bdf00-e6e1-11e9-986c-4dde4e0abc74.jpg)
+

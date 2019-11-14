@@ -229,6 +229,11 @@ class FilterViewController: UIViewController {
     }
     
     @objc
+    private func changePoints() {
+        pointsTextField.text = " " + String(Int(pointsSlider.value))
+    }
+    
+    @objc
     private func pushCountry() {
         let countryButton = UIDropDownButton()
         setupCountry(country: countryButton)

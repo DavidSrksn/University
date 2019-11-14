@@ -89,4 +89,28 @@ class FilterViewController: UIViewController {
         
         setupDataContentTable()
     }
+    
+    @objc
+    private func pushCountry() {
+        let countryButton = UIDropDownButton()
+        setupCountry(country: countryButton)
+        
+        dataContentTable[0].append(countryButton)
+    }
+    
+    private func popCountry() {
+        dataContentTable[0].removeLast()
+    }
+    
+    @objc
+    private func pushSubject() {
+        let subjectButton = UIDropDownButton()
+        setupSubjects(subject: subjectButton)
+        
+        dataContentTable[1].append(subjectButton)
+    }
+    
+    private func popSubject() {
+        dataContentTable[1].removeLast()
+    }
 }

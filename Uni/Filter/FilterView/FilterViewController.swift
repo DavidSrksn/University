@@ -88,7 +88,15 @@ class FilterViewController: UIViewController {
     }
     
     private func setupContentView() {
+        view.addSubview(contentView)
         
+        contentView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        
+        contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.contentViewY).isActive = true
+        contentView.heightAnchor.constraint(equalToConstant: constraints.contentViewHeight).isActive = true
+        contentView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
     }
     
     private func setupPoints() {

@@ -11,11 +11,11 @@ struct FilterPresenter {
         model.campus = true
     }
     
-    mutating func addCountry(newCountrys: [String]) {
+    mutating func addCountry(newCountrys: String?) {
         
     }
     
-    mutating func updateSubject(newSubjects: [String]) {
+    mutating func addSubject(newSubjects: String?) {
         
     }
     

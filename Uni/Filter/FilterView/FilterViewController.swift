@@ -222,6 +222,12 @@ class FilterViewController: UIViewController {
         setupDataContentTable()
     }
     
+    private func fillDataFilter() {
+        presenter.changeMinPoint(for: Int(pointsSlider.value))
+        presenter.changeMilitary(for: militaryButton.isOn)
+        presenter.changeCampus(for: campusButton.isOn)
+    }
+    
     @objc
     private func pushCountry() {
         let countryButton = UIDropDownButton()

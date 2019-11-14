@@ -178,8 +178,35 @@ class FilterViewController: UIViewController {
         setupMilitaryButton()
     }
     
-    private func setupCampus() {
+    private func setupCampusLabel() {
+        campusLabel.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        campusLabel.text = "Общежитие"
         
+        contentView.addSubview(campusLabel)
+        
+        campusLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        campusLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
+        campusLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.campusLabelY).isActive = true
+        campusLabel.heightAnchor.constraint(equalToConstant: constraints.campusLabelHeight).isActive = true
+    }
+    
+    private func setupCampusButton() {
+        contentView.addSubview(campusButton)
+        
+        campusButton.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        campusButton.isOn = true
+        campusButton.onTintColor = dataView.campusButtonColor
+        
+        campusButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        campusButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -constraints.safeAreaBorder).isActive = true
+        campusButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.campusButtonY).isActive = true
+    }
+    
+    private func setupCampus() {
+        setupCampusLabel()
+        setupCampusButton()
     }
     
     override func viewDidLoad() {

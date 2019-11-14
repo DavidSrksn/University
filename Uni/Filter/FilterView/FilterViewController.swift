@@ -39,7 +39,36 @@ class FilterViewController: UIViewController {
     private let campusLabel = UILabel()
     private let campusButton = UISwitch()
     
+    private func setupDataContentTable() {
+        
+    }
+    
+    private func setupContentView() {
+        
+    }
+    
+    private func setupPoints() {
+        
+    }
+    
+    private func setupMilitary() {
+        
+    }
+    
+    private func setupCampus() {
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = dataView.FilterViewColor
+        
+        setupContentView()
+        
+        setupPoints()
+        setupMilitary()
+        setupCampus()
+        
+        setupDataContentTable()
     }
 }

@@ -193,6 +193,22 @@ class FilterViewController: UIViewController {
     }
 }
 
+extension FilterViewController: UITextFieldDelegate {
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if var num = Int(textField.text ?? "non num") {
+            num = (Float(num) - pointsSlider.maximumValue) > .ulpOfOne ? 300 : num
+            num = num < 0 ? 0 : num
+            pointsSlider.value = Float(num)
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
 extension FilterViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

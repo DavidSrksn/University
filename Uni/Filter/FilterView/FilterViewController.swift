@@ -114,3 +114,29 @@ class FilterViewController: UIViewController {
         dataContentTable[1].removeLast()
     }
 }
+
+extension FilterViewController: UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return dataContentTable[section].count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.addSubview(dataContentTable[indexPath.section][indexPath.row])
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return dataHeaderTitle[section]
+    }
+}
+
+extension FilterViewController: UITableViewDelegate {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return dataContentTable.count
+    }
+}
+

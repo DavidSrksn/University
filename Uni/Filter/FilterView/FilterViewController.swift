@@ -99,8 +99,52 @@ class FilterViewController: UIViewController {
         contentView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
     }
     
-    private func setupPoints() {
+    private func setupPointsSlider() {
+        pointsSlider.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
         
+        pointsSlider.minimumValue = 0
+        if let countSubjects = presenter.countOfSubjects() {
+            pointsSlider.maximumValue = Float(countSubjects * 100)
+        } else {
+            pointsSlider.maximumValue = 100
+        }
+        
+        pointsSlider.isContinuous = true
+        pointsSlider.addTarget(self, action: #selector(changePoints), for: .valueChanged)
+        
+        contentView.addSubview(pointsSlider)
+        
+        pointsSlider.translatesAutoresizingMaskIntoConstraints = false
+        
+        pointsSlider.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
+        pointsSlider.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.pointsSliderY).isActive = true
+        pointsSlider.widthAnchor.constraint(equalToConstant: self.view.center.x * 2 - constraints.safeAreaBorder * 2).isActive = true
+        pointsSlider.heightAnchor.constraint(equalToConstant: constraints.pointsSliderHeight).isActive = true
+    }
+    
+    private func setupPointsTextField() {
+        pointsTextField.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        
+        pointsTextField.layer.cornerRadius = 10
+        pointsTextField.layer.borderColor = UIColor.black.cgColor
+        pointsTextField.layer.borderWidth = 1
+        
+        pointsTextField.placeholder = " Минимальный балл "
+        pointsTextField.contentHorizontalAlignment = .left
+        
+        pointsTextField.delegate = self
+        
+        contentView.addSubview(pointsTextField)
+        
+        pointsTextField.translatesAutoresizingMaskIntoConstraints = false
+        pointsTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
+        pointsTextField.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.pointsTextFieldY).isActive = true
+        pointsTextField.heightAnchor.constraint(equalToConstant: constraints.pointsTextFieldHeight).isActive = true
+    }
+    
+    private func setupPoints() {
+        setupPointsSlider()
+        setupPointsTextField()
     }
     
     private func setupMilitary() {

@@ -10,6 +10,8 @@ import UIKit
 
 class FilterViewController: UIViewController {
     
+    private var presenter = FilterPresenter()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }

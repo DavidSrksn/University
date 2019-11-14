@@ -10,6 +10,8 @@ import UIKit
 
 class FilterViewController: UIViewController {
     
+    private var dataFilter = Filter()
+    
     private var presenter = FilterPresenter()
     
     private let constraints = Size()
@@ -38,6 +40,26 @@ class FilterViewController: UIViewController {
     
     private let campusLabel = UILabel()
     private let campusButton = UISwitch()
+    
+    private func setConstraints(for view: Any, x: CGFloat, y:CGFloat, width: CGFloat, height: CGFloat) {
+        
+    }
+    
+    private func updateContentViewConstraints(y: CGFloat) {
+        contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.contentViewY).isActive = true
+    }
+    
+    private func setupContentView() {
+        view.addSubview(contentView)
+        
+        contentView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        
+        contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.contentViewY).isActive = true
+        contentView.heightAnchor.constraint(equalToConstant: constraints.contentViewHeight).isActive = true
+        contentView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+    }
     
     private func setupCountry(country: UIDropDownButton) {
         country.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
@@ -77,37 +99,22 @@ class FilterViewController: UIViewController {
         dataHeaderTitle.append(subjectsHeaderTitle)
         
         contentTable.translatesAutoresizingMaskIntoConstraints = false
-        
+
         contentTable.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         contentTable.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.countryButtonY).isActive = true
         contentTable.widthAnchor.constraint(equalToConstant: self.view.center.x * 2 - constraints.safeAreaBorder).isActive = true
-        contentTable.heightAnchor.constraint(equalToConstant: constraints.countryButtonHeight * 4).isActive = true
+        contentTable.heightAnchor.constraint(equalToConstant: constraints.countryButtonHeight).isActive = true
         
         contentTable.delegate = self
         contentTable.dataSource = self
     }
     
-    private func setupContentView() {
-        view.addSubview(contentView)
-        
-        contentView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        
-        contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.contentViewY).isActive = true
-        contentView.heightAnchor.constraint(equalToConstant: constraints.contentViewHeight).isActive = true
-        contentView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-    }
-    
     private func setupPointsSlider() {
         pointsSlider.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        pointsSlider.tintColor = dataView.sliderColor
         
         pointsSlider.minimumValue = 0
-        if let countSubjects = presenter.countOfSubjects() {
-            pointsSlider.maximumValue = Float(countSubjects * 100)
-        } else {
-            pointsSlider.maximumValue = 100
-        }
+        pointsSlider.maximumValue = Float(dataContentTable[1].count * 100)
         
         pointsSlider.isContinuous = true
         pointsSlider.addTarget(self, action: #selector(changePoints), for: .valueChanged)
@@ -117,7 +124,7 @@ class FilterViewController: UIViewController {
         pointsSlider.translatesAutoresizingMaskIntoConstraints = false
         
         pointsSlider.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
-        pointsSlider.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.pointsSliderY).isActive = true
+        pointsSlider.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: constraints.pointsSliderY).isActive = true
         pointsSlider.widthAnchor.constraint(equalToConstant: self.view.center.x * 2 - constraints.safeAreaBorder * 2).isActive = true
         pointsSlider.heightAnchor.constraint(equalToConstant: constraints.pointsSliderHeight).isActive = true
     }
@@ -138,7 +145,7 @@ class FilterViewController: UIViewController {
         
         pointsTextField.translatesAutoresizingMaskIntoConstraints = false
         pointsTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
-        pointsTextField.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.pointsTextFieldY).isActive = true
+        pointsTextField.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: constraints.pointsTextFieldY).isActive = true
         pointsTextField.heightAnchor.constraint(equalToConstant: constraints.pointsTextFieldHeight).isActive = true
     }
     
@@ -156,7 +163,7 @@ class FilterViewController: UIViewController {
         militaryLabel.translatesAutoresizingMaskIntoConstraints = false
 
         militaryLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
-        militaryLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.militaryLabelY).isActive = true
+        militaryLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: constraints.militaryLabelY).isActive = true
         militaryLabel.heightAnchor.constraint(equalToConstant: constraints.militaryLabelHeight).isActive = true
     }
     
@@ -170,7 +177,7 @@ class FilterViewController: UIViewController {
         militaryButton.translatesAutoresizingMaskIntoConstraints = false
         
         militaryButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -constraints.safeAreaBorder).isActive = true
-        militaryButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.militaryButtonY).isActive = true
+        militaryButton.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: constraints.militaryButtonY).isActive = true
     }
     
     private func setupMilitary() {
@@ -187,7 +194,7 @@ class FilterViewController: UIViewController {
         campusLabel.translatesAutoresizingMaskIntoConstraints = false
 
         campusLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
-        campusLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.campusLabelY).isActive = true
+        campusLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: constraints.campusLabelY).isActive = true
         campusLabel.heightAnchor.constraint(equalToConstant: constraints.campusLabelHeight).isActive = true
     }
     
@@ -201,7 +208,7 @@ class FilterViewController: UIViewController {
         campusButton.translatesAutoresizingMaskIntoConstraints = false
         
         campusButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -constraints.safeAreaBorder).isActive = true
-        campusButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.campusButtonY).isActive = true
+        campusButton.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: constraints.campusButtonY).isActive = true
     }
     
     private func setupCampus() {
@@ -213,13 +220,13 @@ class FilterViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = dataView.FilterViewColor
         
+        setupDataContentTable()
+        
         setupContentView()
         
         setupPoints()
         setupMilitary()
         setupCampus()
-        
-        setupDataContentTable()
     }
     
     private func fillDataFilter() {
@@ -251,6 +258,7 @@ class FilterViewController: UIViewController {
         setupSubjects(subject: subjectButton)
         
         dataContentTable[1].append(subjectButton)
+        pointsSlider.maximumValue = Float(dataContentTable[1].count * 100)
     }
     
     private func popSubject() {
@@ -298,4 +306,3 @@ extension FilterViewController: UITableViewDelegate {
         return dataContentTable.count
     }
 }
-

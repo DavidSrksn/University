@@ -12,6 +12,12 @@ class FilterViewController: UIViewController {
     
     private var presenter = FilterPresenter()
     
+    private let constraints = Size()
+    private let dataView = FilterViewData()
+    
+    private let dataSourceCountry = ["Москва", "Санкт-Петербург", "Омск", "Волгоград", "Владимир", "Екатеринбург", "Уфа", "Владивосток"]
+    private let dataSourceSubject = ["Математика", "Русский", "Информатика", "Физика"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }

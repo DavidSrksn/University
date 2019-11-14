@@ -20,12 +20,19 @@ class TableViewUniversities: UIViewController {
 //        navigationController?.pushViewController(viewController, animated: true)
 //    }
     
+    private func setupFilterButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Фильтры", style: .done, target: self, action: #selector(openFilter))
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         Manager.shared.internetConnectionCheck(viewcontroller: self)
     }
     
        override func viewDidLoad() {
            super.viewDidLoad()
+        
+        setupFilterButton()
+        
         tableView.dataSource = self
         tableView.delegate = self
         let city: String? = "Moscow"
@@ -47,6 +54,12 @@ class TableViewUniversities: UIViewController {
           })
         }
        }
+    
+    @objc
+    private func openFilter() {
+        let filterController = FilterViewController()
+        navigationController?.pushViewController(filterController, animated: true)
+    }
 }
 
 extension TableViewUniversities :  SkeletonTableViewDataSource, SkeletonTableViewDelegate{

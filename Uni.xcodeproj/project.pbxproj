@@ -241,8 +241,8 @@
 			children = (
 				CE51B3DD237DC86C00707B33 /* DropDownDelegate.swift */,
 				CE51B3DA237DC86C00707B33 /* DropDownView.swift */,
-				CE51B3DB237DC86C00707B33 /* FilterViewController.swift */,
 				CE51B3DC237DC86C00707B33 /* UIDropDownButton.swift */,
+				CE51B3DB237DC86C00707B33 /* FilterViewController.swift */,
 			);
 			path = FilterView;
 			sourceTree = "<group>";

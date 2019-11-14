@@ -147,8 +147,35 @@ class FilterViewController: UIViewController {
         setupPointsTextField()
     }
     
-    private func setupMilitary() {
+    private func setupMilitaryLabel() {
+        contentView.addSubview(militaryLabel)
         
+        militaryLabel.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        militaryLabel.text = "Военная Кафедра"
+        
+        militaryLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        militaryLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
+        militaryLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.militaryLabelY).isActive = true
+        militaryLabel.heightAnchor.constraint(equalToConstant: constraints.militaryLabelHeight).isActive = true
+    }
+    
+    private func setupMilitaryButton() {
+        contentView.addSubview(militaryButton)
+        
+        militaryButton.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        militaryButton.isOn = true
+        militaryButton.onTintColor = dataView.militaryButtonColor
+        
+        militaryButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        militaryButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -constraints.safeAreaBorder).isActive = true
+        militaryButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.militaryButtonY).isActive = true
+    }
+    
+    private func setupMilitary() {
+        setupMilitaryLabel()
+        setupMilitaryButton()
     }
     
     private func setupCampus() {

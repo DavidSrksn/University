@@ -39,6 +39,32 @@ class FilterViewController: UIViewController {
     private let campusLabel = UILabel()
     private let campusButton = UISwitch()
     
+    private func setupCountry(country: UIDropDownButton) {
+        country.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        country.backgroundColor = dataView.FilterDropDownColor
+        country.setTitle("Город", for: .normal)
+        country.layer.cornerRadius = dataView.cornerRadius
+        
+        country.translatesAutoresizingMaskIntoConstraints = false
+        
+        country.widthAnchor.constraint(equalToConstant: self.view.center.x * 2 - constraints.safeAreaBorder).isActive = true
+        
+        country.dropView.dropDownOptions = dataSourceCountry
+    }
+    
+    private func setupSubjects(subject: UIDropDownButton) {
+        subject.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        subject.backgroundColor = dataView.FilterDropDownColor
+        subject.setTitle("Предметы", for: .normal)
+        subject.layer.cornerRadius = dataView.cornerRadius
+        
+        subject.translatesAutoresizingMaskIntoConstraints = false
+        
+        subject.widthAnchor.constraint(equalToConstant: self.view.center.x * 2 - constraints.safeAreaBorder).isActive = true
+        
+        subject.dropView.dropDownOptions = dataSourceSubject
+    }
+    
     private func setupDataContentTable() {
         view.addSubview(contentTable)
         

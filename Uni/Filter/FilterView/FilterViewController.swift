@@ -40,7 +40,25 @@ class FilterViewController: UIViewController {
     private let campusButton = UISwitch()
     
     private func setupDataContentTable() {
+        view.addSubview(contentTable)
         
+        dataContentTable.append([])
+        dataContentTable.append([])
+        pushCountry()
+        pushSubject()
+        
+        dataHeaderTitle.append(countryHeaderTitle)
+        dataHeaderTitle.append(subjectsHeaderTitle)
+        
+        contentTable.translatesAutoresizingMaskIntoConstraints = false
+        
+        contentTable.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        contentTable.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.countryButtonY).isActive = true
+        contentTable.widthAnchor.constraint(equalToConstant: self.view.center.x * 2 - constraints.safeAreaBorder).isActive = true
+        contentTable.heightAnchor.constraint(equalToConstant: constraints.countryButtonHeight * 4).isActive = true
+        
+        contentTable.delegate = self
+        contentTable.dataSource = self
     }
     
     private func setupContentView() {

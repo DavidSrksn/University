@@ -352,8 +352,8 @@ enum Subjects: String {
 }
 
 struct Filter {
-    var country: [Countrys]?
-    var subjects: [Subjects]?
+    var country: String?
+    var subjects: [String]?
     var minPoint: Int?
     var military: Bool?
     var campus: Bool?

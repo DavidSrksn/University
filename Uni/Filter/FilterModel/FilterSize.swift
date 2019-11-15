@@ -13,7 +13,10 @@ struct Size {
     let safeAreaBorder = CGFloat(20)
     
     let countryButtonY = CGFloat(60)
-    let countryButtonHeight = CGFloat(150)
+    let countryButtonHeight = CGFloat(35)
+    
+    let contentTableY = CGFloat(100)
+    let contentTableHeight = CGFloat(120)
     
     let contentViewY = CGFloat(220)
     let contentViewHeight = CGFloat(220)

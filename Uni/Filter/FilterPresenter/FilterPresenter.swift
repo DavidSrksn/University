@@ -4,14 +4,14 @@ struct FilterPresenter {
     private var model = Filter()
     
     init() {
-        model.country = []
+        model.country = ""
         model.subjects = []
         model.minPoint = 100
         model.military = true
         model.campus = true
     }
     
-    mutating func addCountry(newCountrys: String?) {
+    mutating func changeCountry(newCountry: String?) {
         
     }
     

@@ -9,9 +9,12 @@
 import UIKit
 
 class UIDropDownButton: UIButton, DropDownDelegate {
+    var changeConstraints: ((CGFloat, UIDropDownButton) -> (Void))?
     var dropView = DropDownView()
     var isOpen: Bool = false
     var height = NSLayoutConstraint()
+    
+    private var constraintHeight: CGFloat = 150
     
     internal func setUpDropView() {
         dropView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
@@ -31,7 +34,12 @@ class UIDropDownButton: UIButton, DropDownDelegate {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        setUpDropView()
+    }
+    
+    init(constraintClosure: @escaping (CGFloat, UIDropDownButton)->(Void)) {
+        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        self.changeConstraints = constraintClosure
         setUpDropView()
     }
     
@@ -65,11 +73,12 @@ class UIDropDownButton: UIButton, DropDownDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !isOpen {
             isOpen = true
+            (changeConstraints ?? {_,_ in})(constraintHeight, self)
             
             NSLayoutConstraint.deactivate([self.height])
             
-            if self.dropView.tableView.contentSize.height > 150 {
-                self.height.constant = 150
+            if self.dropView.tableView.contentSize.height > constraintHeight {
+                self.height.constant = constraintHeight
             } else {
                 self.height.constant = self.dropView.tableView.contentSize.height
             }
@@ -80,6 +89,7 @@ class UIDropDownButton: UIButton, DropDownDelegate {
                 self.dropView.center.y += self.dropView.frame.height / 2
             }, completion: nil)
         } else {
+            (changeConstraints ?? {_,_ in})(-constraintHeight, self)
             self.dismissDropDown()
         }
     }

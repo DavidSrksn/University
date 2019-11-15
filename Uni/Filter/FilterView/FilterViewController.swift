@@ -11,8 +11,9 @@ import UIKit
 class FilterViewController: UIViewController {
     
     private var dataFilter = Filter()
-    
     private var presenter = FilterPresenter()
+    
+    private var constraintClosure: ((CGFloat, UIDropDownButton)->(Void))?
     
     private let constraints = Size()
     private let dataView = FilterViewData()
@@ -22,6 +23,7 @@ class FilterViewController: UIViewController {
     private let dataSourceSubject = ["Математика", "Русский", "Информатика", "Физика"]
     
     private var contentView = UIView()
+    private let addSubject = UIButton()
     private var contentTable = UITableView()
     
     private let countryButton = UIDropDownButton()
@@ -38,12 +40,13 @@ class FilterViewController: UIViewController {
     private let campusLabel = UILabel()
     private let campusButton = UISwitch()
     
-    private func setConstraints(for view: Any, x: CGFloat, y:CGFloat, width: CGFloat, height: CGFloat) {
+    private func updateContentTableConstraints(y: CGFloat) {
         
+        contentTable.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.contentTableY + y).isActive = true
     }
     
     private func updateContentViewConstraints(y: CGFloat) {
-        contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.contentViewY).isActive = true
+        contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.contentViewY + y).isActive = true
     }
     
     private func setupContentView() {
@@ -60,7 +63,10 @@ class FilterViewController: UIViewController {
     
     private func setupCountry() {
         countryButton.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        countryButton.changeConstraints = constraintClosure
+        
         view.addSubview(countryButton)
+        
         countryButton.backgroundColor = dataView.FilterDropDownColor
         countryButton.setTitle("Город", for: .normal)
         countryButton.layer.cornerRadius = dataView.cornerRadius
@@ -212,6 +218,15 @@ class FilterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        FilterManager.controller = self
+        constraintClosure = { y, btn in
+            if FilterManager.controller.countryButton === btn {
+                FilterManager.controller.updateContentTableConstraints(y: y)
+            }
+            FilterManager.controller.updateContentViewConstraints(y: y)
+        }
+        
         view.backgroundColor = dataView.FilterViewColor
         barHeight = navigationController?.navigationBar.frame.size.height ?? 0
         
@@ -277,7 +292,7 @@ extension FilterViewController: UITextFieldDelegate {
 extension FilterViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return dataContentTable.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

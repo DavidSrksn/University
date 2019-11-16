@@ -326,3 +326,22 @@ extension FilterViewController: UITableViewDelegate {
         subjectTable.reloadSections(sections, with: .none)
     }
 }
+
+// Editing subjects extension
+extension FilterViewController {
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            subjectTableData.remove(at: indexPath.row)
+            subjectTable.deleteSections(IndexSet.init(integer: indexPath.section),
+                                        with: .fade)
+            subjectTable.reloadData()
+        } else if editingStyle == .insert {
+            
+        }
+    }
+}

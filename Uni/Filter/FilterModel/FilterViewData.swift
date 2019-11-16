@@ -5,6 +5,9 @@ struct FilterViewData {
     let addSubjectColor = UIColor.black
     let FilterDropDownColor = UIColor.black
     
+    let subjectCellColor = UIColor.black
+    let subjectCellTextColor = UIColor.white
+    
     let sliderColor = UIColor.black
     
     let cornerRadius = CGFloat(10)

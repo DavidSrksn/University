@@ -291,6 +291,11 @@ extension FilterViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
+        
+        cell.backgroundColor = dataView.subjectCellColor
+        cell.layer.cornerRadius = dataView.cornerRadius
+        cell.textLabel?.textColor = dataView.subjectCellTextColor
+        
         let dataIndex = indexPath.row - 1
         
         if indexPath.row == 0 {

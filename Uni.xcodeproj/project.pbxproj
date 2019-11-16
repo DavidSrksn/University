@@ -32,10 +32,7 @@
 		9AF60EE6236E2819007AF8F6 /* WishlistTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF60EE5236E2819007AF8F6 /* WishlistTableView.swift */; };
 		A359B4E91ABCD6BC715873D3 /* Pods_Uni.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA5BC9E9A6BDEACD675B48B /* Pods_Uni.framework */; };
 		CE51B3D5237DB6A000707B33 /* FilterViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51B3D4237DB6A000707B33 /* FilterViewData.swift */; };
-		CE51B3DE237DC86C00707B33 /* DropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51B3DA237DC86C00707B33 /* DropDownView.swift */; };
 		CE51B3DF237DC86C00707B33 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51B3DB237DC86C00707B33 /* FilterViewController.swift */; };
-		CE51B3E0237DC86C00707B33 /* UIDropDownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51B3DC237DC86C00707B33 /* UIDropDownButton.swift */; };
-		CE51B3E1237DC86C00707B33 /* DropDownDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51B3DD237DC86C00707B33 /* DropDownDelegate.swift */; };
 		CE51B3E3237DC87200707B33 /* FilterPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51B3E2237DC87200707B33 /* FilterPresenter.swift */; };
 		CE51B3E6237DC96300707B33 /* FilterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51B3E4237DC96300707B33 /* FilterModel.swift */; };
 		CE51B3E7237DC96300707B33 /* FilterSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51B3E5237DC96300707B33 /* FilterSize.swift */; };
@@ -71,10 +68,7 @@
 		9AF60EE5236E2819007AF8F6 /* WishlistTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WishlistTableView.swift; path = Uni/WishlistTableView.swift; sourceTree = SOURCE_ROOT; };
 		AFB043D206B89764FE505110 /* Pods-Uni.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Uni.debug.xcconfig"; path = "Target Support Files/Pods-Uni/Pods-Uni.debug.xcconfig"; sourceTree = "<group>"; };
 		CE51B3D4237DB6A000707B33 /* FilterViewData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewData.swift; sourceTree = "<group>"; };
-		CE51B3DA237DC86C00707B33 /* DropDownView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownView.swift; sourceTree = "<group>"; };
 		CE51B3DB237DC86C00707B33 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
-		CE51B3DC237DC86C00707B33 /* UIDropDownButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDropDownButton.swift; sourceTree = "<group>"; };
-		CE51B3DD237DC86C00707B33 /* DropDownDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownDelegate.swift; sourceTree = "<group>"; };
 		CE51B3E2237DC87200707B33 /* FilterPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterPresenter.swift; sourceTree = "<group>"; };
 		CE51B3E4237DC96300707B33 /* FilterModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterModel.swift; sourceTree = "<group>"; };
 		CE51B3E5237DC96300707B33 /* FilterSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterSize.swift; sourceTree = "<group>"; };
@@ -239,9 +233,6 @@
 		CE51B3D7237DBAFD00707B33 /* FilterView */ = {
 			isa = PBXGroup;
 			children = (
-				CE51B3DD237DC86C00707B33 /* DropDownDelegate.swift */,
-				CE51B3DA237DC86C00707B33 /* DropDownView.swift */,
-				CE51B3DC237DC86C00707B33 /* UIDropDownButton.swift */,
 				CE51B3DB237DC86C00707B33 /* FilterViewController.swift */,
 			);
 			path = FilterView;
@@ -364,8 +355,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A1F40D923749FCB00D5E424 /* FirstLaunchView.swift in Sources */,
-				CE51B3E1237DC86C00707B33 /* DropDownDelegate.swift in Sources */,
-				CE51B3E0237DC86C00707B33 /* UIDropDownButton.swift in Sources */,
 				9A52BEA72349190F00DA7D35 /* UniversityStruct.swift in Sources */,
 				9A30974A234CC274005B2B85 /* UniversityCell.swift in Sources */,
 				9AEE3C34234E73F200DAAFA3 /* TableViewUniversities.swift in Sources */,
@@ -385,7 +374,6 @@
 				9A3637E6235394E500F730DC /* DepartmentsTableView.swift in Sources */,
 				CE51B3DF237DC86C00707B33 /* FilterViewController.swift in Sources */,
 				9AB858B9234F523800F5217B /* FacultyCell.swift in Sources */,
-				CE51B3DE237DC86C00707B33 /* DropDownView.swift in Sources */,
 				9A3637E2235392C000F730DC /* DepartmentCell.swift in Sources */,
 				9A1F40D623749EC200D5E424 /* OnboardingView.swift in Sources */,
 				CE51B3E7237DC96300707B33 /* FilterSize.swift in Sources */,

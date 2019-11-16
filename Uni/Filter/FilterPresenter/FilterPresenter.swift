@@ -25,11 +25,10 @@ struct FilterPresenter {
         minPoints = self.model.minPoint ?? 100
         military = self.model.military ?? true
         military = self.model.campus ?? true
-        
     }
     
     mutating func changeCountry(newCountry: String?) {
-        
+        model.country = newCountry
     }
     
     mutating func addSubject(newSubjects: String?) {
@@ -48,9 +47,9 @@ struct FilterPresenter {
         model.campus? = value
     }
     
-    func countOfCountrys() -> Int? {
-        return self.model.country?.count
-    }
+//    func countOfCountrys() -> Int? {
+//        return self.model.country?.count
+//    }
     
     func countOfSubjects() -> Int? {
         return self.model.subjects?.count

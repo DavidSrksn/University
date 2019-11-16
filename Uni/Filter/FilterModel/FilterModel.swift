@@ -351,6 +351,12 @@ enum Subjects: String {
     case Литература
 }
 
+struct subjectData {
+    var opened = Bool()
+    var title = String()
+    var sectionData = [String]()
+}
+
 struct Filter {
     var country: String?
     var subjects: [String]?

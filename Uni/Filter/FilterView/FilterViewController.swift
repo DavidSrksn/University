@@ -81,19 +81,6 @@ class FilterViewController: UIViewController {
         countryButton.dropView.dropDownOptions = dataSourceCountry
     }
     
-    private func setupSubjects(subject: UIDropDownButton) {
-        subject.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        subject.backgroundColor = dataView.FilterDropDownColor
-        subject.setTitle("Предметы", for: .normal)
-        subject.layer.cornerRadius = dataView.cornerRadius
-        
-        subject.translatesAutoresizingMaskIntoConstraints = false
-        
-        subject.widthAnchor.constraint(equalToConstant: self.view.center.x * 2 - constraints.safeAreaBorder).isActive = true
-        
-        subject.dropView.dropDownOptions = dataSourceSubject
-    }
-    
     private func setupAddSubject() {
         addSubject.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
         addSubject.layer.cornerRadius = dataView.cornerRadius

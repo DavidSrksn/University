@@ -2,6 +2,7 @@ import UIKit
 
 struct FilterViewData {
     let FilterViewColor = UIColor.white
+    let addSubjectColor = UIColor.black
     let FilterDropDownColor = UIColor.black
     
     let sliderColor = UIColor.black

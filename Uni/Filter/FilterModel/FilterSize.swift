@@ -15,14 +15,15 @@ struct Size {
     let countryButtonY = CGFloat(60)
     let countryButtonHeight = CGFloat(35)
     
-    let contentTableY = CGFloat(100)
-    let contentTableHeight = CGFloat(120)
+    let addSubjectButtonY = CGFloat(120)
+    let addSubjectButtonHeight = CGFloat(40)
+    let addSubjectButtonWidth = CGFloat(200)
     
-    let contentViewY = CGFloat(220)
+    let contentTableY = CGFloat(170)
+    let contentTableHeight = CGFloat(130)
+    
+    let contentViewY = CGFloat(320)
     let contentViewHeight = CGFloat(220)
-    
-    let subjectsButtonY = CGFloat(120)
-    let subjectsButtonHeight = CGFloat(45)
     
     let pointsSliderY = CGFloat(40)
     let pointsSliderHeight = CGFloat(30)

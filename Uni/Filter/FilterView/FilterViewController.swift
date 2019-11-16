@@ -94,6 +94,25 @@ class FilterViewController: UIViewController {
         subject.dropView.dropDownOptions = dataSourceSubject
     }
     
+    private func setupAddSubject() {
+        addSubject.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        addSubject.layer.cornerRadius = dataView.cornerRadius
+        addSubject.setTitle("Добавить предмет", for: .normal)
+        addSubject.backgroundColor = dataView.addSubjectColor
+        
+        
+        addSubject.addTarget(self, action: #selector(pushSubject), for: .touchUpInside)
+        
+        view.addSubview(addSubject)
+        
+        addSubject.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubject.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.addSubjectButtonY + barHeight).isActive = true
+        addSubject.leftAnchor.constraint(equalTo: view.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
+        addSubject.heightAnchor.constraint(equalToConstant: constraints.addSubjectButtonHeight).isActive = true
+        addSubject.widthAnchor.constraint(equalToConstant: constraints.addSubjectButtonWidth).isActive = true
+    }
+    
     private func setupDataContentTable() {
         view.addSubview(contentTable)
         pushSubject()
@@ -231,6 +250,7 @@ class FilterViewController: UIViewController {
         barHeight = navigationController?.navigationBar.frame.size.height ?? 0
         
         setupCountry()
+        setupAddSubject()
         setupDataContentTable()
         
         setupContentView()
@@ -266,6 +286,8 @@ class FilterViewController: UIViewController {
         
         dataContentTable.append(subjectButton)
         pointsSlider.maximumValue = Float(dataContentTable.count * 100)
+        
+        contentTable.reloadData()
     }
     
     private func popSubject() {

@@ -28,7 +28,9 @@ class FilterViewController: UIViewController {
     private let addSubject = UIButton()
     private var subjectTable = UITableView()
     
-    private let countryButton = UIDropDownButton()
+//    private let countryButton = UIDropDownButton()
+    private let countryLabel = UILabel()
+    private let countryPicker = UIPickerView()
     
     private let pointsSlider = UISlider()
     private let pointsTextField = UITextField()
@@ -60,24 +62,35 @@ class FilterViewController: UIViewController {
         contentView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
     }
     
+    private func setupCountryLabel() {
+        
+    }
+    
+    private func setupCountryPicker() {
+        
+    }
+    
     private func setupCountry() {
-        countryButton.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        countryButton.changeConstraints = constraintClosure
+        setupCountryLabel()
+        setupCountryPicker()
         
-        view.addSubview(countryButton)
-        
-        countryButton.backgroundColor = dataView.FilterDropDownColor
-        countryButton.setTitle("Город", for: .normal)
-        countryButton.layer.cornerRadius = dataView.cornerRadius
-        
-        countryButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        countryButton.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.countryButtonY + barHeight).isActive = true
-        countryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        countryButton.heightAnchor.constraint(equalToConstant: constraints.countryButtonHeight).isActive = true
-        countryButton.widthAnchor.constraint(equalToConstant: view.center.x * 2 - constraints.safeAreaBorder).isActive = true
-        
-        countryButton.dropView.dropDownOptions = dataSourceCountry
+//        countryButton.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+//        countryButton.changeConstraints = constraintClosure
+//
+//        view.addSubview(countryButton)
+//
+//        countryButton.backgroundColor = dataView.FilterDropDownColor
+//        countryButton.setTitle("Город", for: .normal)
+//        countryButton.layer.cornerRadius = dataView.cornerRadius
+//
+//        countryButton.translatesAutoresizingMaskIntoConstraints = false
+//
+//        countryButton.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.countryButtonY + barHeight).isActive = true
+//        countryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        countryButton.heightAnchor.constraint(equalToConstant: constraints.countryButtonHeight).isActive = true
+//        countryButton.widthAnchor.constraint(equalToConstant: view.center.x * 2 - constraints.safeAreaBorder).isActive = true
+//
+//        countryButton.dropView.dropDownOptions = dataSourceCountry
     }
     
     private func setupAddSubject() {
@@ -226,11 +239,11 @@ class FilterViewController: UIViewController {
         super.viewDidLoad()
         presenter.loadFilterSettings()
         
-        FilterManager.controller = self
-        constraintClosure = { y in
-            FilterManager.controller.updateContentTableConstraints(y: y)
-            FilterManager.controller.updateContentViewConstraints(y: y)
-        }
+//        FilterManager.controller = self
+//        constraintClosure = { y in
+//            FilterManager.controller.updateContentTableConstraints(y: y)
+//            FilterManager.controller.updateContentViewConstraints(y: y)
+//        }
         
         view.backgroundColor = dataView.FilterViewColor
         barHeight = navigationController?.navigationBar.frame.size.height ?? 0

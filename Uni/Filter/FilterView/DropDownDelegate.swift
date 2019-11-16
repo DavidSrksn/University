@@ -11,7 +11,7 @@ import UIKit
 
 protocol DropDownDelegate {
     var dropView: DropDownView { get set }
-    var changeConstraints: ((_ y: CGFloat)->(Void))? { get set }
+//    var changeConstraints: ((_ y: CGFloat)->(Void))? { get set }
     
     func setUpDropView()
     

@@ -259,6 +259,7 @@ class FilterViewController: UIViewController {
         subjectTableData.append(subjectData(opened: false,
                                             title: subjectTableTitle,
                                             sectionData: dataSourceSubject))
+        subjectTable.reloadData()
     }
     
     private func popSubject() {

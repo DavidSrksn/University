@@ -19,27 +19,27 @@ struct Size {
     let addSubjectButtonHeight = CGFloat(40)
     let addSubjectButtonWidth = CGFloat(200)
     
-    let contentTableY = CGFloat(170)
-    let contentTableHeight = CGFloat(130)
+    let subjectTableY = CGFloat(170)
+    let subjectTableHeight = CGFloat(200)
     
-    let contentViewY = CGFloat(320)
-    let contentViewHeight = CGFloat(220)
+    let contentViewY = CGFloat(390)
+    let contentViewHeight = CGFloat(200)
     
-    let pointsSliderY = CGFloat(40)
+    let pointsSliderY = CGFloat(10)
     let pointsSliderHeight = CGFloat(30)
     
-    let pointsTextFieldY = CGFloat(80)
+    let pointsTextFieldY = CGFloat(50)
     let pointsTextFieldHeight = CGFloat(30)
     
-    let militaryLabelY = CGFloat(130)
+    let militaryLabelY = CGFloat(100)
     let militaryLabelHeight = CGFloat(30)
     
-    let militaryButtonY = CGFloat(130)
+    let militaryButtonY = CGFloat(100)
     let militaryButtonHeight = CGFloat(45)
     
-    let campusLabelY = CGFloat(180)
+    let campusLabelY = CGFloat(150)
     let campusLabelHeight = CGFloat(30)
     
-    let campusButtonY = CGFloat(180)
+    let campusButtonY = CGFloat(150)
     let campusButtonHeight = CGFloat(45)
 }

@@ -12,17 +12,21 @@ import UIKit
 struct Size {
     let safeAreaBorder = CGFloat(20)
     
-    let countryButtonY = CGFloat(60)
-    let countryButtonHeight = CGFloat(35)
+    let countryLabelY = CGFloat(60)
+    let countryLabelHeight = CGFloat(30)
+    let countryLabelWidth = CGFloat(180)
     
-    let addSubjectButtonY = CGFloat(120)
+    let countryPickerY = CGFloat(90)
+    let countryPickerHeight = CGFloat(150)
+    
+    let addSubjectButtonY = CGFloat(270)
     let addSubjectButtonHeight = CGFloat(40)
     let addSubjectButtonWidth = CGFloat(200)
     
-    let subjectTableY = CGFloat(170)
-    let subjectTableHeight = CGFloat(200)
+    let subjectTableY = CGFloat(320)
+    let subjectTableHeight = CGFloat(220)
     
-    let contentViewY = CGFloat(390)
+    let contentViewY = CGFloat(560)
     let contentViewHeight = CGFloat(200)
     
     let pointsSliderY = CGFloat(10)

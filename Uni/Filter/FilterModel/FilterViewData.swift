@@ -5,6 +5,9 @@ struct FilterViewData {
     let addSubjectColor = UIColor.black
     let FilterDropDownColor = UIColor.black
     
+    let countryLabelColor = UIColor.black
+    let countryLabelTextColor = UIColor.white
+    
     let subjectCellColor = UIColor.black
     let subjectCellTextColor = UIColor.white
     

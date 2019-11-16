@@ -63,11 +63,38 @@ class FilterViewController: UIViewController {
     }
     
     private func setupCountryLabel() {
+        view.addSubview(countryLabel)
         
+        countryLabel.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        countryLabel.layer.masksToBounds = true
+        countryLabel.layer.cornerRadius = dataView.cornerRadius
+        countryLabel.backgroundColor = dataView.countryLabelColor
+        countryLabel.textColor = dataView.countryLabelTextColor
+        countryLabel.textAlignment = .center
+        countryLabel.text = "Город"
+        
+        countryLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        countryLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.countryLabelY + barHeight).isActive = true
+        countryLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: constraints.safeAreaBorder / 2).isActive = true
+        countryLabel.heightAnchor.constraint(equalToConstant: constraints.countryLabelHeight).isActive = true
+        countryLabel.widthAnchor.constraint(equalToConstant: constraints.countryLabelWidth).isActive = true
     }
     
     private func setupCountryPicker() {
+        view.addSubview(countryPicker)
         
+        countryPicker.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+        
+        countryPicker.delegate = self
+        countryPicker.dataSource = self
+        
+        countryPicker.translatesAutoresizingMaskIntoConstraints = false
+        
+        countryPicker.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.countryPickerY + barHeight).isActive = true
+        countryPicker.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        countryPicker.heightAnchor.constraint(equalToConstant: constraints.countryPickerHeight).isActive = true
+        countryPicker.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
     }
     
     private func setupCountry() {
@@ -264,6 +291,7 @@ class FilterViewController: UIViewController {
     }
     
     private func fillDataFilter() {
+        presenter.changeCountry(newCountry: countryLabel.text)
         presenter.changeMinPoint(for: Int(pointsSlider.value))
         presenter.changeMilitary(for: militaryButton.isOn)
         presenter.changeCampus(for: campusButton.isOn)
@@ -279,6 +307,25 @@ class FilterViewController: UIViewController {
                                             sectionData: dataSourceSubject))
         pointsSlider.maximumValue = Float(subjectTableData.count * 100)
         subjectTable.reloadData()
+    }
+}
+
+extension FilterViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return dataSourceCountry.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return dataSourceCountry[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        countryLabel.text = dataSourceCountry[row]
     }
 }
 

@@ -10,7 +10,6 @@ import UIKit
 
 class FilterViewController: UIViewController {
     
-    private var dataFilter = Filter()
     private var presenter = FilterPresenter()
     
     private var constraintClosure: ((CGFloat)->(Void))?
@@ -225,6 +224,7 @@ class FilterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter.loadFilterSettings()
         
         FilterManager.controller = self
         constraintClosure = { y in
@@ -243,6 +243,11 @@ class FilterViewController: UIViewController {
         setupPoints()
         setupMilitary()
         setupCampus()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.fillDataFilter()
+        presenter.updateFilterSettings()
     }
     
     private func fillDataFilter() {

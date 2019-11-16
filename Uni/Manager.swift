@@ -29,6 +29,8 @@ class Manager {
     
     var preference: String?
     
+    private var filterSettings = Filter(country: nil, subjects: nil, minPoint: nil, military: nil, campus: nil)
+    
     func internetConnectionCheck(viewcontroller: UIViewController ){
         if !NetworkReachabilityManager()!.isReachable{
 //          let newVC = viewcontroller.storyboard?.instantiateViewController(identifier: "wishlist")  as! WishlistTableView
@@ -225,7 +227,15 @@ class Manager {
             return true
         }
     }
+    
+    func loadFilterSettings() -> Filter {
+        return self.filterSettings
     }
+    
+    func updateFilterSettings(with newFilter: Filter) {
+        self.filterSettings = newFilter
+    }
+}
     
    
 

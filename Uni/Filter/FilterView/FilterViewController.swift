@@ -13,7 +13,7 @@ class FilterViewController: UIViewController {
     private var dataFilter = Filter()
     private var presenter = FilterPresenter()
     
-    private var constraintClosure: ((CGFloat, UIDropDownButton)->(Void))?
+    private var constraintClosure: ((CGFloat)->(Void))?
     
     private let constraints = Size()
     private let dataView = FilterViewData()
@@ -23,13 +23,13 @@ class FilterViewController: UIViewController {
     private let dataSourceSubject = ["Математика", "Русский", "Информатика", "Физика"]
     
     private var contentView = UIView()
+    
+    private var subjectTableData = [subjectData]()
+    private let subjectTableTitle = "Предметы"
     private let addSubject = UIButton()
-    private var contentTable = UITableView()
+    private var subjectTable = UITableView()
     
     private let countryButton = UIDropDownButton()
-    
-    private var dataContentTable: [UIDropDownButton] = []
-    private var dataHeaderTitle: String = "Предметы"
     
     private let pointsSlider = UISlider()
     private let pointsTextField = UITextField()
@@ -42,7 +42,7 @@ class FilterViewController: UIViewController {
     
     private func updateContentTableConstraints(y: CGFloat) {
         
-        contentTable.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.contentTableY + y).isActive = true
+        subjectTable.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.contentTableY + y).isActive = true
     }
     
     private func updateContentViewConstraints(y: CGFloat) {
@@ -114,18 +114,19 @@ class FilterViewController: UIViewController {
     }
     
     private func setupDataContentTable() {
-        view.addSubview(contentTable)
+        view.addSubview(subjectTable)
+        subjectTableData = []
         pushSubject()
         
-        contentTable.translatesAutoresizingMaskIntoConstraints = false
+        subjectTable.translatesAutoresizingMaskIntoConstraints = false
 
-        contentTable.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        contentTable.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.contentTableY + barHeight).isActive = true
-        contentTable.widthAnchor.constraint(equalToConstant: self.view.center.x * 2 - constraints.safeAreaBorder).isActive = true
-        contentTable.heightAnchor.constraint(equalToConstant: constraints.contentTableHeight).isActive = true
+        subjectTable.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        subjectTable.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.contentTableY + barHeight).isActive = true
+        subjectTable.widthAnchor.constraint(equalToConstant: self.view.center.x * 2 - constraints.safeAreaBorder).isActive = true
+        subjectTable.heightAnchor.constraint(equalToConstant: constraints.contentTableHeight).isActive = true
         
-        contentTable.delegate = self
-        contentTable.dataSource = self
+        subjectTable.delegate = self
+        subjectTable.dataSource = self
     }
     
     private func setupPointsSlider() {
@@ -133,7 +134,7 @@ class FilterViewController: UIViewController {
         pointsSlider.tintColor = dataView.sliderColor
         
         pointsSlider.minimumValue = 0
-        pointsSlider.maximumValue = Float(dataContentTable.count * 100)
+        pointsSlider.maximumValue = Float(subjectTableData.count * 100)
         
         pointsSlider.isContinuous = true
         pointsSlider.addTarget(self, action: #selector(changePoints), for: .valueChanged)
@@ -239,10 +240,8 @@ class FilterViewController: UIViewController {
         super.viewDidLoad()
         
         FilterManager.controller = self
-        constraintClosure = { y, btn in
-            if FilterManager.controller.countryButton === btn {
-                FilterManager.controller.updateContentTableConstraints(y: y)
-            }
+        constraintClosure = { y in
+            FilterManager.controller.updateContentTableConstraints(y: y)
             FilterManager.controller.updateContentViewConstraints(y: y)
         }
         
@@ -269,29 +268,14 @@ class FilterViewController: UIViewController {
         pointsTextField.text = " " + String(Int(pointsSlider.value))
     }
     
-//    @objc private func pushCountry() {
-//        let countryButton = UIDropDownButton()
-//        setupCountry(country: countryButton)
-//
-//        dataContentTable[0].append(countryButton)
-//    }
-//
-//    private func popCountry() {
-//        dataContentTable[0].removeLast()
-//    }
-    
     @objc private func pushSubject() {
-        let subjectButton = UIDropDownButton()
-        setupSubjects(subject: subjectButton)
-        
-        dataContentTable.append(subjectButton)
-        pointsSlider.maximumValue = Float(dataContentTable.count * 100)
-        
-        contentTable.reloadData()
+        subjectTableData.append(subjectData(opened: false,
+                                            title: subjectTableTitle,
+                                            sectionData: dataSourceSubject))
     }
     
     private func popSubject() {
-        dataContentTable.removeLast()
+        // dataContentTable.removeLast()
     }
 }
 
@@ -314,24 +298,43 @@ extension FilterViewController: UITextFieldDelegate {
 extension FilterViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataContentTable.count
+        if subjectTableData[section].opened {
+            return subjectTableData[section].sectionData.count + 1
+        } else {
+            return 1
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.addSubview(dataContentTable[indexPath.row])
+        let dataIndex = indexPath.row - 1
+        
+        if indexPath.row == 0 {
+            cell.textLabel?.text = subjectTableData[indexPath.section].title
+        } else {
+            cell.textLabel?.text = subjectTableData[indexPath.section].sectionData[dataIndex]
+        }
         
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return dataHeaderTitle
     }
 }
 
 extension FilterViewController: UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return dataContentTable.count
+        return subjectTableData.count
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let dataIndex = indexPath.row - 1
+        
+        if indexPath.row != 0 {
+            subjectTableData[indexPath.section].title = subjectTableData[indexPath.section].sectionData[dataIndex]
+        }
+        
+        subjectTableData[indexPath.section].opened = !(subjectTableData[indexPath.section].opened)
+        
+        let sections = IndexSet.init(integer: indexPath.section)
+        subjectTable.reloadSections(sections, with: .none)
     }
 }

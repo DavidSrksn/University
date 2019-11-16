@@ -264,16 +264,14 @@ class FilterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter.loadFilterSettings()
+        view.backgroundColor = dataView.FilterViewColor
+        barHeight = navigationController?.navigationBar.frame.size.height ?? 0
         
 //        FilterManager.controller = self
 //        constraintClosure = { y in
 //            FilterManager.controller.updateContentTableConstraints(y: y)
 //            FilterManager.controller.updateContentViewConstraints(y: y)
 //        }
-        
-        view.backgroundColor = dataView.FilterViewColor
-        barHeight = navigationController?.navigationBar.frame.size.height ?? 0
         
         setupCountry()
         setupAddSubject()
@@ -283,6 +281,15 @@ class FilterViewController: UIViewController {
         setupPoints()
         setupMilitary()
         setupCampus()
+        
+        if (presenter.loadFilterSettings()) {
+            presenter.fillFields(country: &countryLabel.text,
+                                 subjects: &subjectTableData,
+                                 minPoints: &pointsSlider.value,
+                                 military: &militaryButton.isOn,
+                                 campus: &campusButton.isOn)
+            self.pointsTextField.text = "\(Int(pointsSlider.value))"
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

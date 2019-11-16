@@ -11,18 +11,26 @@ struct FilterPresenter {
         model.campus = true
     }
     
-    mutating func loadFilterSettings() {
+    mutating func loadFilterSettings() -> Bool {
         self.model = Manager.shared.loadFilterSettings()
+        
+        return self.model.country != nil
     }
     
     func updateFilterSettings() {
         Manager.shared.updateFilterSettings(with: self.model)
     }
     
-    func fillFields(country: inout String, subjects: inout [String], minPoints: inout Int, military: inout Bool, campus: inout Bool) {
-        country = self.model.country ?? ""
-        subjects = self.model.subjects ?? []
-        minPoints = self.model.minPoint ?? 100
+    func fillFields(country: inout String?, subjects: inout [subjectData], minPoints: inout Float, military: inout Bool, campus: inout Bool) {
+        country = self.model.country
+        
+        if let data = self.model.subjects {
+            for i in 0...data.count {
+                subjects[i].title = data[i]
+            }
+        }
+        
+        minPoints = Float(self.model.minPoint ?? 100)
         military = self.model.military ?? true
         military = self.model.campus ?? true
     }

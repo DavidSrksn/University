@@ -264,6 +264,7 @@ class FilterViewController: UIViewController {
         subjectTableData.append(subjectData(opened: false,
                                             title: subjectTableTitle,
                                             sectionData: dataSourceSubject))
+        pointsSlider.maximumValue = Float(subjectTableData.count * 100)
         subjectTable.reloadData()
     }
 }
@@ -342,9 +343,11 @@ extension FilterViewController {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            
             subjectTableData.remove(at: indexPath.row)
-            subjectTable.deleteSections(IndexSet.init(integer: indexPath.section),
-                                        with: .fade)
+            pointsSlider.maximumValue = Float(subjectTableData.count * 100)
+            
+            subjectTable.deleteSections(IndexSet.init(integer: indexPath.section), with: .fade)
             subjectTable.reloadData()
         } else if editingStyle == .insert {
             

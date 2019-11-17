@@ -15,6 +15,8 @@ class TableViewUniversities: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
+    private var filterSettings = Filter(country: nil, subjects: nil, minPoint: nil, military: nil, campus: nil)
+    
 //    @IBAction func wishlistButton(_ sender: UIButton) {
 //        let viewController = storyboard?.instantiateViewController(identifier: "wishlist") as! WishlistTableView
 //        navigationController?.pushViewController(viewController, animated: true)
@@ -24,36 +26,51 @@ class TableViewUniversities: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Фильтры", style: .done, target: self, action: #selector(openFilter))
     }
     
+    private func reloadData(_ value: Bool) {
+        let city: String? = self.filterSettings.country ?? "Moscow"
+        let subjects: [String]? = self.filterSettings.subjects ?? ["математика","русский", "физика"]
+        let minPoints: Int? = self.filterSettings.minPoint ?? 200
+        let dormitory: Bool? = self.filterSettings.campus ?? true
+        let militaryDepartment: Bool? = self.filterSettings.military ?? true
+        
+//        if Manager.shared.UFD.keys.count == 0{
+        if value {
+            view.showAnimatedGradientSkeleton()
+            
+//          let gradient = SkeletonGradient(baseColor: .alizarin, secondaryColor: .alizarin)
+//          let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
+//          view.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation, transition: .none)
+//          navigationController?.view.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation, transition: .none)
+            
+            Manager.shared.loadUniversities(limit: Int.max , city: city, subjects: subjects, minPoints: minPoints, dormitory: dormitory, militaryDepartment: militaryDepartment, completion: { [weak self] in
+                DispatchQueue.main.async{
+                self?.tableView.reloadData()
+                self?.view.hideSkeleton()
+                }
+            })
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.filterSettings = Manager.shared.loadFilterSettings()
+        reloadData(true)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         Manager.shared.internetConnectionCheck(viewcontroller: self)
     }
     
-       override func viewDidLoad() {
-           super.viewDidLoad()
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         setupFilterButton()
         
+        reloadData(true)
+        
         tableView.dataSource = self
         tableView.delegate = self
-        let city: String? = "Moscow"
-        let subjects: [String]? = ["математика","русский","физика"]
-        let dormitory: Bool? = true
-        let minPoints: Int?  = 100
-        let militaryDepartment: Bool?  = true
-        if Manager.shared.UFD.keys.count == 0{
-        view.showAnimatedGradientSkeleton()
-//            let gradient = SkeletonGradient(baseColor: .alizarin, secondaryColor: .alizarin)
-//            let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
-//            view.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation, transition: .none)
-//        navigationController?.view.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation, transition: .none)
-        Manager.shared.loadUniversities(limit: Int.max , city: city, subjects: subjects, minPoints: minPoints, dormitory: dormitory, militaryDepartment: militaryDepartment, completion: { [weak self] in
-                DispatchQueue.main.async{
-                 self?.tableView.reloadData()
-                 self?.view.hideSkeleton()
-            }
-          })
-        }
-       }
+    }
     
     @objc
     private func openFilter() {

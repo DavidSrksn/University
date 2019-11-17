@@ -35,11 +35,14 @@ class TableViewUniversities: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
-        let city: String? = "Moscow"
-        let subjects: [String]? = ["математика","русский","физика"]
-        let dormitory: Bool? = true
-        let minPoints: Int?  = 100
-        let militaryDepartment: Bool?  = true
+        
+        let filterSettings = Manager.shared.loadFilterSettings()
+        let city: String? = filterSettings.country ?? "Moscow"
+        let subjects: [String]? = filterSettings.subjects ?? ["математика","русский"]
+        let minPoints: Int? = filterSettings.minPoint ?? 200
+        let dormitory: Bool? = filterSettings.campus ?? true
+        let militaryDepartment: Bool? = filterSettings.military ?? true
+        
         if Manager.shared.UFD.keys.count == 0{
         view.showAnimatedGradientSkeleton()
 //            let gradient = SkeletonGradient(baseColor: .alizarin, secondaryColor: .alizarin)

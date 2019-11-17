@@ -32,7 +32,7 @@ class TableViewUniversities: UIViewController {
         let minPoints: Int? = self.filterSettings.minPoint ?? 200
         let dormitory: Bool? = self.filterSettings.campus ?? true
         let militaryDepartment: Bool? = self.filterSettings.military ?? true
-                
+        
 //        if Manager.shared.UFD.keys.count == 0{
         if value {
             view.showAnimatedGradientSkeleton()

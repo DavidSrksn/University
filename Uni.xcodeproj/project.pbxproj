@@ -36,6 +36,7 @@
 		CE51B3E3237DC87200707B33 /* FilterPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51B3E2237DC87200707B33 /* FilterPresenter.swift */; };
 		CE51B3E6237DC96300707B33 /* FilterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51B3E4237DC96300707B33 /* FilterModel.swift */; };
 		CE51B3E7237DC96300707B33 /* FilterSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51B3E5237DC96300707B33 /* FilterSize.swift */; };
+		CE5A96CA2381751B0013DBBE /* UniversitiesPrefetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5A96C92381751B0013DBBE /* UniversitiesPrefetching.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +73,7 @@
 		CE51B3E2237DC87200707B33 /* FilterPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterPresenter.swift; sourceTree = "<group>"; };
 		CE51B3E4237DC96300707B33 /* FilterModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterModel.swift; sourceTree = "<group>"; };
 		CE51B3E5237DC96300707B33 /* FilterSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterSize.swift; sourceTree = "<group>"; };
+		CE5A96C92381751B0013DBBE /* UniversitiesPrefetching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversitiesPrefetching.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 				9AEE3C33234E73F200DAAFA3 /* TableViewUniversities.swift */,
 				9A309749234CC274005B2B85 /* UniversityCell.swift */,
 				9A52BEA62349190F00DA7D35 /* UniversityStruct.swift */,
+				CE5A96C92381751B0013DBBE /* UniversitiesPrefetching.swift */,
 			);
 			name = Universities;
 			sourceTree = "<group>";
@@ -366,6 +369,7 @@
 				CE51B3E6237DC96300707B33 /* FilterModel.swift in Sources */,
 				9AE7C27E2376FED200D63525 /* MainNavigationController.swift in Sources */,
 				9AAD7EC72371C39400F2C148 /* WishlistObject.swift in Sources */,
+				CE5A96CA2381751B0013DBBE /* UniversitiesPrefetching.swift in Sources */,
 				CE51B3E3237DC87200707B33 /* FilterPresenter.swift in Sources */,
 				9A9CAFA7233FC8A700258AB8 /* AppDelegate.swift in Sources */,
 				9A38C1812355D16F004DB189 /* Manager.swift in Sources */,

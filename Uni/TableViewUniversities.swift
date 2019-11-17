@@ -12,6 +12,9 @@ import SkeletonView
 
 
 class TableViewUniversities: UIViewController {
+    
+    private var loadingQueue = OperationQueue()
+//    private var loadingOperation = [IndexPath: DataLoadOperation]()
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -35,11 +38,14 @@ class TableViewUniversities: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.prefetchDataSource = self
+        
         let city: String? = "Moscow"
         let subjects: [String]? = ["математика","русский","физика"]
         let dormitory: Bool? = true
         let minPoints: Int?  = 100
         let militaryDepartment: Bool?  = true
+        
         if Manager.shared.UFD.keys.count == 0{
         view.showAnimatedGradientSkeleton()
 //            let gradient = SkeletonGradient(baseColor: .alizarin, secondaryColor: .alizarin)

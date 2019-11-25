@@ -23,7 +23,9 @@ class TableViewUniversities: UIViewController {
 //    }
     
     private func setupFilterButton() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Фильтры", style: .done, target: self, action: #selector(openFilter))
+        let filterButton = UIBarButtonItem(title: "Фильтры", style: .done, target: self, action: #selector(openFilter))
+        filterButton.tintColor = .white
+        navigationItem.rightBarButtonItem = filterButton
     }
     
     private func reloadData(_ value: Bool) {
@@ -54,7 +56,7 @@ class TableViewUniversities: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.filterSettings = Manager.shared.loadFilterSettings()
-        reloadData(true)
+        // reloadData(true)
     }
     
     override func viewDidAppear(_ animated: Bool) {

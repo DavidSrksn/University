@@ -61,6 +61,7 @@ class Manager {
                                 if !Manager.shared.UFD.keys.contains(University(dictionary: document1.data())!) {
                                     if let error = error {
                                         print("\(error.localizedDescription)")
+                                        completion?()
                                         // добавить комплишены
                                     }
                                     else{
@@ -112,6 +113,7 @@ class Manager {
                       .getDocuments { (querySnapshot2, error) in
                         if let error = error {
                            print("\(error.localizedDescription)")
+                            completion?()
                         } else {
                              for document2 in (querySnapshot2?.documents)!{
                                 self.db.collection("Universities")
@@ -159,6 +161,7 @@ class Manager {
                          .getDocuments { (querySnapshot2, error) in
                            if let error = error {
                               print("\(error.localizedDescription)")
+                            completion?()
                            }
                                else{
                                  for document2 in (querySnapshot2?.documents)!{

@@ -28,15 +28,14 @@ class TableViewUniversities: UIViewController {
         navigationItem.rightBarButtonItem = filterButton
     }
     
-    private func reloadData(_ value: Bool) {
+    private func reloadData() {
         let city: String? = self.filterSettings.country ?? "Moscow"
         let subjects: [String]? = self.filterSettings.subjects ?? ["математика","русский", "физика"]
         let minPoints: Int? = self.filterSettings.minPoint ?? 200
         let dormitory: Bool? = self.filterSettings.campus ?? true
         let militaryDepartment: Bool? = self.filterSettings.military ?? true
         
-//        if Manager.shared.UFD.keys.count == 0{
-        if value {
+        if Manager.shared.UFD.keys.count == 0 {
             view.showAnimatedGradientSkeleton()
             
 //          let gradient = SkeletonGradient(baseColor: .alizarin, secondaryColor: .alizarin)
@@ -51,12 +50,13 @@ class TableViewUniversities: UIViewController {
                 }
             })
         }
+        
+        Manager.shared.dataUFD = Manager.shared.UFD;
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.filterSettings = Manager.shared.loadFilterSettings()
-        // reloadData(true)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -68,7 +68,7 @@ class TableViewUniversities: UIViewController {
         
         setupFilterButton()
         
-        reloadData(true)
+        reloadData()
         
         tableView.dataSource = self
         tableView.delegate = self

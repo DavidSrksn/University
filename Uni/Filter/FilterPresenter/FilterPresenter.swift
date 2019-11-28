@@ -44,15 +44,15 @@ struct FilterPresenter {
     }
     
     mutating func changeMinPoint(for value: Int) {
-        model.minPoint? = value
+        model.minPoint = value
     }
     
     mutating func changeMilitary(for value: Bool) {
-        model.military? = value
+        model.military = value
     }
     
     mutating func changeCampus(for value: Bool) {
-        model.campus? = value
+        model.campus = value
     }
     
 //    func countOfCountrys() -> Int? {

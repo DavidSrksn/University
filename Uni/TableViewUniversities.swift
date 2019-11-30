@@ -39,6 +39,9 @@ class TableViewUniversities: UIViewController {
     
     private func setupNavigationItem() {
         searchTitle.text = "University"
+        searchTitle.textColor = .white
+        searchTitle.font = UIFont(name: "AppleMyungjo", size: 24)
+        
         navigationItem.titleView = searchTitle
     }
     
@@ -174,6 +177,33 @@ extension TableViewUniversities :  SkeletonTableViewDataSource, SkeletonTableVie
 
 extension TableViewUniversities: UISearchBarDelegate {
     
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        return true
+    } // return NO to not become first responder
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        
+    } // called when text starts editing
+    
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        return true
+    } // return NO to not resign first responder
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        
+    } // called when text ends editing
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+    } // called when text changes (including clear)
+    
+    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        return true
+    } // called before text changes
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+    } // called when keyboard search button pressed
 }
 
 

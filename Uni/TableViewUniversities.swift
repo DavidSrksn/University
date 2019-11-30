@@ -17,6 +17,8 @@ class TableViewUniversities: UIViewController {
     
     private var filterSettings = Filter(country: nil, subjects: nil, minPoint: nil, military: nil, campus: nil)
     
+    private let searchButton = UIButton()
+    
 //    @IBAction func wishlistButton(_ sender: UIButton) {
 //        let viewController = storyboard?.instantiateViewController(identifier: "wishlist") as! WishlistTableView
 //        navigationController?.pushViewController(viewController, animated: true)
@@ -26,6 +28,14 @@ class TableViewUniversities: UIViewController {
         let filterButton = UIBarButtonItem(title: "Фильтры", style: .done, target: self, action: #selector(openFilter))
         filterButton.tintColor = .white
         navigationItem.rightBarButtonItem = filterButton
+    }
+    
+    private func setupSearchButton() {
+        self.navigationController?.view.addSubview(searchButton)
+        
+        searchButton.frame = CGRect(origin: CGPoint(x: self.view.frame.width - 100, y: self.view.frame.height - 180), size: CGSize(width: 80, height: 80))
+        searchButton.layer.cornerRadius = searchButton.frame.width / 2
+        searchButton.backgroundColor = UIColor.black
     }
     
     private func reloadData() {
@@ -66,6 +76,7 @@ class TableViewUniversities: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupSearchButton()
         setupFilterButton()
         
         reloadData()

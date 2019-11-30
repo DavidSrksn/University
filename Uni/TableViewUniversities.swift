@@ -19,6 +19,9 @@ class TableViewUniversities: UIViewController {
     
     private let filterButton = UIButton()
     
+    private let searchField = UISearchBar()
+    private let searchTitle = UILabel()
+    
 //    @IBAction func wishlistButton(_ sender: UIButton) {
 //        let viewController = storyboard?.instantiateViewController(identifier: "wishlist") as! WishlistTableView
 //        navigationController?.pushViewController(viewController, animated: true)
@@ -35,7 +38,8 @@ class TableViewUniversities: UIViewController {
     }
     
     private func setupNavigationItem() {
-        navigationItem.title = "University"
+        searchTitle.text = "University"
+        navigationItem.titleView = searchTitle
     }
     
     private func setupSearchButton() {
@@ -52,9 +56,9 @@ class TableViewUniversities: UIViewController {
     }
     
     private func setupSearchField() {
-        let searchField = UITextField()
-        
-        navigationItem.titleView = searchField
+        searchField.placeholder = "Введите университет"
+        searchField.delegate = self
+        searchField.isHidden = false
     }
     
     private func reloadData() {
@@ -120,16 +124,18 @@ class TableViewUniversities: UIViewController {
     }
     
     @objc private func search() {
-        navigationItem.rightBarButtonItem?.tintColor = .clear
-        navigationItem.rightBarButtonItem?.isEnabled = false
+        navigationItem.titleView = searchField
+        
+        navigationItem.rightBarButtonItem = nil
         
         navigationItem.leftBarButtonItem?.isEnabled = true
         navigationItem.leftBarButtonItem?.tintColor = .white
     }
     
     @objc private func endSearching() {
-        navigationItem.rightBarButtonItem?.isEnabled = true
-        navigationItem.rightBarButtonItem?.tintColor = .white
+        navigationItem.titleView = searchTitle
+        
+        setupSearchButton()
         
         navigationItem.leftBarButtonItem?.tintColor = .clear
         navigationItem.leftBarButtonItem?.isEnabled = false
@@ -166,6 +172,9 @@ extension TableViewUniversities :  SkeletonTableViewDataSource, SkeletonTableVie
         }
 }
 
+extension TableViewUniversities: UISearchBarDelegate {
+    
+}
 
 
 

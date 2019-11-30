@@ -428,7 +428,7 @@
         <!--Home-->
         <scene sceneID="BjR-ar-wuO">
             <objects>
-                <navigationController storyboardIdentifier="NavigationController" automaticallyAdjustsScrollViewInsets="NO" hidesBarsWhenKeyboardAppears="YES" id="q95-sv-hp1" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationController" automaticallyAdjustsScrollViewInsets="NO" id="q95-sv-hp1" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="-3" title="Home" image="house" catalog="system" id="Wp2-gg-IUU"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="LBz-kG-97s"/>

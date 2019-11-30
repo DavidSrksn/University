@@ -25,7 +25,7 @@
             </objects>
             <point key="canvasLocation" x="3719" y="-106"/>
         </scene>
-        <!--University-->
+        <!--Table View Universities-->
         <scene sceneID="rJe-Dg-WoB">
             <objects>
                 <viewController storyboardIdentifier="UniversityTable" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ixu-KK-Ejz" customClass="TableViewUniversities" customModule="Uni" customModuleProvider="target" sceneMemberID="viewController">
@@ -124,7 +124,7 @@
                             <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </view>
-                    <navigationItem key="navigationItem" title="University" id="9wg-HH-JKf"/>
+                    <navigationItem key="navigationItem" id="9wg-HH-JKf"/>
                     <connections>
                         <outlet property="tableView" destination="lKp-zF-UDW" id="rcx-vJ-3Gz"/>
                     </connections>

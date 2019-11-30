@@ -34,10 +34,25 @@ class TableViewUniversities: UIViewController {
         filterButton.addTarget(self, action: #selector(openFilter), for: .touchUpInside)
     }
     
+    private func setupNavigationItem() {
+        navigationItem.title = "University"
+    }
+    
     private func setupSearchButton() {
         let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(search))
         searchButton.tintColor = .white
         navigationItem.rightBarButtonItem = searchButton
+    }
+    
+    private func setupEndSearchingButton() {
+        let endSearchingButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(endSearching))
+        endSearchingButton.tintColor = .white
+        endSearchingButton.isEnabled = false
+        navigationItem.rightBarButtonItem = endSearchingButton
+    }
+    
+    private func setupSearchField() {
+        
     }
     
     private func reloadData() {
@@ -68,7 +83,7 @@ class TableViewUniversities: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        filterButton.isHidden = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -78,13 +93,21 @@ class TableViewUniversities: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupNavigationItem()
         setupSearchButton()
         setupFilterButton()
+        setupSearchField()
         
         reloadData()
         
         tableView.dataSource = self
         tableView.delegate = self
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        filterButton.isHidden = true
     }
     
     @objc private func openFilter() {
@@ -93,6 +116,10 @@ class TableViewUniversities: UIViewController {
     }
     
     @objc private func search() {
+        navigationItem.rightBarButtonItem?.isEnabled = true
+    }
+    
+    @objc private func endSearching() {
         
     }
 }

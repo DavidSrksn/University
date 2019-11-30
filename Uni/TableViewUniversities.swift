@@ -17,7 +17,7 @@ class TableViewUniversities: UIViewController {
     
     private var filterSettings = Filter(country: nil, subjects: nil, minPoint: nil, military: nil, campus: nil)
     
-    private let searchButton = UIButton()
+    private let filterButton = UIButton()
     
 //    @IBAction func wishlistButton(_ sender: UIButton) {
 //        let viewController = storyboard?.instantiateViewController(identifier: "wishlist") as! WishlistTableView
@@ -25,17 +25,19 @@ class TableViewUniversities: UIViewController {
 //    }
     
     private func setupFilterButton() {
-        let filterButton = UIBarButtonItem(title: "Фильтры", style: .done, target: self, action: #selector(openFilter))
-        filterButton.tintColor = .white
-        navigationItem.rightBarButtonItem = filterButton
+        self.navigationController?.view.addSubview(filterButton)
+        
+        filterButton.frame = CGRect(origin: CGPoint(x: self.view.frame.width - 100, y: self.view.frame.height - 180), size: CGSize(width: 80, height: 80))
+        filterButton.layer.cornerRadius = filterButton.frame.width / 2
+        filterButton.backgroundColor = UIColor.black
+        
+        filterButton.addTarget(self, action: #selector(openFilter), for: .touchUpInside)
     }
     
     private func setupSearchButton() {
-        self.navigationController?.view.addSubview(searchButton)
-        
-        searchButton.frame = CGRect(origin: CGPoint(x: self.view.frame.width - 100, y: self.view.frame.height - 180), size: CGSize(width: 80, height: 80))
-        searchButton.layer.cornerRadius = searchButton.frame.width / 2
-        searchButton.backgroundColor = UIColor.black
+        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(search))
+        searchButton.tintColor = .white
+        navigationItem.rightBarButtonItem = searchButton
     }
     
     private func reloadData() {
@@ -85,10 +87,13 @@ class TableViewUniversities: UIViewController {
         tableView.delegate = self
     }
     
-    @objc
-    private func openFilter() {
+    @objc private func openFilter() {
         let filterController = FilterViewController()
         navigationController?.pushViewController(filterController, animated: true)
+    }
+    
+    @objc private func search() {
+        
     }
 }
 

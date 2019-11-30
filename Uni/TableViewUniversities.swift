@@ -46,13 +46,15 @@ class TableViewUniversities: UIViewController {
     
     private func setupEndSearchingButton() {
         let endSearchingButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(endSearching))
-        endSearchingButton.tintColor = .white
+        endSearchingButton.tintColor = .clear
         endSearchingButton.isEnabled = false
-        navigationItem.rightBarButtonItem = endSearchingButton
+        navigationItem.leftBarButtonItem = endSearchingButton
     }
     
     private func setupSearchField() {
+        let searchField = UITextField()
         
+        navigationItem.titleView = searchField
     }
     
     private func reloadData() {
@@ -95,8 +97,10 @@ class TableViewUniversities: UIViewController {
         
         setupNavigationItem()
         setupSearchButton()
-        setupFilterButton()
+        setupEndSearchingButton()
         setupSearchField()
+        
+        setupFilterButton()
         
         reloadData()
         
@@ -116,11 +120,19 @@ class TableViewUniversities: UIViewController {
     }
     
     @objc private func search() {
-        navigationItem.rightBarButtonItem?.isEnabled = true
+        navigationItem.rightBarButtonItem?.tintColor = .clear
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        
+        navigationItem.leftBarButtonItem?.isEnabled = true
+        navigationItem.leftBarButtonItem?.tintColor = .white
     }
     
     @objc private func endSearching() {
+        navigationItem.rightBarButtonItem?.isEnabled = true
+        navigationItem.rightBarButtonItem?.tintColor = .white
         
+        navigationItem.leftBarButtonItem?.tintColor = .clear
+        navigationItem.leftBarButtonItem?.isEnabled = false
     }
 }
 

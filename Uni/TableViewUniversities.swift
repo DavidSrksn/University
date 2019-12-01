@@ -40,7 +40,7 @@ class TableViewUniversities: UIViewController {
     private func setupNavigationItem() {
         searchTitle.text = "University"
         searchTitle.textColor = .white
-        searchTitle.font = UIFont(name: "AppleMyungjo", size: 24)
+        searchTitle.font = UIFont(name: "Baskerville-Bold", size: 24)
         
         navigationItem.titleView = searchTitle
     }
@@ -60,6 +60,11 @@ class TableViewUniversities: UIViewController {
     
     private func setupSearchField() {
         searchField.placeholder = "Введите университет"
+        
+        if let textField = searchField.value(forKey: "searchField") as? UITextField {
+            textField.textColor = .white
+        }
+        
         searchField.delegate = self
         searchField.isHidden = false
     }
@@ -183,6 +188,7 @@ extension TableViewUniversities: UISearchBarDelegate {
             return $0.key.name.contains(searchText)
         }
         tableView.reloadData()
+        print(searchText)
     }
 }
 

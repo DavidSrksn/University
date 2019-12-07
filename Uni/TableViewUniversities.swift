@@ -188,7 +188,6 @@ extension TableViewUniversities: UISearchBarDelegate {
             return $0.key.name.contains(searchText)
         }
         tableView.reloadData()
-        print(searchText)
     }
 }
 

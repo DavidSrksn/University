@@ -12,7 +12,6 @@ import Firebase
 struct Faculty: Hashable {
     var name: String
     var fullName : String
-    var subjects: [String]
     
     var dictionary : [String : Any]{
         return [
@@ -26,10 +25,9 @@ struct Faculty: Hashable {
 extension Faculty: DocumentSerializable{
         init?(dictionary: [String: Any]){
         guard let name = dictionary["name"] as? String,
-              let fullName = dictionary["fullName"] as? String,
-              let subjects = dictionary["subjects"] as? [String]
+              let fullName = dictionary["fullName"] as? String
             else { return nil }
-            self.init(name: name,fullName : fullName, subjects: subjects)
+            self.init(name: name,fullName : fullName)
     }
 }
 

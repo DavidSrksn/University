@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainNavigationController: UINavigationController {       // ТЕСТОВОЕ
+final class MainNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let userFefaults = UserDefaults.standard

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FacultyCell: UITableViewCell {
+final class FacultyCell: UITableViewCell {
 
     @IBOutlet weak var facultyLabel: UILabel!
     @IBOutlet weak var facultyFullNameLabel: UILabel!

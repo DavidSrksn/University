@@ -16,7 +16,9 @@
 		9A3637E6235394E500F730DC /* DepartmentsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3637E5235394E500F730DC /* DepartmentsTableView.swift */; };
 		9A38C1812355D16F004DB189 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38C1802355D16F004DB189 /* Manager.swift */; };
 		9A52BEA72349190F00DA7D35 /* UniversityStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A52BEA62349190F00DA7D35 /* UniversityStruct.swift */; };
-		9A76BA16236A157E004E2259 /* WishlistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A76BA15236A157E004E2259 /* WishlistCell.swift */; };
+		9A7722E32394547000F0DDCA /* SortTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7722E22394547000F0DDCA /* SortTable.swift */; };
+		9A79FEA323983AA6006D8474 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79FEA223983AA6006D8474 /* TabBarController.swift */; };
+		9A79FEA523983AFB006D8474 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79FEA423983AFB006D8474 /* NavigationController.swift */; };
 		9A9CAFA7233FC8A700258AB8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9CAFA6233FC8A700258AB8 /* AppDelegate.swift */; };
 		9A9CAFA9233FC8A700258AB8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9CAFA8233FC8A700258AB8 /* SceneDelegate.swift */; };
 		9A9CAFAE233FC8A700258AB8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A9CAFAC233FC8A700258AB8 /* Main.storyboard */; };
@@ -30,6 +32,8 @@
 		9AEE3C34234E73F200DAAFA3 /* TableViewUniversities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEE3C33234E73F200DAAFA3 /* TableViewUniversities.swift */; };
 		9AEE3C37234F1F5E00DAAFA3 /* FacultiesTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEE3C36234F1F5E00DAAFA3 /* FacultiesTableView.swift */; };
 		9AF60EE6236E2819007AF8F6 /* WishlistTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF60EE5236E2819007AF8F6 /* WishlistTableView.swift */; };
+		9AF72EDE238DA18400CD9FBA /* DropdownCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AF72EDD238DA18400CD9FBA /* DropdownCell.xib */; };
+		9AF72EE2238DA43B00CD9FBA /* DropdownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF72EE1238DA43B00CD9FBA /* DropdownCell.swift */; };
 		A359B4E91ABCD6BC715873D3 /* Pods_Uni.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA5BC9E9A6BDEACD675B48B /* Pods_Uni.framework */; };
 		CE51B3D5237DB6A000707B33 /* FilterViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51B3D4237DB6A000707B33 /* FilterViewData.swift */; };
 		CE51B3DF237DC86C00707B33 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE51B3DB237DC86C00707B33 /* FilterViewController.swift */; };
@@ -50,7 +54,9 @@
 		9A3637E5235394E500F730DC /* DepartmentsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartmentsTableView.swift; sourceTree = "<group>"; };
 		9A38C1802355D16F004DB189 /* Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
 		9A52BEA62349190F00DA7D35 /* UniversityStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversityStruct.swift; sourceTree = "<group>"; };
-		9A76BA15236A157E004E2259 /* WishlistCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishlistCell.swift; sourceTree = "<group>"; };
+		9A7722E22394547000F0DDCA /* SortTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortTable.swift; sourceTree = SOURCE_ROOT; };
+		9A79FEA223983AA6006D8474 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		9A79FEA423983AFB006D8474 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		9A9CAFA3233FC8A700258AB8 /* Uni.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Uni.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A9CAFA6233FC8A700258AB8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9A9CAFA8233FC8A700258AB8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -66,6 +72,8 @@
 		9AEE3C33234E73F200DAAFA3 /* TableViewUniversities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewUniversities.swift; sourceTree = "<group>"; };
 		9AEE3C36234F1F5E00DAAFA3 /* FacultiesTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacultiesTableView.swift; sourceTree = "<group>"; };
 		9AF60EE5236E2819007AF8F6 /* WishlistTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WishlistTableView.swift; path = Uni/WishlistTableView.swift; sourceTree = SOURCE_ROOT; };
+		9AF72EDD238DA18400CD9FBA /* DropdownCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DropdownCell.xib; sourceTree = "<group>"; };
+		9AF72EE1238DA43B00CD9FBA /* DropdownCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownCell.swift; sourceTree = "<group>"; };
 		AFB043D206B89764FE505110 /* Pods-Uni.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Uni.debug.xcconfig"; path = "Target Support Files/Pods-Uni/Pods-Uni.debug.xcconfig"; sourceTree = "<group>"; };
 		CE51B3D4237DB6A000707B33 /* FilterViewData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewData.swift; sourceTree = "<group>"; };
 		CE51B3DB237DC86C00707B33 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
@@ -111,9 +119,19 @@
 			isa = PBXGroup;
 			children = (
 				9AF60EE5236E2819007AF8F6 /* WishlistTableView.swift */,
-				9A76BA15236A157E004E2259 /* WishlistCell.swift */,
+				9AF72EE1238DA43B00CD9FBA /* DropdownCell.swift */,
+				9AF72EDD238DA18400CD9FBA /* DropdownCell.xib */,
 				9AAD7EC62371C39400F2C148 /* WishlistObject.swift */,
 			);
+			path = Wishlist;
+			sourceTree = "<group>";
+		};
+		9A7722E12394541A00F0DDCA /* Sort */ = {
+			isa = PBXGroup;
+			children = (
+				9A7722E22394547000F0DDCA /* SortTable.swift */,
+			);
+			name = Sort;
 			path = Wishlist;
 			sourceTree = "<group>";
 		};
@@ -122,6 +140,8 @@
 			children = (
 				9A9CAFA5233FC8A700258AB8 /* Uni */,
 				9A9CAFA4233FC8A700258AB8 /* Products */,
+				9A7722E12394541A00F0DDCA /* Sort */,
+				9AB858BA234F8E3C00F5217B /* Something else */,
 				A5C54AAABADA039AA821F2EF /* Pods */,
 				B305FAB70B4E26EBCC70DE8A /* Frameworks */,
 			);
@@ -140,6 +160,7 @@
 			children = (
 				9A9CAFAC233FC8A700258AB8 /* Main.storyboard */,
 				9A38C1802355D16F004DB189 /* Manager.swift */,
+				CE51B3D2237DB62400707B33 /* Filter */,
 				9A1F40D723749F5F00D5E424 /* First Launch */,
 				9AB858B3234F4B9F00F5217B /* Universities */,
 				9AB858B4234F51CB00F5217B /* Faculties */,
@@ -176,6 +197,8 @@
 			children = (
 				9A9CAFA6233FC8A700258AB8 /* AppDelegate.swift */,
 				9A9CAFA8233FC8A700258AB8 /* SceneDelegate.swift */,
+				9A79FEA223983AA6006D8474 /* TabBarController.swift */,
+				9A79FEA423983AFB006D8474 /* NavigationController.swift */,
 				9A9CAFB1233FC8A800258AB8 /* LaunchScreen.storyboard */,
 				9A9CAFAF233FC8A800258AB8 /* Assets.xcassets */,
 				9A0AEC402370916C009434A6 /* Uni.xcdatamodeld */,
@@ -183,6 +206,7 @@
 				9A9CAFB4233FC8A800258AB8 /* Info.plist */,
 			);
 			name = "Something else";
+			path = Uni;
 			sourceTree = "<group>";
 		};
 		A5C54AAABADA039AA821F2EF /* Pods */ = {
@@ -299,6 +323,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A9CAFB3233FC8A800258AB8 /* LaunchScreen.storyboard in Resources */,
+				9AF72EDE238DA18400CD9FBA /* DropdownCell.xib in Resources */,
 				9A9CAFBB233FC8E100258AB8 /* GoogleService-Info.plist in Resources */,
 				9A9CAFB0233FC8A800258AB8 /* Assets.xcassets in Resources */,
 				9A9CAFAE233FC8A700258AB8 /* Main.storyboard in Resources */,
@@ -358,6 +383,7 @@
 				9A52BEA72349190F00DA7D35 /* UniversityStruct.swift in Sources */,
 				9A30974A234CC274005B2B85 /* UniversityCell.swift in Sources */,
 				9AEE3C34234E73F200DAAFA3 /* TableViewUniversities.swift in Sources */,
+				9AF72EE2238DA43B00CD9FBA /* DropdownCell.swift in Sources */,
 				9AB858B6234F51FB00F5217B /* FacultyStruct.swift in Sources */,
 				9AF60EE6236E2819007AF8F6 /* WishlistTableView.swift in Sources */,
 				9A3637DD2353926200F730DC /* DepartmentStruct.swift in Sources */,
@@ -369,13 +395,15 @@
 				CE51B3E3237DC87200707B33 /* FilterPresenter.swift in Sources */,
 				9A9CAFA7233FC8A700258AB8 /* AppDelegate.swift in Sources */,
 				9A38C1812355D16F004DB189 /* Manager.swift in Sources */,
-				9A76BA16236A157E004E2259 /* WishlistCell.swift in Sources */,
 				CE51B3D5237DB6A000707B33 /* FilterViewData.swift in Sources */,
+				9A7722E32394547000F0DDCA /* SortTable.swift in Sources */,
 				9A3637E6235394E500F730DC /* DepartmentsTableView.swift in Sources */,
 				CE51B3DF237DC86C00707B33 /* FilterViewController.swift in Sources */,
+				9A79FEA523983AFB006D8474 /* NavigationController.swift in Sources */,
 				9AB858B9234F523800F5217B /* FacultyCell.swift in Sources */,
 				9A3637E2235392C000F730DC /* DepartmentCell.swift in Sources */,
 				9A1F40D623749EC200D5E424 /* OnboardingView.swift in Sources */,
+				9A79FEA323983AA6006D8474 /* TabBarController.swift in Sources */,
 				CE51B3E7237DC96300707B33 /* FilterSize.swift in Sources */,
 				9A9CAFA9233FC8A700258AB8 /* SceneDelegate.swift in Sources */,
 			);

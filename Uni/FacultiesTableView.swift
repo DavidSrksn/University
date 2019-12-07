@@ -10,31 +10,55 @@ import UIKit
 import Firebase
 import SkeletonView
 
-class FacultiesTableView: UIViewController {
+final class FacultiesTableView: UIViewController {
 
+    @IBOutlet weak var universityAdressLabel: UIButton!
+    @IBAction func universityAdress(_ sender: UIButton) {
+        
+    }
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var universityImage: UIImageView!
     @IBOutlet weak var universityLabel: UILabel!
-
-    let subjects: [String]? = ["математика","русский","физика"]
-    let minPoints: Int?  = 100
     
-           override func viewDidLoad() {
-            super.viewDidLoad()
-            universityImage.image = UIImage(named: "\((Manager.shared.choosed[0] as! University).name).jpg")
-            universityLabel.text = (Manager.shared.choosed[0] as! University).name
-            tableView.dataSource = self
-            tableView.delegate = self
-            if (Manager.shared.UFD[Manager.shared.choosed[0] as! University]?.keys.count)! == 0 {
-                view.showAnimatedGradientSkeleton()
-                Manager.shared.loadFaculties(minPoints: minPoints,subjects: subjects, completion: { [weak self] in
-                   DispatchQueue.main.async{
-                   self?.tableView.reloadData()
-                   self?.view.hideSkeleton()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setTable()
+        setImage()
+        setUniversityLabel()
+        serUniversityAdress(universityAdress: (Manager.shared.choosed[0] as? University)!.adress)
+        if (Manager.shared.UFD[Manager.shared.choosed[0] as! University]?.keys.count)! == 0 {
+            view.showAnimatedGradientSkeleton()
+            Manager.shared.loadFaculties(minPoints:Manager.shared.filterSettings.minPoint,subjects: Manager.shared.filterSettings.subjects, completion: { [weak self] in
+                DispatchQueue.main.async{
+                    self?.tableView.reloadData()
+                    self?.view.hideSkeleton()
                 }
             })
         }
-   }
+    }
+    
+    func serUniversityAdress(universityAdress: String) {
+        universityAdressLabel.setTitle("adress:" + universityAdress, for: .normal)
+        universityAdressLabel.setTitleColor(.black, for: .normal)
+        universityAdressLabel.titleLabel?.font = UIFont(name: "AvenirNext-Regular", size: 15)
+    }
+    
+    func setTable(){
+        self.title = "Faculties"
+        tableView.tableFooterView = UIView.init(frame: .zero)
+        tableView.dataSource = self
+        tableView.delegate = self
+    }
+    
+    func setImage(){
+         universityImage.layer.cornerRadius = 20
+         universityImage.image = UIImage(named: "\((Manager.shared.choosed[0] as! University).name).jpg")
+    }
+    
+    func setUniversityLabel(){
+        universityLabel.layer.cornerRadius = 15
+        universityLabel.text = (Manager.shared.choosed[0] as! University).name
+    }
 }
 
     extension FacultiesTableView : SkeletonTableViewDelegate,SkeletonTableViewDataSource{

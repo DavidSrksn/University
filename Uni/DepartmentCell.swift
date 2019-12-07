@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DepartmentCell: UITableViewCell {
+final class DepartmentCell: UITableViewCell {
 
     @IBOutlet weak var addToWishlistButtonStatus: UIButton!
     @IBOutlet weak var departmentNameLabel: UILabel!
@@ -16,12 +16,14 @@ class DepartmentCell: UITableViewCell {
     
     @IBAction func addToWishlistButton(_ sender: UIButton) {
          Manager.shared.choosed[2] = (Manager.shared.UFD[Manager.shared.choosed[0] as! University]?[Manager.shared.choosed[1] as? Faculty]!)!.first { (department) -> Bool in
-            department.name == self.departmentNameLabel.text
+             Manager.shared.semaphore.signal()
+            return department.name == self.departmentNameLabel.text
         }
+        Manager.shared.semaphore.wait()
         if Manager.shared.departmentStatus(department:  Manager.shared.choosed[2] as! Department){
             Manager.shared.addToWishlist(sender: sender)
         } else {
-            Manager.shared.deleteFromWishlist(sender: sender)
+            Manager.shared.deleteFromWishlist(sender: sender, setImage: UIImage(systemName: "star")!)
         }
 //        switch sender.currentImage {
 //            case UIImage(systemName: "plus"):
@@ -34,7 +36,7 @@ class DepartmentCell: UITableViewCell {
 //        }
     }
     func setDepartmentCell(department: Department){
-           self.departmentNameLabel.text = department.name
+        self.departmentNameLabel.text = department.name
            self.departmentFullNameLabel.text = department.fullName
         if !Manager.shared.departmentStatus(department: department){
             self.addToWishlistButtonStatus.setImage(UIImage(systemName: "star.fill"), for: .normal)

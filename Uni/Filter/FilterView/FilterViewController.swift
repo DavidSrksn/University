@@ -217,7 +217,7 @@ class FilterViewController: UIViewController {
         contentView.addSubview(militaryButton)
         
         militaryButton.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        militaryButton.isOn = true
+        militaryButton.isOn = false
         militaryButton.onTintColor = dataView.militaryButtonColor
         
         militaryButton.translatesAutoresizingMaskIntoConstraints = false
@@ -295,6 +295,7 @@ class FilterViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         self.fillDataFilter()
         presenter.updateFilterSettings()
+        Manager.shared.updateController(controller: presentingViewController!)
     }
     
     private func fillDataFilter() {

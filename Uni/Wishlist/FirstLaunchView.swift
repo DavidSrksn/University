@@ -11,7 +11,7 @@ import paper_onboarding
 import CircleMenu
 import QuartzCore
 
-class FirstLaunchView: UIViewController, PaperOnboardingDataSource, PaperOnboardingDelegate,CircleMenuDelegate {
+final class FirstLaunchView: UIViewController, PaperOnboardingDataSource, PaperOnboardingDelegate,CircleMenuDelegate {
 
     @IBOutlet weak var getStartedButton: UIButton!
     @IBOutlet weak var onboardingView: OnboardingView!
@@ -54,7 +54,7 @@ class FirstLaunchView: UIViewController, PaperOnboardingDataSource, PaperOnboard
         return[OnboardingItemInfo(informationImage: UIImage(named: "МГТУ.jpg")!, title: "Выбери университет на свой вкус", description: "Выбери университет, основываясь на личных требованиях и предпочтениях", pageIcon: transparentImage.image!, color: backgroundColourOne, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
             OnboardingItemInfo(informationImage: UIImage(named: "МФТИ.jpg")!, title: "Test", description: "Test", pageIcon: transparentImage.image!, color: backgroundColourTwo, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
             OnboardingItemInfo(informationImage: UIImage(named: "РУДН.jpg")!, title: "Testing", description: "Плохой альбом", pageIcon: transparentImage.image!, color: backgroundColourThree, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
-            OnboardingItemInfo(informationImage: transparentImage.image!, title: "Выбери свои предпочтения", description: "черная - технарь \n белая - гумманитарий \n (пример)", pageIcon: transparentImage.image!, color: .darkGray, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont)
+            OnboardingItemInfo(informationImage: transparentImage.image!, title: "Выбери свои предпочтения", description: "черная - технарь \n белая - гумманитарий \n (пример)", pageIcon: transparentImage.image!, color: .carrot, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont)
             ][index]
     }
 

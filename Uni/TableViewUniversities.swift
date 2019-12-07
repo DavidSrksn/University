@@ -15,6 +15,8 @@ class TableViewUniversities: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
+    var warning = UILabel()
+    
     private var filterSettings = Filter(country: nil, subjects: nil, minPoint: nil, military: nil, campus: nil)
     
     private let filterButton = UIButton()
@@ -22,10 +24,9 @@ class TableViewUniversities: UIViewController {
     private let searchField = UISearchBar()
     private let searchTitle = UILabel()
     
-//    @IBAction func wishlistButton(_ sender: UIButton) {
-//        let viewController = storyboard?.instantiateViewController(identifier: "wishlist") as! WishlistTableView
-//        navigationController?.pushViewController(viewController, animated: true)
-//    }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     private func setupFilterButton() {
         self.navigationController?.view.addSubview(filterButton)
@@ -70,21 +71,14 @@ class TableViewUniversities: UIViewController {
     }
     
     private func reloadData() {
-        let city: String? = self.filterSettings.country ?? "Moscow"
-        let subjects: [String]? = self.filterSettings.subjects ?? ["математика","русский", "физика"]
-        let minPoints: Int? = self.filterSettings.minPoint ?? 200
-        let dormitory: Bool? = self.filterSettings.campus ?? true
-        let militaryDepartment: Bool? = self.filterSettings.military ?? true
-        
-        if Manager.shared.UFD.keys.count == 0 {
+        if  Manager.shared.flagFilterChanged {
+            view.isSkeletonable = true
             view.showAnimatedGradientSkeleton()
-            
 //          let gradient = SkeletonGradient(baseColor: .alizarin, secondaryColor: .alizarin)
 //          let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
 //          view.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation, transition: .none)
 //          navigationController?.view.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation, transition: .none)
-            
-            Manager.shared.loadUniversities(limit: Int.max , city: city, subjects: subjects, minPoints: minPoints, dormitory: dormitory, militaryDepartment: militaryDepartment, completion: { [weak self] in
+            Manager.shared.loadUniversities(tableView: self.tableView, wanrningLabel: warning, viewcontroller: self, city: Manager.shared.filterSettings.country, subjects: Manager.shared.filterSettings.subjects , minPoints: Manager.shared.filterSettings.minPoint, dormitory: Manager.shared.filterSettings.campus, militaryDepartment: Manager.shared.filterSettings.campus, completion: { [weak self] in
                 DispatchQueue.main.async{
                 self?.tableView.reloadData()
                 self?.view.hideSkeleton()
@@ -92,7 +86,7 @@ class TableViewUniversities: UIViewController {
             })
         }
         
-        Manager.shared.dataUFD = Manager.shared.UFD;
+        Manager.shared.dataUFD = Manager.shared.UFD
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -115,15 +109,22 @@ class TableViewUniversities: UIViewController {
         setupFilterButton()
         
         reloadData()
-        
-        tableView.dataSource = self
-        tableView.delegate = self
+        setTable()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         filterButton.isHidden = true
+    }
+  
+    func setTable(){
+        self.title = "University"
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.estimatedRowHeight = 68
+        tableView.rowHeight = 150 //UITableView.automaticDimension
+        tableView.separatorInset = .zero
     }
     
     @objc private func openFilter() {
@@ -153,7 +154,7 @@ class TableViewUniversities: UIViewController {
 extension TableViewUniversities :  SkeletonTableViewDataSource, SkeletonTableViewDelegate{
     
     func collectionSkeletonView(_ skeletonView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 4
     }
     
     func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {

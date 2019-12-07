@@ -11,24 +11,66 @@ import Firebase
 import SkeletonView
 
 
-final class TableViewUniversities: UIViewController {
+class TableViewUniversities: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
     var warning = UILabel()
     
+    private var filterSettings = Filter(country: nil, subjects: nil, minPoint: nil, military: nil, campus: nil)
+    
+    private let filterButton = UIButton()
+    
+    private let searchField = UISearchBar()
+    private let searchTitle = UILabel()
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
-    @IBOutlet weak var warningLabel: UILabel!
     private func setupFilterButton() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Фильтры", style: .done, target: self, action: #selector(openFilter))
+        self.navigationController?.view.addSubview(filterButton)
+        
+        filterButton.frame = CGRect(origin: CGPoint(x: self.view.frame.width - 100, y: self.view.frame.height - 180), size: CGSize(width: 80, height: 80))
+        filterButton.layer.cornerRadius = filterButton.frame.width / 2
+        filterButton.backgroundColor = UIColor.black
+        
+        filterButton.addTarget(self, action: #selector(openFilter), for: .touchUpInside)
     }
     
+    private func setupNavigationItem() {
+        searchTitle.text = "University"
+        searchTitle.textColor = .white
+        searchTitle.font = UIFont(name: "Baskerville-Bold", size: 24)
         
+        navigationItem.titleView = searchTitle
+    }
+    
+    private func setupSearchButton() {
+        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(search))
+        searchButton.tintColor = .white
+        navigationItem.rightBarButtonItem = searchButton
+    }
+    
+    private func setupEndSearchingButton() {
+        let endSearchingButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(endSearching))
+        endSearchingButton.tintColor = .clear
+        endSearchingButton.isEnabled = false
+        navigationItem.leftBarButtonItem = endSearchingButton
+    }
+    
+    private func setupSearchField() {
+        searchField.placeholder = "Введите университет"
+        
+        if let textField = searchField.value(forKey: "searchField") as? UITextField {
+            textField.textColor = .white
+        }
+        
+        searchField.delegate = self
+        searchField.isHidden = false
+    }
+    
     private func reloadData() {
-//        if Manager.shared.UFD.keys.count == 0{
         if  Manager.shared.flagFilterChanged {
             view.isSkeletonable = true
             view.showAnimatedGradientSkeleton()
@@ -36,20 +78,20 @@ final class TableViewUniversities: UIViewController {
 //          let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
 //          view.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation, transition: .none)
 //          navigationController?.view.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation, transition: .none)
-            
             Manager.shared.loadUniversities(tableView: self.tableView, wanrningLabel: warning, viewcontroller: self, city: Manager.shared.filterSettings.country, subjects: Manager.shared.filterSettings.subjects , minPoints: Manager.shared.filterSettings.minPoint, dormitory: Manager.shared.filterSettings.campus, militaryDepartment: Manager.shared.filterSettings.campus, completion: { [weak self] in
                 DispatchQueue.main.async{
                 self?.tableView.reloadData()
                 self?.view.hideSkeleton()
                 }
             })
-       }
+        }
+        
+        Manager.shared.dataUFD = Manager.shared.UFD
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        self.filterSettings = Manager.shared.loadFilterSettings()
-//        reloadData()
+        filterButton.isHidden = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -58,17 +100,24 @@ final class TableViewUniversities: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupNavigationItem()
+        setupSearchButton()
+        setupEndSearchingButton()
+        setupSearchField()
+        
         setupFilterButton()
+        
         reloadData()
         setTable()
     }
     
-    @objc
-    private func openFilter() {
-        let filterController = FilterViewController()
-        self.present(filterController, animated: true, completion: nil)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        filterButton.isHidden = true
     }
-    
+  
     func setTable(){
         self.title = "University"
         tableView.dataSource = self
@@ -76,6 +125,29 @@ final class TableViewUniversities: UIViewController {
         tableView.estimatedRowHeight = 68
         tableView.rowHeight = 150 //UITableView.automaticDimension
         tableView.separatorInset = .zero
+    }
+    
+    @objc private func openFilter() {
+        let filterController = FilterViewController()
+        navigationController?.pushViewController(filterController, animated: true)
+    }
+    
+    @objc private func search() {
+        navigationItem.titleView = searchField
+        
+        navigationItem.rightBarButtonItem = nil
+        
+        navigationItem.leftBarButtonItem?.isEnabled = true
+        navigationItem.leftBarButtonItem?.tintColor = .white
+    }
+    
+    @objc private func endSearching() {
+        navigationItem.titleView = searchTitle
+        
+        setupSearchButton()
+        
+        navigationItem.leftBarButtonItem?.tintColor = .clear
+        navigationItem.leftBarButtonItem?.isEnabled = false
     }
 }
 
@@ -107,9 +179,18 @@ extension TableViewUniversities :  SkeletonTableViewDataSource, SkeletonTableVie
             let viewController = storyboard?.instantiateViewController(identifier: "факультет") as! FacultiesTableView
             navigationController?.pushViewController(viewController, animated: true)
         }
-    
 }
 
+extension TableViewUniversities: UISearchBarDelegate {
+    
+    // called when text changes (including clear)
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        Manager.shared.UFD = Manager.shared.dataUFD.filter {
+            return $0.key.name.contains(searchText)
+        }
+        tableView.reloadData()
+    }
+}
 
 
 
@@ -117,4 +198,3 @@ extension TableViewUniversities :  SkeletonTableViewDataSource, SkeletonTableVie
 
 //        db.collection("Universities").addDocument(data: ["name":"МГТУ","dormitory": true]).collection("МГТУfaculties").addDocument(data: ["name":"РК","minPoints": 150])
 //        db.collection("Universities").document("6CvTvBl7wcwcMrUW1d6C").collection("МГТУfaculties").addDocument(data: ["name":"ИУ","minPoints": 98])
-

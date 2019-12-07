@@ -83,10 +83,9 @@
                             <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </view>
-                    <navigationItem key="navigationItem" title="University" id="9wg-HH-JKf"/>
+                    <navigationItem key="navigationItem" id="9wg-HH-JKf"/>
                     <connections>
                         <outlet property="tableView" destination="lKp-zF-UDW" id="rcx-vJ-3Gz"/>
-                        <outlet property="warningLabel" destination="YDd-va-4J9" id="qtX-Ix-gOv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U1Y-XH-KRy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -348,7 +347,7 @@
         <!--Home-->
         <scene sceneID="BjR-ar-wuO">
             <objects>
-                <navigationController storyboardIdentifier="NavigationController" automaticallyAdjustsScrollViewInsets="NO" hidesBarsWhenKeyboardAppears="YES" id="q95-sv-hp1" customClass="NavigationController" customModule="Uni" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationController" automaticallyAdjustsScrollViewInsets="NO" id="q95-sv-hp1" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="-3" title="Home" image="house" catalog="system" id="Wp2-gg-IUU"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="LBz-kG-97s"/>

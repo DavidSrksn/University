@@ -9,7 +9,6 @@
 import UIKit
 import Alamofire
 
-
 final class WishlistTableView: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!

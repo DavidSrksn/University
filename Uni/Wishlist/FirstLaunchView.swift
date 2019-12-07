@@ -106,6 +106,8 @@ final class FirstLaunchView: UIViewController, PaperOnboardingDataSource, PaperO
             button.setImage(UIImage(systemName: "book"), for: .normal)
         } else{
             button.backgroundColor = .white
+            button.setTitle("f(x)", for: .normal)
+            button.setTitleColor(.black, for: .normal)
 //            button.setImage(UIImage(named: "laptop"), for: .normal)
         }
 }
@@ -116,6 +118,7 @@ final class FirstLaunchView: UIViewController, PaperOnboardingDataSource, PaperO
         }else{
             Manager.shared.preference = "Технарь"
         }
+        circleButton.setTitle(button.titleLabel!.text, for: .normal)
         UIView.animate(withDuration: 0.5) {
         self.getStartedButton.alpha = 1
         }

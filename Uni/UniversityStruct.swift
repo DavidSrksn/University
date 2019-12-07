@@ -9,7 +9,6 @@
 import Foundation
 import Firebase
 
-
 protocol  DocumentSerializable {
     init?(dictionary: [String: Any])
 }

@@ -282,14 +282,14 @@ class FilterViewController: UIViewController {
         setupMilitary()
         setupCampus()
         
-//        if (presenter.loadFilterSettings()) {
+        if (presenter.loadFilterSettings()) {
             presenter.fillFields(country: &countryLabel.text,
                                  subjects: &subjectTableData,
                                  minPoints: &pointsSlider.value,
                                  military: &militaryButton.isOn,
                                  campus: &campusButton.isOn)
             self.pointsTextField.text = "\(Int(pointsSlider.value))"
-//        }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

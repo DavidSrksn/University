@@ -9,7 +9,6 @@
 import UIKit
 import Firebase
 
-
 final class DepartmentsTableView: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!

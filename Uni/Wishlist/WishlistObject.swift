@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-class WishlistObject: Object{
+final class WishlistObject: Object{
     
     @objc dynamic var departmentName: String = ""
     @objc dynamic var universityName: String = ""

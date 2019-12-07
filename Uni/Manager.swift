@@ -33,6 +33,7 @@ final class Manager {
     static let shared = Manager()
     
     var UFD = [ University : [Faculty? : [Department]?]]()
+    var dataUFD = [University : [Faculty? : [Department]?]]()
     
     var choosed: [Any?] = [nil,nil,nil]
     
@@ -53,7 +54,6 @@ final class Manager {
             viewcontroller.present(alert, animated: true)
         }
     }
-    
     
     func warningLabel(label: UILabel, warning text: String, viewController: UIViewController, tableView: UITableView){
         label.frame = CGRect(x: 0, y: 0, width: 400, height: 100)
@@ -281,9 +281,9 @@ final class Manager {
         }
     }
     
-//    func loadFilterSettings() -> Filter {
-//        return self.filterSettings
-//    }
+    func loadFilterSettings() -> Filter {
+        return self.filterSettings
+    }
     
     func filterSettingsChanged(filter: Filter){
         if filter.country == Manager.shared.filterSettings.country && filter.campus == Manager.shared.filterSettings.campus && filter.minPoint == Manager.shared.filterSettings.minPoint && filter.campus == Manager.shared.filterSettings.campus && filter.subjects == Manager.shared.filterSettings.subjects {
@@ -301,7 +301,6 @@ final class Manager {
     
     func updateController(controller: UIViewController){
         ((controller as? UITabBarController)?.selectedViewController as? UINavigationController)?.viewControllers[0].viewDidLoad()
-//        controller.viewDidLoad()
     }
 }
     

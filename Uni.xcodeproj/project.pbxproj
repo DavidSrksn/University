@@ -165,7 +165,9 @@
 				9AB858B3234F4B9F00F5217B /* Universities */,
 				9AB858B4234F51CB00F5217B /* Faculties */,
 				9A3637DE2353926700F730DC /* Departments */,
+				CE51B3D2237DB62400707B33 /* Filter */,
 				9A76BA17236A1589004E2259 /* Wishlist */,
+				9AB858BA234F8E3C00F5217B /* Something else */,
 			);
 			path = Uni;
 			sourceTree = "<group>";

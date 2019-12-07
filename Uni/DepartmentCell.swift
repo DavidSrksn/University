@@ -14,7 +14,6 @@ final class DepartmentCell: UITableViewCell {
     @IBOutlet weak var departmentNameLabel: UILabel!
     @IBOutlet weak var departmentFullNameLabel: UILabel!
     
-    
     @IBAction func addToWishlistButton(_ sender: UIButton) {
          Manager.shared.choosed[2] = (Manager.shared.UFD[Manager.shared.choosed[0] as! University]?[Manager.shared.choosed[1] as? Faculty]!)!.first { (department) -> Bool in
              Manager.shared.semaphore.signal()

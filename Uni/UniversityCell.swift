@@ -58,5 +58,4 @@ final class UniversityCell: UITableViewCell {
 //        universityLabel.lineBreakMode = .byWordWrapping
         self.addSubview(universityLabel)
     }
-    
 }

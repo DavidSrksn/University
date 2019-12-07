@@ -15,7 +15,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="barTintColor" red="0.84272887299999999" green="0.92363564399999998" blue="0.87819703270000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </tabBar>
                     <connections>
                         <segue destination="q95-sv-hp1" kind="relationship" relationship="viewControllers" id="Oyj-SK-hEg"/>
@@ -26,7 +25,7 @@
             </objects>
             <point key="canvasLocation" x="3719" y="-106"/>
         </scene>
-        <!--University-->
+        <!--Table View Universities-->
         <scene sceneID="rJe-Dg-WoB">
             <objects>
                 <viewController storyboardIdentifier="UniversityTable" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ixu-KK-Ejz" customClass="TableViewUniversities" customModule="Uni" customModuleProvider="target" sceneMemberID="viewController">
@@ -35,7 +34,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="lKp-zF-UDW">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="830"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="781"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="separatorColor" red="0.84272887299999999" green="0.92363564399999998" blue="0.87819703270000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -125,7 +124,7 @@
                             <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </view>
-                    <navigationItem key="navigationItem" title="University" id="9wg-HH-JKf"/>
+                    <navigationItem key="navigationItem" id="9wg-HH-JKf"/>
                     <connections>
                         <outlet property="tableView" destination="lKp-zF-UDW" id="rcx-vJ-3Gz"/>
                     </connections>
@@ -429,7 +428,7 @@
         <!--Home-->
         <scene sceneID="BjR-ar-wuO">
             <objects>
-                <navigationController storyboardIdentifier="NavigationController" automaticallyAdjustsScrollViewInsets="NO" hidesBarsWhenKeyboardAppears="YES" id="q95-sv-hp1" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationController" automaticallyAdjustsScrollViewInsets="NO" id="q95-sv-hp1" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="-3" title="Home" image="house" catalog="system" id="Wp2-gg-IUU"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="LBz-kG-97s"/>
@@ -437,14 +436,14 @@
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.851280272" green="0.88223153350000005" blue="0.88627678160000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                        <color key="tintColor" red="0.25892275570000001" green="0.25454905630000002" blue="0.27059063319999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                        <color key="barTintColor" red="0.84272887299999999" green="0.92363564399999998" blue="0.87819703270000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <textAttributes key="titleTextAttributes">
                             <fontDescription key="fontDescription" name="TimesNewRomanPS-BoldMT" family="Times New Roman" pointSize="24"/>
-                            <color key="textColor" red="0.23619488266123323" green="0.23322323287412422" blue="0.24864028416914385" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </textAttributes>
                         <textAttributes key="largeTitleTextAttributes">
-                            <color key="textColor" red="0.2361948827" green="0.23322323289999999" blue="0.24864028420000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </textAttributes>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
@@ -480,7 +479,7 @@
                                 </state>
                                 <connections>
                                     <action selector="getStartedButtonAction:" destination="1FK-Sj-Ijx" eventType="touchUpInside" id="5eY-Jt-AMq"/>
-                                    <segue destination="q95-sv-hp1" kind="presentation" modalPresentationStyle="fullScreen" id="vuY-4H-7Ye"/>
+                                    <segue destination="u0n-2V-vAs" kind="presentation" modalPresentationStyle="fullScreen" id="V15-EQ-EUW"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -501,15 +500,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Tb-9U-3bv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="855" y="663"/>
+            <point key="canvasLocation" x="1874" y="-106"/>
         </scene>
     </scenes>
     <resources>
         <image name="house" catalog="system" width="64" height="54"/>
         <image name="star" catalog="system" width="64" height="58"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="vuY-4H-7Ye"/>
-    </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
 </document>

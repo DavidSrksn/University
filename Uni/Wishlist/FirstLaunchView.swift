@@ -54,7 +54,7 @@ class FirstLaunchView: UIViewController, PaperOnboardingDataSource, PaperOnboard
         return[OnboardingItemInfo(informationImage: UIImage(named: "МГТУ.jpg")!, title: "Выбери университет на свой вкус", description: "Выбери университет, основываясь на личных требованиях и предпочтениях", pageIcon: transparentImage.image!, color: backgroundColourOne, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
             OnboardingItemInfo(informationImage: UIImage(named: "МФТИ.jpg")!, title: "Test", description: "Test", pageIcon: transparentImage.image!, color: backgroundColourTwo, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
             OnboardingItemInfo(informationImage: UIImage(named: "РУДН.jpg")!, title: "Testing", description: "Плохой альбом", pageIcon: transparentImage.image!, color: backgroundColourThree, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
-            OnboardingItemInfo(informationImage: transparentImage.image!, title: "Выбери свои предпочтения", description: "черная - технарь \n белая - гумманитарий \n (пример)", pageIcon: transparentImage.image!, color: .carrot, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont)
+            OnboardingItemInfo(informationImage: transparentImage.image!, title: "Выбери свои предпочтения", description: "черная - технарь \n белая - гумманитарий \n (пример)", pageIcon: transparentImage.image!, color: .darkGray, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont)
             ][index]
     }
 
@@ -106,6 +106,8 @@ class FirstLaunchView: UIViewController, PaperOnboardingDataSource, PaperOnboard
             button.setImage(UIImage(systemName: "book"), for: .normal)
         } else{
             button.backgroundColor = .white
+            button.setTitle("f(x)", for: .normal)
+            button.setTitleColor(.black, for: .normal)
 //            button.setImage(UIImage(named: "laptop"), for: .normal)
         }
 }
@@ -116,6 +118,7 @@ class FirstLaunchView: UIViewController, PaperOnboardingDataSource, PaperOnboard
         }else{
             Manager.shared.preference = "Технарь"
         }
+        circleButton.setTitle(button.titleLabel!.text, for: .normal)
         UIView.animate(withDuration: 0.5) {
         self.getStartedButton.alpha = 1
         }

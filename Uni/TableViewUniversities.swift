@@ -17,24 +17,66 @@ class TableViewUniversities: UIViewController {
     
     private var filterSettings = Filter(country: nil, subjects: nil, minPoint: nil, military: nil, campus: nil)
     
+    private let filterButton = UIButton()
+    
+    private let searchField = UISearchBar()
+    private let searchTitle = UILabel()
+    
 //    @IBAction func wishlistButton(_ sender: UIButton) {
 //        let viewController = storyboard?.instantiateViewController(identifier: "wishlist") as! WishlistTableView
 //        navigationController?.pushViewController(viewController, animated: true)
 //    }
     
     private func setupFilterButton() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Фильтры", style: .done, target: self, action: #selector(openFilter))
+        self.navigationController?.view.addSubview(filterButton)
+        
+        filterButton.frame = CGRect(origin: CGPoint(x: self.view.frame.width - 100, y: self.view.frame.height - 180), size: CGSize(width: 80, height: 80))
+        filterButton.layer.cornerRadius = filterButton.frame.width / 2
+        filterButton.backgroundColor = UIColor.black
+        
+        filterButton.addTarget(self, action: #selector(openFilter), for: .touchUpInside)
     }
     
-    private func reloadData(_ value: Bool) {
+    private func setupNavigationItem() {
+        searchTitle.text = "University"
+        searchTitle.textColor = .white
+        searchTitle.font = UIFont(name: "Baskerville-Bold", size: 24)
+        
+        navigationItem.titleView = searchTitle
+    }
+    
+    private func setupSearchButton() {
+        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(search))
+        searchButton.tintColor = .white
+        navigationItem.rightBarButtonItem = searchButton
+    }
+    
+    private func setupEndSearchingButton() {
+        let endSearchingButton = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(endSearching))
+        endSearchingButton.tintColor = .clear
+        endSearchingButton.isEnabled = false
+        navigationItem.leftBarButtonItem = endSearchingButton
+    }
+    
+    private func setupSearchField() {
+        searchField.placeholder = "Введите университет"
+        
+        if let textField = searchField.value(forKey: "searchField") as? UITextField {
+            textField.textColor = .white
+        }
+        
+        searchField.delegate = self
+        searchField.isHidden = false
+    }
+    
+    private func reloadData() {
         let city: String? = self.filterSettings.country ?? "Moscow"
         let subjects: [String]? = self.filterSettings.subjects ?? ["математика","русский", "физика"]
         let minPoints: Int? = self.filterSettings.minPoint ?? 200
         let dormitory: Bool? = self.filterSettings.campus ?? true
         let militaryDepartment: Bool? = self.filterSettings.military ?? true
         
-//        if Manager.shared.UFD.keys.count == 0{
-        if value {
+        if Manager.shared.UFD.keys.count == 0 {
             view.showAnimatedGradientSkeleton()
             
 //          let gradient = SkeletonGradient(baseColor: .alizarin, secondaryColor: .alizarin)
@@ -49,12 +91,13 @@ class TableViewUniversities: UIViewController {
                 }
             })
         }
+        
+        Manager.shared.dataUFD = Manager.shared.UFD;
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.filterSettings = Manager.shared.loadFilterSettings()
-        reloadData(true)
+        filterButton.isHidden = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -64,18 +107,46 @@ class TableViewUniversities: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupNavigationItem()
+        setupSearchButton()
+        setupEndSearchingButton()
+        setupSearchField()
+        
         setupFilterButton()
         
-        reloadData(true)
+        reloadData()
         
         tableView.dataSource = self
         tableView.delegate = self
     }
     
-    @objc
-    private func openFilter() {
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        filterButton.isHidden = true
+    }
+    
+    @objc private func openFilter() {
         let filterController = FilterViewController()
         navigationController?.pushViewController(filterController, animated: true)
+    }
+    
+    @objc private func search() {
+        navigationItem.titleView = searchField
+        
+        navigationItem.rightBarButtonItem = nil
+        
+        navigationItem.leftBarButtonItem?.isEnabled = true
+        navigationItem.leftBarButtonItem?.tintColor = .white
+    }
+    
+    @objc private func endSearching() {
+        navigationItem.titleView = searchTitle
+        
+        setupSearchButton()
+        
+        navigationItem.leftBarButtonItem?.tintColor = .clear
+        navigationItem.leftBarButtonItem?.isEnabled = false
     }
 }
 
@@ -109,6 +180,16 @@ extension TableViewUniversities :  SkeletonTableViewDataSource, SkeletonTableVie
         }
 }
 
+extension TableViewUniversities: UISearchBarDelegate {
+    
+    // called when text changes (including clear)
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        Manager.shared.UFD = Manager.shared.dataUFD.filter {
+            return $0.key.name.contains(searchText)
+        }
+        tableView.reloadData()
+    }
+}
 
 
 

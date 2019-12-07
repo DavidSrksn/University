@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         var initialVC = sb.instantiateViewController(identifier: "Onboarding")
 
         let userDefaults = UserDefaults.standard
-        if  userDefaults.bool(forKey: "Onboarding Complete"){
+        if  !userDefaults.bool(forKey: "Onboarding Complete"){
             initialVC = sb.instantiateViewController(identifier: "TabBarController")
         }
 

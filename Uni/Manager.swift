@@ -20,7 +20,11 @@ class Manager {
 
     static let shared = Manager()
     
-    var UFD = [ University : [Faculty? : [Department]?]]()
+    private var filterSettings = Filter(country: nil, subjects: nil, minPoint: nil, military: nil, campus: nil)
+    
+    var UFD = [University : [Faculty? : [Department]?]]()
+    
+    var dataUFD = [University : [Faculty? : [Department]?]]()
     
     var choosed: [Any?] = [nil,nil,nil]
     
@@ -28,8 +32,6 @@ class Manager {
     let realm = try! Realm()
     
     var preference: String?
-    
-    private var filterSettings = Filter(country: nil, subjects: nil, minPoint: nil, military: nil, campus: nil)
     
     func internetConnectionCheck(viewcontroller: UIViewController ){
         if !NetworkReachabilityManager()!.isReachable{
@@ -61,6 +63,7 @@ class Manager {
                                 if !Manager.shared.UFD.keys.contains(University(dictionary: document1.data())!) {
                                     if let error = error {
                                         print("\(error.localizedDescription)")
+                                        completion?()
                                         // добавить комплишены
                                     }
                                     else{
@@ -112,6 +115,7 @@ class Manager {
                       .getDocuments { (querySnapshot2, error) in
                         if let error = error {
                            print("\(error.localizedDescription)")
+                            completion?()
                         } else {
                              for document2 in (querySnapshot2?.documents)!{
                                 self.db.collection("Universities")
@@ -159,6 +163,7 @@ class Manager {
                          .getDocuments { (querySnapshot2, error) in
                            if let error = error {
                               print("\(error.localizedDescription)")
+                            completion?()
                            }
                                else{
                                  for document2 in (querySnapshot2?.documents)!{
@@ -234,6 +239,70 @@ class Manager {
     
     func updateFilterSettings(with newFilter: Filter) {
         self.filterSettings = newFilter
+    }
+    
+    func filterUniversities() {
+        Manager.shared.UFD = Manager.shared.dataUFD.filter { (arg0) -> Bool in
+            
+            let (key, value) = arg0
+            
+            let condition: Bool = !(
+                    (key.city == filterSettings.country ?? "_") &&
+                    (key.militaryDepartment == filterSettings.military ?? false) &&
+                    (key.dormitory == filterSettings.campus ?? false))
+            
+            for (keyFac, valueDep) in value {
+                
+                let conditionFac: Bool = keyFac?.subjects != filterSettings.subjects
+                
+                if conditionFac { continue }
+                
+                for dep in valueDep ?? [] {
+                    if dep.minPoints == filterSettings.minPoint {
+                        return condition
+                    }
+                }
+            }
+            
+            return false
+        }
+    }
+    
+    func filterFaculties() {
+        for (key, value) in Manager.shared.UFD {
+            Manager.shared.UFD[key] = value.filter({ (arg0) -> Bool in
+                
+                let (key, value) = arg0
+                
+                let conditionFac: Bool = key?.subjects != filterSettings.subjects
+                
+                if conditionFac { return false }
+                
+                for dep in value ?? [] {
+                    if dep.minPoints == filterSettings.minPoint {
+                        return true
+                    }
+                }
+                
+                return false
+            })
+        }
+    }
+    
+    func filterDepartments() {
+        for (key, value) in Manager.shared.UFD {
+            for (keyFac, dep) in value {
+                Manager.shared.UFD[key]?[keyFac] = dep?.filter({ (curDep) -> Bool in
+                    return curDep.minPoints == filterSettings.minPoint
+                })
+            }
+        }
+    }
+    
+    func filterUFD() {
+        filterUniversities()
+        filterFaculties()
+        filterDepartments()
     }
 }
     

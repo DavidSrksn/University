@@ -39,8 +39,8 @@ struct FilterPresenter {
         model.country = newCountry
     }
     
-    mutating func addSubject(newSubjects: String?) {
-        
+    mutating func updateSubject(newSubjects: [String]?) {
+        model.subjects = newSubjects ?? []
     }
     
     mutating func changeMinPoint(for value: Int) {

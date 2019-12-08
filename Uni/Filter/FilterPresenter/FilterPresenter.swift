@@ -32,7 +32,7 @@ struct FilterPresenter {
         
         minPoints = Float(self.model.minPoint ?? 100)
         military = self.model.military ?? true
-        military = self.model.campus ?? true
+        campus = self.model.campus ?? true
     }
     
     mutating func changeCountry(newCountry: String?) {

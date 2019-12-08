@@ -265,8 +265,8 @@ class FilterViewController: UIViewController {
                                  military: &militaryButton.isOn,
                                  campus: &campusButton.isOn)
             
-//            if let row = dataSourceCountry.firstIndex(of: countryLabel.text ?? "") {
-//                self.countryPicker.selectedRow(inComponent: row)
+//            if let row = dataSourceCountry.firstIndex(of: countryLabel.text ?? "nil") {
+//                self.countryPicker.selectRow(row, inComponent: 1, animated: true)
 //            }
             
             self.pointsTextField.text = "\(Int(pointsSlider.value))"

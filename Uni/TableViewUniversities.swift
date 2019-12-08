@@ -128,7 +128,7 @@ class TableViewUniversities: UIViewController {
     
     @objc private func openFilter() {
         let filterController = FilterViewController()
-        navigationController?.pushViewController(filterController, animated: true)
+        self.present(filterController, animated: true, completion: nil)
     }
     
     @objc private func search() {

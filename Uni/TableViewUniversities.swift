@@ -80,13 +80,12 @@ class TableViewUniversities: UIViewController {
 //          navigationController?.view.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation, transition: .none)
             Manager.shared.loadUniversities(tableView: self.tableView, wanrningLabel: warning, viewcontroller: self, city: Manager.shared.filterSettings.country, subjects: Manager.shared.filterSettings.subjects , minPoints: Manager.shared.filterSettings.minPoint, dormitory: Manager.shared.filterSettings.campus, militaryDepartment: Manager.shared.filterSettings.campus, completion: { [weak self] in
                 DispatchQueue.main.async{
-                self?.tableView.reloadData()
-                self?.view.hideSkeleton()
+                    Manager.shared.dataUFD = Manager.shared.UFD
+                    self?.tableView.reloadData()
+                    self?.view.hideSkeleton()
                 }
             })
         }
-        
-        Manager.shared.dataUFD = Manager.shared.UFD
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -185,8 +184,12 @@ extension TableViewUniversities: UISearchBarDelegate {
     
     // called when text changes (including clear)
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        Manager.shared.UFD = Manager.shared.dataUFD.filter {
-            return $0.key.name.contains(searchText)
+        if (searchText == "") {
+            Manager.shared.UFD = Manager.shared.dataUFD
+        } else {
+            Manager.shared.UFD = Manager.shared.dataUFD.filter {
+                return $0.key.fullName.contains(searchText)
+            }
         }
         tableView.reloadData()
     }

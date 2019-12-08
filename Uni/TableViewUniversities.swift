@@ -91,6 +91,7 @@ class TableViewUniversities: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         filterButton.isHidden = false
+        filterButton.isEnabled = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -115,6 +116,7 @@ class TableViewUniversities: UIViewController {
         super.viewWillDisappear(animated)
         
         filterButton.isHidden = true
+        filterButton.isEnabled = false
     }
   
     func setTable(){

@@ -36,7 +36,7 @@ class TableViewUniversities: UIViewController {
         
         filterButton.layer.shadowColor = UIColor.black.cgColor
         filterButton.layer.shadowOffset = CGSize(width: 0, height: 2)
-        filterButton.layer.shadowOpacity = 2.0
+        filterButton.layer.shadowOpacity = 1.0
         filterButton.layer.shadowRadius = filterButton.layer.cornerRadius * 1.5
         
         filterButton.backgroundColor = UIColor.black

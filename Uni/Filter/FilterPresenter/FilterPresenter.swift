@@ -25,8 +25,11 @@ struct FilterPresenter {
         country = self.model.country
         
         if let data = self.model.subjects {
-            for i in 0...data.count {
-                subjects[i].title = data[i]
+            let sectionData: [String] = subjects[0].sectionData
+            subjects = []
+            
+            for title in data {
+                subjects.append(subjectData(opened: false, title: title, sectionData: sectionData))
             }
         }
         

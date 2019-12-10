@@ -269,6 +269,9 @@ class FilterViewController: UIViewController {
                 self.countryPicker.selectRow(row, inComponent: 0, animated: true)
             }
             
+            pointsSlider.maximumValue = Float(subjectTableData.count * 100)
+            pointsTextField.text = String(Int(pointsSlider.value))
+            
             self.pointsTextField.text = "\(Int(pointsSlider.value))"
         }
     }
@@ -280,6 +283,17 @@ class FilterViewController: UIViewController {
     }
     
     private func fillDataFilter() {
+        var subjectsData: [String] = []
+        
+        let subjectsStruct = subjectTableData.filter({ (data) -> Bool in
+            return data.title != subjectTableTitle
+        })
+        
+        for data in subjectsStruct {
+            subjectsData.append(data.title)
+        }
+        
+        presenter.updateSubject(newSubjects: subjectsData)
         presenter.changeCountry(newCountry: countryLabel.text)
         presenter.changeMinPoint(for: Int(pointsSlider.value))
         presenter.changeMilitary(for: militaryButton.isOn)

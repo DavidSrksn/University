@@ -33,6 +33,12 @@ class TableViewUniversities: UIViewController {
         
         filterButton.frame = CGRect(origin: CGPoint(x: self.view.frame.width - 100, y: self.view.frame.height - 180), size: CGSize(width: 80, height: 80))
         filterButton.layer.cornerRadius = filterButton.frame.width / 2
+        
+        filterButton.layer.shadowColor = UIColor.black.cgColor
+        filterButton.layer.shadowOffset = CGSize(width: 0, height: 2)
+        filterButton.layer.shadowOpacity = 1.0
+        filterButton.layer.shadowRadius = filterButton.layer.cornerRadius * 1.5
+        
         filterButton.backgroundColor = UIColor.black
         
         filterButton.addTarget(self, action: #selector(openFilter), for: .touchUpInside)
@@ -91,6 +97,7 @@ class TableViewUniversities: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         filterButton.isHidden = false
+        filterButton.isEnabled = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -115,6 +122,7 @@ class TableViewUniversities: UIViewController {
         super.viewWillDisappear(animated)
         
         filterButton.isHidden = true
+        filterButton.isEnabled = false
     }
   
     func setTable(){
@@ -128,7 +136,7 @@ class TableViewUniversities: UIViewController {
     
     @objc private func openFilter() {
         let filterController = FilterViewController()
-        navigationController?.pushViewController(filterController, animated: true)
+        self.present(filterController, animated: true, completion: nil)
     }
     
     @objc private func search() {

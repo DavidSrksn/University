@@ -25,22 +25,25 @@ struct FilterPresenter {
         country = self.model.country
         
         if let data = self.model.subjects {
-            for i in 0...data.count {
-                subjects[i].title = data[i]
+            let sectionData: [String] = subjects[0].sectionData
+            subjects = []
+            
+            for title in data {
+                subjects.append(subjectData(opened: false, title: title, sectionData: sectionData))
             }
         }
         
         minPoints = Float(self.model.minPoint ?? 100)
         military = self.model.military ?? true
-        military = self.model.campus ?? true
+        campus = self.model.campus ?? true
     }
     
     mutating func changeCountry(newCountry: String?) {
         model.country = newCountry
     }
     
-    mutating func addSubject(newSubjects: String?) {
-        
+    mutating func updateSubject(newSubjects: [String]?) {
+        model.subjects = newSubjects ?? []
     }
     
     mutating func changeMinPoint(for value: Int) {

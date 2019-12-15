@@ -100,24 +100,6 @@ class FilterViewController: UIViewController {
     private func setupCountry() {
         setupCountryLabel()
         setupCountryPicker()
-        
-//        countryButton.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-//        countryButton.changeConstraints = constraintClosure
-//
-//        view.addSubview(countryButton)
-//
-//        countryButton.backgroundColor = dataView.FilterDropDownColor
-//        countryButton.setTitle("Город", for: .normal)
-//        countryButton.layer.cornerRadius = dataView.cornerRadius
-//
-//        countryButton.translatesAutoresizingMaskIntoConstraints = false
-//
-//        countryButton.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.countryButtonY + barHeight).isActive = true
-//        countryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        countryButton.heightAnchor.constraint(equalToConstant: constraints.countryButtonHeight).isActive = true
-//        countryButton.widthAnchor.constraint(equalToConstant: view.center.x * 2 - constraints.safeAreaBorder).isActive = true
-//
-//        countryButton.dropView.dropDownOptions = dataSourceCountry
     }
     
     private func setupAddSubject() {
@@ -248,7 +230,7 @@ class FilterViewController: UIViewController {
         contentView.addSubview(campusButton)
         
         campusButton.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
-        campusButton.isOn = true
+        campusButton.isOn = false
         campusButton.onTintColor = dataView.campusButtonColor
         
         campusButton.translatesAutoresizingMaskIntoConstraints = false
@@ -267,12 +249,6 @@ class FilterViewController: UIViewController {
         view.backgroundColor = dataView.FilterViewColor
         barHeight = navigationController?.navigationBar.frame.size.height ?? 0
         
-//        FilterManager.controller = self
-//        constraintClosure = { y in
-//            FilterManager.controller.updateContentTableConstraints(y: y)
-//            FilterManager.controller.updateContentViewConstraints(y: y)
-//        }
-        
         setupCountry()
         setupAddSubject()
         setupSubjectTable()
@@ -288,6 +264,14 @@ class FilterViewController: UIViewController {
                                  minPoints: &pointsSlider.value,
                                  military: &militaryButton.isOn,
                                  campus: &campusButton.isOn)
+            
+            if let row = dataSourceCountry.firstIndex(of: countryLabel.text ?? "nil") {
+                self.countryPicker.selectRow(row, inComponent: 0, animated: true)
+            }
+            
+            pointsSlider.maximumValue = Float(subjectTableData.count * 100)
+            pointsTextField.text = String(Int(pointsSlider.value))
+            
             self.pointsTextField.text = "\(Int(pointsSlider.value))"
         }
     }
@@ -299,6 +283,17 @@ class FilterViewController: UIViewController {
     }
     
     private func fillDataFilter() {
+        var subjectsData: [String] = []
+        
+        let subjectsStruct = subjectTableData.filter({ (data) -> Bool in
+            return data.title != subjectTableTitle
+        })
+        
+        for data in subjectsStruct {
+            subjectsData.append(data.title)
+        }
+        
+        presenter.updateSubject(newSubjects: subjectsData)
         presenter.changeCountry(newCountry: countryLabel.text)
         presenter.changeMinPoint(for: Int(pointsSlider.value))
         presenter.changeMilitary(for: militaryButton.isOn)

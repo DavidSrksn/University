@@ -21,6 +21,8 @@ class FilterViewController: UIViewController {
     private let dataSourceCountry = ["Москва", "Санкт-Петербург", "Омск", "Волгоград", "Владимир", "Екатеринбург", "Уфа", "Владивосток"]
     private let dataSourceSubject = ["Математика", "Русский", "Информатика", "Физика"]
     
+    private let filterScrollView = UIScrollView()
+    
     private var contentView = UIView()
     
     private var subjectTableData = [subjectData]()
@@ -28,7 +30,6 @@ class FilterViewController: UIViewController {
     private let addSubject = UIButton()
     private var subjectTable = UITableView()
     
-//    private let countryButton = UIDropDownButton()
     private let countryLabel = UILabel()
     private let countryPicker = UIPickerView()
     
@@ -51,7 +52,7 @@ class FilterViewController: UIViewController {
     }
     
     private func setupContentView() {
-        view.addSubview(contentView)
+        filterScrollView.addSubview(contentView)
         
         contentView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
         
@@ -63,7 +64,7 @@ class FilterViewController: UIViewController {
     }
     
     private func setupCountryLabel() {
-        view.addSubview(countryLabel)
+        filterScrollView.addSubview(countryLabel)
         
         countryLabel.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
         countryLabel.layer.masksToBounds = true
@@ -82,7 +83,7 @@ class FilterViewController: UIViewController {
     }
     
     private func setupCountryPicker() {
-        view.addSubview(countryPicker)
+        filterScrollView.addSubview(countryPicker)
         
         countryPicker.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
         
@@ -111,7 +112,7 @@ class FilterViewController: UIViewController {
         
         addSubject.addTarget(self, action: #selector(pushSubject), for: .touchUpInside)
         
-        view.addSubview(addSubject)
+        filterScrollView.addSubview(addSubject)
         
         addSubject.translatesAutoresizingMaskIntoConstraints = false
         
@@ -122,7 +123,7 @@ class FilterViewController: UIViewController {
     }
     
     private func setupSubjectTable() {
-        view.addSubview(subjectTable)
+        filterScrollView.addSubview(subjectTable)
         subjectTableData = []
         pushSubject()
         
@@ -246,6 +247,9 @@ class FilterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        filterScrollView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        view.addSubview(filterScrollView)
+        
         view.backgroundColor = dataView.FilterViewColor
         barHeight = navigationController?.navigationBar.frame.size.height ?? 0
         

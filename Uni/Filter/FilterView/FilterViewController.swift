@@ -22,6 +22,7 @@ class FilterViewController: UIViewController {
     private let dataSourceSubject = ["Математика", "Русский", "Информатика", "Физика"]
     
     private let filterScrollView = UIScrollView()
+    private let filterContainerView = UIView()
     
     private var contentView = UIView()
     
@@ -42,12 +43,13 @@ class FilterViewController: UIViewController {
     private let campusLabel = UILabel()
     private let campusButton = UISwitch()
     
-    private func updateContentTableConstraints(y: CGFloat) {
-        
-        subjectTable.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.subjectTableY + y).isActive = true
+    
+    
+    private func updateSubjectTableConstraints(height: CGFloat) {
+        subjectTable.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    private func updateContentViewConstraints(y: CGFloat) {
+    private func updateContentViewConstraints(to y: CGFloat) {
         contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.contentViewY + y).isActive = true
     }
     
@@ -58,9 +60,9 @@ class FilterViewController: UIViewController {
         
         contentView.translatesAutoresizingMaskIntoConstraints = false
         
-        contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.contentViewY + barHeight).isActive = true
+        contentView.topAnchor.constraint(equalTo: filterContainerView.topAnchor, constant: constraints.contentViewY + barHeight).isActive = true
         contentView.heightAnchor.constraint(equalToConstant: constraints.contentViewHeight).isActive = true
-        contentView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        contentView.widthAnchor.constraint(equalTo: filterContainerView.widthAnchor).isActive = true
     }
     
     private func setupCountryLabel() {
@@ -76,8 +78,8 @@ class FilterViewController: UIViewController {
         
         countryLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        countryLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.countryLabelY + barHeight).isActive = true
-        countryLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: constraints.safeAreaBorder / 2).isActive = true
+        countryLabel.topAnchor.constraint(equalTo: filterContainerView.topAnchor, constant: constraints.countryLabelY + barHeight).isActive = true
+        countryLabel.leftAnchor.constraint(equalTo: filterContainerView.leftAnchor, constant: constraints.safeAreaBorder / 2).isActive = true
         countryLabel.heightAnchor.constraint(equalToConstant: constraints.countryLabelHeight).isActive = true
         countryLabel.widthAnchor.constraint(equalToConstant: constraints.countryLabelWidth).isActive = true
     }
@@ -92,10 +94,10 @@ class FilterViewController: UIViewController {
         
         countryPicker.translatesAutoresizingMaskIntoConstraints = false
         
-        countryPicker.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.countryPickerY + barHeight).isActive = true
-        countryPicker.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        countryPicker.topAnchor.constraint(equalTo: filterContainerView.topAnchor, constant: constraints.countryPickerY + barHeight).isActive = true
+        countryPicker.centerXAnchor.constraint(equalTo: filterContainerView.centerXAnchor).isActive = true
         countryPicker.heightAnchor.constraint(equalToConstant: constraints.countryPickerHeight).isActive = true
-        countryPicker.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        countryPicker.widthAnchor.constraint(equalTo: filterContainerView.widthAnchor).isActive = true
     }
     
     private func setupCountry() {
@@ -116,8 +118,8 @@ class FilterViewController: UIViewController {
         
         addSubject.translatesAutoresizingMaskIntoConstraints = false
         
-        addSubject.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.addSubjectButtonY + barHeight).isActive = true
-        addSubject.leftAnchor.constraint(equalTo: view.leftAnchor, constant: constraints.safeAreaBorder / 2).isActive = true
+        addSubject.topAnchor.constraint(equalTo: filterContainerView.topAnchor, constant: constraints.addSubjectButtonY + barHeight).isActive = true
+        addSubject.leftAnchor.constraint(equalTo: filterContainerView.leftAnchor, constant: constraints.safeAreaBorder / 2).isActive = true
         addSubject.heightAnchor.constraint(equalToConstant: constraints.addSubjectButtonHeight).isActive = true
         addSubject.widthAnchor.constraint(equalToConstant: constraints.addSubjectButtonWidth).isActive = true
     }
@@ -129,10 +131,10 @@ class FilterViewController: UIViewController {
         
         subjectTable.translatesAutoresizingMaskIntoConstraints = false
 
-        subjectTable.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        subjectTable.topAnchor.constraint(equalTo: self.view.topAnchor, constant: constraints.subjectTableY + barHeight).isActive = true
-        subjectTable.widthAnchor.constraint(equalToConstant: self.view.center.x * 2 - constraints.safeAreaBorder).isActive = true
-        subjectTable.heightAnchor.constraint(equalToConstant: constraints.subjectTableHeight).isActive = true
+        subjectTable.centerXAnchor.constraint(equalTo: self.filterContainerView.centerXAnchor).isActive = true
+        subjectTable.topAnchor.constraint(equalTo: self.filterContainerView.topAnchor, constant: constraints.subjectTableY + barHeight).isActive = true
+        subjectTable.widthAnchor.constraint(equalToConstant: self.filterContainerView.center.x * 2 - constraints.safeAreaBorder).isActive = true
+        subjectTable.heightAnchor.constraint(equalToConstant: constraints.subjectTableCellHeight).isActive = true
         
         subjectTable.delegate = self
         subjectTable.dataSource = self
@@ -152,9 +154,9 @@ class FilterViewController: UIViewController {
         
         pointsSlider.translatesAutoresizingMaskIntoConstraints = false
         
-        pointsSlider.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
+        pointsSlider.leftAnchor.constraint(equalTo: self.filterContainerView.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
         pointsSlider.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: constraints.pointsSliderY).isActive = true
-        pointsSlider.widthAnchor.constraint(equalToConstant: self.view.center.x * 2 - constraints.safeAreaBorder * 2).isActive = true
+        pointsSlider.widthAnchor.constraint(equalToConstant: self.filterContainerView.center.x * 2 - constraints.safeAreaBorder * 2).isActive = true
         pointsSlider.heightAnchor.constraint(equalToConstant: constraints.pointsSliderHeight).isActive = true
     }
     
@@ -173,7 +175,7 @@ class FilterViewController: UIViewController {
         contentView.addSubview(pointsTextField)
         
         pointsTextField.translatesAutoresizingMaskIntoConstraints = false
-        pointsTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
+        pointsTextField.leftAnchor.constraint(equalTo: self.filterContainerView.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
         pointsTextField.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: constraints.pointsTextFieldY).isActive = true
         pointsTextField.heightAnchor.constraint(equalToConstant: constraints.pointsTextFieldHeight).isActive = true
     }
@@ -191,7 +193,7 @@ class FilterViewController: UIViewController {
         
         militaryLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        militaryLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
+        militaryLabel.leftAnchor.constraint(equalTo: self.filterContainerView.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
         militaryLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: constraints.militaryLabelY).isActive = true
         militaryLabel.heightAnchor.constraint(equalToConstant: constraints.militaryLabelHeight).isActive = true
     }
@@ -205,7 +207,7 @@ class FilterViewController: UIViewController {
         
         militaryButton.translatesAutoresizingMaskIntoConstraints = false
         
-        militaryButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -constraints.safeAreaBorder).isActive = true
+        militaryButton.rightAnchor.constraint(equalTo: self.filterContainerView.rightAnchor, constant: -constraints.safeAreaBorder).isActive = true
         militaryButton.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: constraints.militaryButtonY).isActive = true
     }
     
@@ -222,7 +224,7 @@ class FilterViewController: UIViewController {
         
         campusLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        campusLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
+        campusLabel.leftAnchor.constraint(equalTo: self.filterContainerView.leftAnchor, constant: constraints.safeAreaBorder).isActive = true
         campusLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: constraints.campusLabelY).isActive = true
         campusLabel.heightAnchor.constraint(equalToConstant: constraints.campusLabelHeight).isActive = true
     }
@@ -236,7 +238,7 @@ class FilterViewController: UIViewController {
         
         campusButton.translatesAutoresizingMaskIntoConstraints = false
         
-        campusButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -constraints.safeAreaBorder).isActive = true
+        campusButton.rightAnchor.constraint(equalTo: self.filterContainerView.rightAnchor, constant: -constraints.safeAreaBorder).isActive = true
         campusButton.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: constraints.campusButtonY).isActive = true
     }
     
@@ -245,13 +247,20 @@ class FilterViewController: UIViewController {
         setupCampusButton()
     }
     
+    // MARK: filter view controller lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        filterScrollView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        
+        filterScrollView.addSubview(filterContainerView)
+        filterContainerView.frame = view.bounds
+        
         view.addSubview(filterScrollView)
+        filterScrollView.frame = filterContainerView.bounds
+        filterScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 500)
         
         view.backgroundColor = dataView.FilterViewColor
-        barHeight = navigationController?.navigationBar.frame.size.height ?? 0
+//        barHeight = navigationController?.navigationBar.frame.size.height ?? 0
         
         setupCountry()
         setupAddSubject()
@@ -304,6 +313,8 @@ class FilterViewController: UIViewController {
         presenter.changeCampus(for: campusButton.isOn)
     }
     
+    // MARK: targets
+    
     @objc private func changePoints() {
         pointsTextField.text = " " + String(Int(pointsSlider.value))
     }
@@ -314,6 +325,9 @@ class FilterViewController: UIViewController {
                                             sectionData: dataSourceSubject))
         pointsSlider.maximumValue = Float(subjectTableData.count * 100)
         subjectTable.reloadData()
+        
+//        updateSubjectTableConstraints(height: CGFloat(subjectTableData.count) * constraints.subjectTableCellHeight)
+//        updateContentViewConstraints(to: constraints.subjectTableCellHeight)
     }
 }
 
@@ -416,6 +430,9 @@ extension FilterViewController {
             
             subjectTable.deleteSections(IndexSet.init(integer: indexPath.section), with: .fade)
             subjectTable.reloadData()
+            
+            updateSubjectTableConstraints(height: CGFloat(subjectTableData.count) * constraints.subjectTableCellHeight)
+            updateContentViewConstraints(to: -constraints.subjectTableCellHeight)
         } else if editingStyle == .insert {
             
         }

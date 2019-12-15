@@ -24,7 +24,7 @@ struct Size {
     let addSubjectButtonWidth = CGFloat(200)
     
     let subjectTableY = CGFloat(320)
-    let subjectTableHeight = CGFloat(220)
+    let subjectTableCellHeight = CGFloat(44)
     
     let contentViewY = CGFloat(560)
     let contentViewHeight = CGFloat(200)

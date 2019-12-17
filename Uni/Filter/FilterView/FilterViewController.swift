@@ -18,6 +18,9 @@ class FilterViewController: UIViewController {
     private let dataView = FilterViewData()
     private var barHeight: CGFloat = 0
     
+    private var subjectConstraint = NSLayoutConstraint()
+    private var contentConstraint = NSLayoutConstraint()
+    
     private let dataSourceCountry = ["Москва", "Санкт-Петербург", "Омск", "Волгоград", "Владимир", "Екатеринбург", "Уфа", "Владивосток"]
     private let dataSourceSubject = ["Математика", "Русский", "Информатика", "Физика"]
     
@@ -46,11 +49,11 @@ class FilterViewController: UIViewController {
     
     
     private func updateSubjectTableConstraints(height: CGFloat) {
-        subjectTable.heightAnchor.constraint(equalToConstant: height).isActive = true
+        subjectConstraint.constant = height
     }
     
     private func updateContentViewConstraints(to y: CGFloat) {
-        contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: constraints.contentViewY + y).isActive = true
+        contentConstraint.constant += y
     }
     
     private func setupContentView() {
@@ -60,7 +63,8 @@ class FilterViewController: UIViewController {
         
         contentView.translatesAutoresizingMaskIntoConstraints = false
         
-        contentView.topAnchor.constraint(equalTo: filterContainerView.topAnchor, constant: constraints.contentViewY + barHeight).isActive = true
+        contentConstraint = contentView.topAnchor.constraint(equalTo: filterContainerView.topAnchor, constant: constraints.contentViewY + barHeight)
+        contentConstraint.isActive = true
         contentView.heightAnchor.constraint(equalToConstant: constraints.contentViewHeight).isActive = true
         contentView.widthAnchor.constraint(equalTo: filterContainerView.widthAnchor).isActive = true
     }
@@ -134,7 +138,8 @@ class FilterViewController: UIViewController {
         subjectTable.centerXAnchor.constraint(equalTo: self.filterContainerView.centerXAnchor).isActive = true
         subjectTable.topAnchor.constraint(equalTo: self.filterContainerView.topAnchor, constant: constraints.subjectTableY + barHeight).isActive = true
         subjectTable.widthAnchor.constraint(equalToConstant: self.filterContainerView.center.x * 2 - constraints.safeAreaBorder).isActive = true
-        subjectTable.heightAnchor.constraint(equalToConstant: constraints.subjectTableCellHeight).isActive = true
+        subjectConstraint = subjectTable.heightAnchor.constraint(equalToConstant: constraints.subjectTableCellHeight)
+        subjectConstraint.isActive = true
         
         subjectTable.delegate = self
         subjectTable.dataSource = self
@@ -326,8 +331,8 @@ class FilterViewController: UIViewController {
         pointsSlider.maximumValue = Float(subjectTableData.count * 100)
         subjectTable.reloadData()
         
-//        updateSubjectTableConstraints(height: CGFloat(subjectTableData.count) * constraints.subjectTableCellHeight)
-//        updateContentViewConstraints(to: constraints.subjectTableCellHeight)
+        updateSubjectTableConstraints(height: CGFloat(subjectTableData.count) * constraints.subjectTableCellHeight)
+        updateContentViewConstraints(to: constraints.subjectTableCellHeight)
     }
 }
 
@@ -389,6 +394,7 @@ extension FilterViewController: UITableViewDataSource {
             cell.textLabel?.text = subjectTableData[indexPath.section].title
         } else {
             cell.textLabel?.text = subjectTableData[indexPath.section].sectionData[dataIndex]
+            cell.backgroundColor = .darkGray
         }
         
         return cell
@@ -409,6 +415,16 @@ extension FilterViewController: UITableViewDelegate {
         }
         
         subjectTableData[indexPath.section].opened = !(subjectTableData[indexPath.section].opened)
+        
+        let curHeight = subjectConstraint.constant
+        
+        if (subjectTableData[indexPath.section].opened) {
+            updateSubjectTableConstraints(height: curHeight + constraints.subjectTableCellHeight * 4)
+            updateContentViewConstraints(to: constraints.subjectTableCellHeight * 4)
+        } else {
+            updateSubjectTableConstraints(height: curHeight - constraints.subjectTableCellHeight * 4)
+            updateContentViewConstraints(to: -constraints.subjectTableCellHeight * 4)
+        }
         
         let sections = IndexSet.init(integer: indexPath.section)
         subjectTable.reloadSections(sections, with: .none)

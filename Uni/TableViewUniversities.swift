@@ -31,6 +31,10 @@ class TableViewUniversities: UIViewController {
     private func setupFilterButton() {
         self.navigationController?.view.addSubview(filterButton)
         
+        if let filterImage = UIImage(named: "filterIcon") {
+            filterButton.setImage(filterImage, for: .normal)
+        }
+        
         filterButton.frame = CGRect(origin: CGPoint(x: self.view.frame.width - 100, y: self.view.frame.height - 180), size: CGSize(width: 80, height: 80))
         filterButton.layer.cornerRadius = filterButton.frame.width / 2
         

@@ -21,7 +21,7 @@ class FilterViewController: UIViewController {
     private var subjectConstraint = NSLayoutConstraint()
     private var contentConstraint = NSLayoutConstraint()
     
-    private let dataSourceCountry = ["Москва", "Санкт-Петербург", "Омск", "Волгоград", "Владимир", "Екатеринбург", "Уфа", "Владивосток"]
+    private let dataSourceCountry = ["Город", "Москва", "Санкт-Петербург", "Омск", "Волгоград", "Владимир", "Екатеринбург", "Уфа", "Владивосток"]
     private let dataSourceSubject = ["Математика", "Русский", "Информатика", "Физика"]
     
     private let filterScrollView = UIScrollView()
@@ -150,7 +150,7 @@ class FilterViewController: UIViewController {
         pointsSlider.tintColor = dataView.sliderColor
         
         pointsSlider.minimumValue = 0
-        pointsSlider.maximumValue = Float(subjectTableData.count * 100)
+        pointsSlider.maximumValue = Float(300)
         
         pointsSlider.isContinuous = true
         pointsSlider.addTarget(self, action: #selector(changePoints), for: .valueChanged)
@@ -328,7 +328,11 @@ class FilterViewController: UIViewController {
         subjectTableData.append(subjectData(opened: false,
                                             title: subjectTableTitle,
                                             sectionData: dataSourceSubject))
-        pointsSlider.maximumValue = Float(subjectTableData.count * 100)
+        if (subjectTableData.count > 3) {
+            pointsSlider.maximumValue = Float(subjectTableData.count * 100)
+        } else {
+            pointsSlider.maximumValue = Float(300)
+        }
         subjectTable.reloadData()
         
         updateSubjectTableConstraints(height: CGFloat(subjectTableData.count) * constraints.subjectTableCellHeight)
@@ -442,7 +446,14 @@ extension FilterViewController {
         if editingStyle == .delete {
             
             subjectTableData.remove(at: indexPath.row)
-            pointsSlider.maximumValue = Float(subjectTableData.count * 100)
+            
+            if (subjectTableData.count > 3) {
+                pointsSlider.maximumValue = Float(subjectTableData.count * 100)
+            } else {
+                pointsSlider.maximumValue = Float(300)
+            }
+            
+            self.changePoints()
             
             subjectTable.deleteSections(IndexSet.init(integer: indexPath.section), with: .fade)
             subjectTable.reloadData()

@@ -22,7 +22,8 @@ class FilterViewController: UIViewController {
     private var contentConstraint = NSLayoutConstraint()
     
     private let dataSourceCountry = ["Город", "Москва", "Санкт-Петербург", "Омск", "Волгоград", "Владимир", "Екатеринбург", "Уфа", "Владивосток"]
-    private let dataSourceSubject = ["Математика", "Русский", "Информатика", "Физика"]
+    
+    private let dataSourceSubject = ["Математика", "Русский", "Физика", "Химия", "История", "Обществознание", "Информатика", "Биология", "Георграфия", "Английский", "Немецкий", "Французсский", "Испанский", "Литература"]
     
     private let filterScrollView = UIScrollView()
     private let filterContainerView = UIView()

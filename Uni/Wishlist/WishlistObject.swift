@@ -9,22 +9,29 @@
 import Foundation
 import RealmSwift
 
-final class WishlistObject: Object{
+final class RealmWishlistObject: Object{
     
     @objc dynamic var departmentName: String = ""
     @objc dynamic var universityName: String = ""
     @objc dynamic var minPoints: Int = 0
-    @objc dynamic var firstSubject: String = ""
-    @objc dynamic var secondSubject: String = ""
-    @objc dynamic var thirdSubject: String = ""
+    var subjects = List<String?>()
     
-   convenience init(university: University ,department: Department) {
-    self.init()
-    self.departmentName = department.fullName
-    self.universityName = university.name
-    self.minPoints = department.minPoints
-    self.firstSubject = department.subjects[0]
-    self.secondSubject = department.subjects[1]
-    self.thirdSubject = department.subjects[2]
+    convenience init(university: University ,department: Department) {
+        self.init()
+        self.departmentName = department.fullName
+        self.universityName = university.name
+        self.minPoints = department.minPoints
+        self.subjects = {()->List<String?> in
+            let subjectsList = List<String?>()
+            for subject in department.subjects{
+                subjectsList.append(subject)
+            }
+            if (5 - department.subjects.count) != 0{
+                for _ in department.subjects.count ... 5{
+                    subjectsList.append(nil)
+                }
+            }
+            return subjectsList
+        }()
     }
 }

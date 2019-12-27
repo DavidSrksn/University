@@ -9,12 +9,20 @@
 import UIKit
 import paper_onboarding
 import CircleMenu
-import QuartzCore
 
-final class FirstLaunchView: UIViewController, PaperOnboardingDataSource, PaperOnboardingDelegate,CircleMenuDelegate {
+final class FirstLaunchView: UIViewController {
 
     @IBOutlet weak var getStartedButton: UIButton!
     @IBOutlet weak var onboardingView: OnboardingView!
+    
+    let circleButton = CircleMenu(
+           frame: CGRect(origin:  CGPoint(x: 0, y: 0), size: CGSize(width: 0, height: 0)),
+           normalIcon:"icon_menu",
+           selectedIcon:"icon_close",
+           buttonsCount: 3,
+           duration: 1,
+           distance: 150)
+    
     
     @IBAction func getStartedButtonAction(_ sender: UIButton) {
         let userDefaults = UserDefaults.standard
@@ -22,20 +30,82 @@ final class FirstLaunchView: UIViewController, PaperOnboardingDataSource, PaperO
         userDefaults.synchronize()
     }
     
-    let circleButton = CircleMenu(
-            frame: CGRect(origin:  CGPoint(x: 180, y: 250), size: CGSize(width: 70, height: 70)),
-            normalIcon:"icon_menu",
-            selectedIcon:"icon_close",
-            buttonsCount: 2,
-            duration: 2,
-            distance: 150)
+     override func viewDidLoad() {
+            super.viewDidLoad()
+            onboardingView.dataSource = self
+            onboardingView.delegate = self
+        }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        onboardingView.dataSource = self
-        onboardingView.delegate = self
+}
+
+
+extension FirstLaunchView: CircleMenuDelegate{
+    
+    func circleMenu(_ circleMenu: CircleMenu, willDisplay button: UIButton, atIndex: Int) {
+        if atIndex == 0{
+            button.backgroundColor = .black
+            button.setImage(UIImage(systemName: "book"), for: .normal)
+        }else if atIndex == 1{
+            button.backgroundColor = .white
+            button.setTitle("f(x)", for: .normal)
+            button.setTitleColor(.black, for: .normal)
+        }else if atIndex == 2{
+            button.backgroundColor = UIColor(red: 106/256, green: 166/256, blue: 211/256, alpha: 1)
+            button.setTitle("Bio", for: .normal)
+            button.setTitleColor(.darkGray, for: .normal)
+        }
     }
     
+    func circleMenu(_ circleMenu: CircleMenu, buttonDidSelected button: UIButton, atIndex: Int) {
+        circleMenu.backgroundColor = button.backgroundColor
+        let userDefaults = UserDefaults.standard
+        if atIndex == 0{
+            userDefaults.set("Гуманитарные науки", forKey: "Увлечение")
+            circleButton.setTitle(nil, for: .normal)
+            circleButton.setImage(button.image(for: .selected), for: .normal)
+        }else if atIndex == 1{
+            circleButton.setImage(nil, for: .normal)
+            circleButton.setTitleColor(.black, for: .normal)
+            circleButton.setTitle(button.titleLabel!.text, for: .normal)
+            userDefaults.set("Технические науки", forKey: "Увлечение")
+        }else if atIndex == 2{
+            circleButton.setImage(nil, for: .normal)
+            circleButton.setTitleColor(.darkGray, for: .normal)
+            circleButton.setTitle(button.titleLabel!.text, for: .normal)
+            userDefaults.set("Естественные науки", forKey: "Увлечение")
+        }
+        circleButton.backgroundColor = button.backgroundColor
+        UIView.animate(withDuration: 0.5) {
+            self.getStartedButton.alpha = 1
+        }
+        self.view.reloadInputViews()
+        userDefaults.synchronize()
+    }
+    
+    func setupCircleButton(){
+        self.view.addSubview(circleButton)
+
+        circleButton.backgroundColor = .midnightBlue
+        circleButton.delegate = self
+        
+        circleButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        circleButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        circleButton.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        circleButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 230).isActive = true
+        circleButton.heightAnchor.constraint(equalTo: circleButton.widthAnchor).isActive = true
+        
+        circleButton.layer.cornerRadius = 70 / 2
+        
+        UIView.animate(withDuration: 0.3) {
+            self.circleButton.alpha = 1
+        }
+    }
+}
+
+
+
+extension FirstLaunchView: PaperOnboardingDataSource, PaperOnboardingDelegate{
     
     func onboardingItemsCount() -> Int {
         return 4
@@ -52,12 +122,12 @@ final class FirstLaunchView: UIViewController, PaperOnboardingDataSource, PaperO
         let transparentImage =  UIImageView(image: UIImage(named: "Transparent.jpg"))
         
         return[OnboardingItemInfo(informationImage: UIImage(named: "МГТУ.jpg")!, title: "Выбери университет на свой вкус", description: "Выбери университет, основываясь на личных требованиях и предпочтениях", pageIcon: transparentImage.image!, color: backgroundColourOne, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
-            OnboardingItemInfo(informationImage: UIImage(named: "МФТИ.jpg")!, title: "Test", description: "Test", pageIcon: transparentImage.image!, color: backgroundColourTwo, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
-            OnboardingItemInfo(informationImage: UIImage(named: "РУДН.jpg")!, title: "Testing", description: "Плохой альбом", pageIcon: transparentImage.image!, color: backgroundColourThree, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
-            OnboardingItemInfo(informationImage: transparentImage.image!, title: "Выбери свои предпочтения", description: "черная - технарь \n белая - гумманитарий \n (пример)", pageIcon: transparentImage.image!, color: .carrot, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont)
+               OnboardingItemInfo(informationImage: UIImage(named: "МФТИ.jpg")!, title: "Test", description: "Test", pageIcon: transparentImage.image!, color: backgroundColourTwo, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
+               OnboardingItemInfo(informationImage: UIImage(named: "РУДН.jpg")!, title: "Testing", description: "Плохой альбом", pageIcon: transparentImage.image!, color: backgroundColourThree, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
+               OnboardingItemInfo(informationImage: transparentImage.image!, title: "Выбери свои предпочтения", description: "черная - технарь \n белая - гуманитарий \n (пример)", pageIcon: transparentImage.image!, color: .carrot, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont)
             ][index]
     }
-
+    
     func onboardingConfigurationItem(_: OnboardingContentViewItem, index _: Int) {
         
     }
@@ -72,57 +142,26 @@ final class FirstLaunchView: UIViewController, PaperOnboardingDataSource, PaperO
     
     func onboardingWillTransitonToIndex(_ index: Int) {
         if index != 3{
-        if Manager.shared.preference == nil{
-        if self.getStartedButton.alpha == 1{
-            UIView.animate(withDuration: 0.4) {
-                           self.getStartedButton.alpha = 0
-                       }
-              }
+            if UserDefaults.standard.string(forKey: "Увлечение") == nil{
+                if self.getStartedButton.alpha == 1{
+                    UIView.animate(withDuration: 0.4) {
+                        self.getStartedButton.alpha = 0
+                    }
+                }
             }
-        }
-        UIView.animate(withDuration: 0.3) {
-        self.circleButton.alpha = 0
         }
     }
     
     func onboardingDidTransitonToIndex(_ index: Int) {
         if index == 3{
-       circleButton.backgroundColor = .midnightBlue
-       circleButton.delegate = self
-       circleButton.layer.cornerRadius = circleButton.frame.size.width / 2
-       circleButton.center = self.view.center
-            circleButton.titleLabel?.text = "f(x)"
-            circleButton.titleLabel?.textColor = .black
-       self.view.addSubview(circleButton)
-       UIView.animate(withDuration: 0.3) {
-        self.circleButton.alpha = 1
-     }
-    }
-    }
-    
-    func circleMenu(_ circleMenu: CircleMenu, willDisplay button: UIButton, atIndex: Int) {
-        if atIndex == 1{
-            button.backgroundColor = .black
-            button.setImage(UIImage(systemName: "book"), for: .normal)
-        } else{
-            button.backgroundColor = .white
-            button.setTitle("f(x)", for: .normal)
-            button.setTitleColor(.black, for: .normal)
-//            button.setImage(UIImage(named: "laptop"), for: .normal)
-        }
-}
-    
-    func circleMenu(_ circleMenu: CircleMenu, buttonDidSelected button: UIButton, atIndex: Int) {
-        if atIndex == 1{
-        Manager.shared.preference = "Гуманитарий"
+           setupCircleButton()
         }else{
-            Manager.shared.preference = "Технарь"
+            circleButton.hideButtons(0.25)
+            UIView.animate(withDuration: 0.3) {
+                      self.circleButton.alpha = 0
+                  }
         }
-        circleButton.setTitle(button.titleLabel!.text, for: .normal)
-        UIView.animate(withDuration: 0.5) {
-        self.getStartedButton.alpha = 1
-        }
-        self.view.reloadInputViews()
-        print("preferenc - \(Manager.shared.preference)")
-    }
 }
+    
+}
+

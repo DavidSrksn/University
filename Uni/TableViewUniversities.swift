@@ -16,7 +16,7 @@ class TableViewUniversities: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var warning = UILabel()
-    
+            
     private var filterSettings = Filter(country: nil, subjects: nil, minPoint: nil, military: nil, campus: nil)
     
     private let filterButton = UIButton()
@@ -29,7 +29,7 @@ class TableViewUniversities: UIViewController {
     }
     
     private func setupFilterButton() {
-        self.navigationController?.view.addSubview(filterButton)
+        self.view.addSubview(filterButton)
         
         if let filterImage = UIImage(named: "filterIcon") {
             filterButton.setImage(filterImage, for: .normal)
@@ -83,17 +83,16 @@ class TableViewUniversities: UIViewController {
     
     private func reloadData() {
         if  Manager.shared.flagFilterChanged {
-            view.isSkeletonable = true
-            view.showAnimatedGradientSkeleton()
-//          let gradient = SkeletonGradient(baseColor: .alizarin, secondaryColor: .alizarin)
+            Loader.shared.showActivityIndicatory(uiView: view, blurView: Loader.shared.blurView, loadingView: Loader.shared.loadingView, actInd: Loader.shared.actInd)
+            //          let gradient = SkeletonGradient(baseColor: .alizarin, secondaryColor: .alizarin)
 //          let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
 //          view.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation, transition: .none)
 //          navigationController?.view.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation, transition: .none)
-            Manager.shared.loadUniversities(tableView: self.tableView, wanrningLabel: warning, viewcontroller: self, city: Manager.shared.filterSettings.country, subjects: Manager.shared.filterSettings.subjects , minPoints: Manager.shared.filterSettings.minPoint, dormitory: Manager.shared.filterSettings.campus, militaryDepartment: Manager.shared.filterSettings.campus, completion: { [weak self] in
+            NetworkManager.shared.loadUniversities(tableView: self.tableView, warningLabel: warning, viewcontroller: self, city: Manager.shared.filterSettings.country, subjects: Manager.shared.filterSettings.subjects , minPoints: Manager.shared.filterSettings.minPoint, dormitory: Manager.shared.filterSettings.campus, militaryDepartment: Manager.shared.filterSettings.campus, completion: { [weak self] in
                 DispatchQueue.main.async{
                     Manager.shared.dataUFD = Manager.shared.UFD
                     self?.tableView.reloadData()
-                    self?.view.hideSkeleton()
+                    Loader.shared.removeActivityIndicator(blurView: Loader.shared.blurView, loadingView: Loader.shared.loadingView, actInd: Loader.shared.actInd)
                 }
             })
         }
@@ -120,7 +119,7 @@ class TableViewUniversities: UIViewController {
         setupFilterButton()
         
         reloadData()
-        setTable()
+        setupTable()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -130,12 +129,18 @@ class TableViewUniversities: UIViewController {
         filterButton.isEnabled = false
     }
   
-    func setTable(){
+    func setupTable(){
         self.title = "University"
+        
+        tableView.clipsToBounds = true
+        tableView.tableFooterView = UIView()
+        
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.estimatedRowHeight = 68
-        tableView.rowHeight = 150 //UITableView.automaticDimension
+        
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 80
+        
         tableView.separatorInset = .zero
     }
     
@@ -155,7 +160,7 @@ class TableViewUniversities: UIViewController {
     
     @objc private func endSearching() {
         navigationItem.titleView = searchTitle
-        
+    
         setupSearchButton()
         
         navigationItem.leftBarButtonItem?.tintColor = .clear
@@ -177,11 +182,14 @@ extension TableViewUniversities :  SkeletonTableViewDataSource, SkeletonTableVie
         return Manager.shared.UFD.keys.count
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 130
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let university = Array(Manager.shared.UFD.keys)[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "UniversityCell") as! UniversityCell
-        cell.setUniversityCell(university: university)
+        cell.setupUniversityCell(university: university)
         return cell
     }
     
@@ -190,7 +198,26 @@ extension TableViewUniversities :  SkeletonTableViewDataSource, SkeletonTableVie
             Manager.shared.choosed[0] = Array(Manager.shared.UFD.keys)[indexPath.row]
             let viewController = storyboard?.instantiateViewController(identifier: "факультет") as! FacultiesTableView
             navigationController?.pushViewController(viewController, animated: true)
-        }
+    }
+    
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let label = UILabel()
+//
+//        label.numberOfLines = 0
+//        label.textAlignment = .left
+//        label.textColor = .black
+//        label.backgroundColor = view.backgroundColor
+//
+//        label.font = UIFont(name: "AvenirNext-Regular", size: 30)!
+//        label.text = "Выберите университет"
+//
+//        return label
+//    }
+//
+//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        return 150
+//    }
+    
 }
 
 extension TableViewUniversities: UISearchBarDelegate {

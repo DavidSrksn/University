@@ -16,9 +16,14 @@
 		9A3637E6235394E500F730DC /* DepartmentsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3637E5235394E500F730DC /* DepartmentsTableView.swift */; };
 		9A38C1812355D16F004DB189 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A38C1802355D16F004DB189 /* Manager.swift */; };
 		9A52BEA72349190F00DA7D35 /* UniversityStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A52BEA62349190F00DA7D35 /* UniversityStruct.swift */; };
+		9A692B9223B5551A00A94940 /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A692B9123B5551A00A94940 /* Loader.swift */; };
+		9A692B9523B556C000A94940 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A692B9423B556C000A94940 /* NetworkManager.swift */; };
 		9A7722E32394547000F0DDCA /* SortTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A7722E22394547000F0DDCA /* SortTable.swift */; };
 		9A79FEA323983AA6006D8474 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79FEA223983AA6006D8474 /* TabBarController.swift */; };
 		9A79FEA523983AFB006D8474 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79FEA423983AFB006D8474 /* NavigationController.swift */; };
+		9A88D5E923AF78EE0097B2A2 /* SortStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A88D5E823AF78EE0097B2A2 /* SortStruct.swift */; };
+		9A9A2C9223A4F0450084E87B /* a.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9A2C9123A4F0450084E87B /* a.swift */; };
+		9A9A2C9423A4F10A0084E87B /* SortTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9A2C9323A4F10A0084E87B /* SortTableView.swift */; };
 		9A9CAFA7233FC8A700258AB8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9CAFA6233FC8A700258AB8 /* AppDelegate.swift */; };
 		9A9CAFA9233FC8A700258AB8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9CAFA8233FC8A700258AB8 /* SceneDelegate.swift */; };
 		9A9CAFAE233FC8A700258AB8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A9CAFAC233FC8A700258AB8 /* Main.storyboard */; };
@@ -54,9 +59,14 @@
 		9A3637E5235394E500F730DC /* DepartmentsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepartmentsTableView.swift; sourceTree = "<group>"; };
 		9A38C1802355D16F004DB189 /* Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
 		9A52BEA62349190F00DA7D35 /* UniversityStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversityStruct.swift; sourceTree = "<group>"; };
+		9A692B9123B5551A00A94940 /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
+		9A692B9423B556C000A94940 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		9A7722E22394547000F0DDCA /* SortTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortTable.swift; sourceTree = SOURCE_ROOT; };
 		9A79FEA223983AA6006D8474 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		9A79FEA423983AFB006D8474 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		9A88D5E823AF78EE0097B2A2 /* SortStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortStruct.swift; sourceTree = "<group>"; };
+		9A9A2C9123A4F0450084E87B /* a.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = a.swift; sourceTree = "<group>"; };
+		9A9A2C9323A4F10A0084E87B /* SortTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortTableView.swift; sourceTree = "<group>"; };
 		9A9CAFA3233FC8A700258AB8 /* Uni.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Uni.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A9CAFA6233FC8A700258AB8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9A9CAFA8233FC8A700258AB8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -115,6 +125,16 @@
 			name = Departments;
 			sourceTree = "<group>";
 		};
+		9A692B9323B556A300A94940 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				9A38C1802355D16F004DB189 /* Manager.swift */,
+				9A692B9123B5551A00A94940 /* Loader.swift */,
+				9A692B9423B556C000A94940 /* NetworkManager.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		9A76BA17236A1589004E2259 /* Wishlist */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +150,17 @@
 			isa = PBXGroup;
 			children = (
 				9A7722E22394547000F0DDCA /* SortTable.swift */,
+			);
+			name = Sort;
+			path = Wishlist;
+			sourceTree = "<group>";
+		};
+		9A9A2C9023A4EFFA0084E87B /* Sort */ = {
+			isa = PBXGroup;
+			children = (
+				9A9A2C9323A4F10A0084E87B /* SortTableView.swift */,
+				9A9A2C9123A4F0450084E87B /* a.swift */,
+				9A88D5E823AF78EE0097B2A2 /* SortStruct.swift */,
 			);
 			name = Sort;
 			path = Wishlist;
@@ -159,15 +190,14 @@
 			isa = PBXGroup;
 			children = (
 				9A9CAFAC233FC8A700258AB8 /* Main.storyboard */,
-				9A38C1802355D16F004DB189 /* Manager.swift */,
-				CE51B3D2237DB62400707B33 /* Filter */,
+				9A692B9323B556A300A94940 /* Shared */,
+				9A9A2C9023A4EFFA0084E87B /* Sort */,
 				9A1F40D723749F5F00D5E424 /* First Launch */,
 				9AB858B3234F4B9F00F5217B /* Universities */,
 				9AB858B4234F51CB00F5217B /* Faculties */,
 				9A3637DE2353926700F730DC /* Departments */,
 				CE51B3D2237DB62400707B33 /* Filter */,
 				9A76BA17236A1589004E2259 /* Wishlist */,
-				9AB858BA234F8E3C00F5217B /* Something else */,
 			);
 			path = Uni;
 			sourceTree = "<group>";
@@ -384,6 +414,9 @@
 				9A30974A234CC274005B2B85 /* UniversityCell.swift in Sources */,
 				9AEE3C34234E73F200DAAFA3 /* TableViewUniversities.swift in Sources */,
 				9AF72EE2238DA43B00CD9FBA /* DropdownCell.swift in Sources */,
+				9A692B9523B556C000A94940 /* NetworkManager.swift in Sources */,
+				9A9A2C9223A4F0450084E87B /* a.swift in Sources */,
+				9A88D5E923AF78EE0097B2A2 /* SortStruct.swift in Sources */,
 				9AB858B6234F51FB00F5217B /* FacultyStruct.swift in Sources */,
 				9AF60EE6236E2819007AF8F6 /* WishlistTableView.swift in Sources */,
 				9A3637DD2353926200F730DC /* DepartmentStruct.swift in Sources */,
@@ -398,6 +431,7 @@
 				CE51B3D5237DB6A000707B33 /* FilterViewData.swift in Sources */,
 				9A7722E32394547000F0DDCA /* SortTable.swift in Sources */,
 				9A3637E6235394E500F730DC /* DepartmentsTableView.swift in Sources */,
+				9A692B9223B5551A00A94940 /* Loader.swift in Sources */,
 				CE51B3DF237DC86C00707B33 /* FilterViewController.swift in Sources */,
 				9A79FEA523983AFB006D8474 /* NavigationController.swift in Sources */,
 				9AB858B9234F523800F5217B /* FacultyCell.swift in Sources */,
@@ -406,6 +440,7 @@
 				9A79FEA323983AA6006D8474 /* TabBarController.swift in Sources */,
 				CE51B3E7237DC96300707B33 /* FilterSize.swift in Sources */,
 				9A9CAFA9233FC8A700258AB8 /* SceneDelegate.swift in Sources */,
+				9A9A2C9423A4F10A0084E87B /* SortTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

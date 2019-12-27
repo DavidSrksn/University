@@ -15,6 +15,7 @@ struct Department {
     var fullName : String
     var subjects: [String]
     var followers: Int
+    var link: String
     
     var dictionary : [String : Any]{
         return [
@@ -22,7 +23,8 @@ struct Department {
             "minPoints": minPoints,
             "fullName": fullName,
             "subjects": subjects,
-            "followers": followers
+            "followers": followers,
+            "link": link
         ]
     }
 }
@@ -33,8 +35,9 @@ extension Department: DocumentSerializable{
             let minPoints = dictionary["minPoints"] as? Int,
             let fullName = dictionary["fullName"] as? String,
             let subjects = dictionary["subjects"] as? [String],
-            let followers = dictionary["followers"] as? Int
-        else { return nil }
-        self.init(name: name, minPoints: minPoints,fullName : fullName, subjects: subjects, followers: followers)
+            let followers = dictionary["followers"] as? Int,
+            let link = dictionary["link"] as? String
+            else { return nil }
+        self.init(name: name, minPoints: minPoints,fullName : fullName, subjects: subjects, followers: followers, link: link)
     }
 }

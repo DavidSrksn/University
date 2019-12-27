@@ -10,6 +10,8 @@ import UIKit
 
 class FilterViewController: UIViewController {
     
+    static let filterManager = FilterViewController()
+    
     private var presenter = FilterPresenter()
     
     private var constraintClosure: ((CGFloat)->(Void))?

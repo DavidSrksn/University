@@ -302,18 +302,18 @@ class FilterViewController: UIViewController {
     }
     
     private func fillDataFilter() {
-        var subjectsData: [String] = []
+        var subjectsData: [String]? = []
         
         let subjectsStruct = subjectTableData.filter({ (data) -> Bool in
             return data.title != subjectTableTitle
         })
         
         for data in subjectsStruct {
-            subjectsData.append(data.title)
+            subjectsData!.append(data.title)
         }
         
-        presenter.updateSubject(newSubjects: subjectsData)
-        presenter.changeCountry(newCountry: countryLabel.text)
+        presenter.updateSubject(newSubjects: subjectsData == [] ? nil : subjectsData)
+        presenter.changeCountry(newCountry: countryLabel.text == "Город" ? nil : countryLabel.text)
         presenter.changeMinPoint(for: Int(pointsSlider.value))
         presenter.changeMilitary(for: militaryButton.isOn)
         presenter.changeCampus(for: campusButton.isOn)

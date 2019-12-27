@@ -39,7 +39,9 @@ struct FilterPresenter {
     }
     
     mutating func changeCountry(newCountry: String?) {
+        if newCountry != "Город"{
         model.country = newCountry
+        }
     }
     
     mutating func updateSubject(newSubjects: [String]?) {

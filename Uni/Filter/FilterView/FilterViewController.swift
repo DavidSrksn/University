@@ -10,6 +10,8 @@ import UIKit
 
 class FilterViewController: UIViewController {
     
+    static let filterManager = FilterViewController()
+    
     private var presenter = FilterPresenter()
     
     private var constraintClosure: ((CGFloat)->(Void))?
@@ -22,7 +24,7 @@ class FilterViewController: UIViewController {
     private var contentConstraint = NSLayoutConstraint()
     
     private let dataSourceCountry = ["Москва", "Санкт-Петербург", "Омск", "Волгоград", "Владимир", "Екатеринбург", "Уфа", "Владивосток"]
-    private let dataSourceSubject = ["Математика", "Русский", "Информатика", "Физика"]
+    let dataSourceSubject = ["Математика", "Русский", "Информатика", "Физика"]
     
     private let filterScrollView = UIScrollView()
     private let filterContainerView = UIView()

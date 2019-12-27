@@ -15,6 +15,8 @@ class DropdownCell: UITableViewCell{
     
     var cellExists: Bool = false
     
+    let leftConstraint: CGFloat = 5
+    
     @IBOutlet weak var open: UIButton!
     
     @IBOutlet weak var subjectsLabel: UILabel!
@@ -25,13 +27,13 @@ class DropdownCell: UITableViewCell{
         
         do {
             try Manager.shared.realm.write {
-                Manager.shared.realm.delete(Manager.shared.realm.objects(WishlistObject.self).filter("departmentName = '\((self.departmentNameLabel.text)!)'"))
+                Manager.shared.realm.delete(Manager.shared.realm.objects(RealmWishlistObject.self).filter("departmentName = '\((self.departmentNameLabel.text)!)'"))
             }
         } catch{
             print(error.localizedDescription)
         }
         Manager.shared.notificationCentre.post(Notification(name: Notification.Name(rawValue: "Department Deleted")))
-        Manager.shared.queue.async(execute: Manager.shared.workItem)
+        Manager.shared.wishlistQueue.async(execute: Manager.shared.workItem)
     }
     
     @IBOutlet weak var deleteButton: UIButton!
@@ -70,31 +72,52 @@ class DropdownCell: UITableViewCell{
         })
     }
     
-    func setWishlistCell(universityName: String, departmentName:String, firstSubject: String, secondSubject: String, thirdSubject: String, cell: UITableViewCell) {
+    func setWishlistCell(universityName: String, departmentName:String, subjects: [String?], cell: UITableViewCell) {
+        
         cell.preservesSuperviewLayoutMargins = false
         cell.separatorInset = UIEdgeInsets.zero
         cell.layoutMargins = UIEdgeInsets.zero
+        
         setDeleteButton(cell: cell)
         setMapButton()
         setDepartmentLable(departmentName: departmentName)
         setUniversityName(universityName: universityName)
         setOpenView(cell: cell)
         setView(cell: cell)
-        setSubjects(firstSubject: firstSubject, secondSubject: secondSubject, thirdSubject: thirdSubject)
+        setSubjects(subjects: subjects)
         setFollowersLabel(departmentName: departmentName, followersCount: 2)
-        open.setTitle("", for: .normal)
         
+        open.setTitle("", for: .normal)
     }
     
     func setDeleteButton(cell: UITableViewCell){
-        deleteButton.frame = CGRect(x: view.bounds.maxX - deleteButton.frame.size.width*2/3 , y: view.bounds.maxY - deleteButton.frame.size.height*1/2, width: mapButtonOutlet.frame.size.width, height: mapButtonOutlet.frame.size.height)
-        deleteButton.layer.cornerRadius = 2
+        deleteButton.layer.cornerRadius = 5
         deleteButton.setTitle("Удалить", for: .normal)
         deleteButton.setTitleColor(.black, for: .normal)
         deleteButton.backgroundColor = UIColor.alizarin
+        
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        deleteButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        deleteButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        deleteButton.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        deleteButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        
     }
     
     func setDepartmentLable(departmentName: String){
+        
+//        departmentNameLabel.translatesAutoresizingMaskIntoConstraints = false
+
+//        departmentNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 2).isActive = true
+//        departmentNameLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5).isActive = true
+//        departmentNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5).isActive = true
+//        departmentNameLabel.bottomAnchor.constraint(greaterThanOrEqualTo: self.bottomAnchor, constant: -2 ).isActive = true
+        
+//        departmentNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        
+        departmentNameLabel.numberOfLines = 0
+        departmentNameLabel.textAlignment = .center
         self.departmentNameLabel.text = departmentName
         departmentNameLabel.textColor = UIColor.white
     }
@@ -109,8 +132,12 @@ class DropdownCell: UITableViewCell{
     
     func setView(cell: UITableViewCell){
         view.layer.masksToBounds = true
-//        view.layer.cornerRadius = 15
-        openView.translatesAutoresizingMaskIntoConstraints = false
+//        openView.translatesAutoresizingMaskIntoConstraints = false
+
+//        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        
         view.frame = CGRect(x: openView.frame.minX, y: openView.frame.maxY, width: cell.bounds.size.width - 8, height: 210)
         view.frame.size.width = openView.frame.size.width
         self.view.backgroundColor = #colorLiteral(red: 0.7747164369, green: 0.9268901944, blue: 0.880443871, alpha: 1)
@@ -121,22 +148,41 @@ class DropdownCell: UITableViewCell{
     }
     
     func setMapButton() {
-        mapButtonOutlet.frame = CGRect(x: deleteButton.frame.origin.x - 120 - 40, y: deleteButton.frame.origin.y , width: 150, height: 50)
-        mapButtonOutlet.layer.masksToBounds = true
-        mapButtonOutlet.layer.cornerRadius = 2
+        mapButtonOutlet.layer.cornerRadius = 5
         mapButtonOutlet.backgroundColor = UIColor(red: 106/256, green: 166/256, blue: 211/256, alpha: 1)
         mapButtonOutlet.setTitle("Построить маршрут", for: .normal)
         mapButtonOutlet.setTitleColor(.black, for: .normal)
         mapButtonOutlet.titleLabel?.font = UIFont(name: "AvenirNext-Regular", size: 15)
+        
+        mapButtonOutlet.translatesAutoresizingMaskIntoConstraints = false
+        
+        mapButtonOutlet.topAnchor.constraint(equalTo: deleteButton.topAnchor).isActive = true
+        mapButtonOutlet.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        mapButtonOutlet.rightAnchor.constraint(equalTo: deleteButton.leftAnchor, constant: -10).isActive = true
+        mapButtonOutlet.widthAnchor.constraint(equalToConstant: 150).isActive = true
     }
     
-    func setSubjects(firstSubject: String, secondSubject: String, thirdSubject: String) {
+    func setSubjects(subjects: [String?]) {
         subjectsLabel.backgroundColor = view.backgroundColor
         subjectsLabel.numberOfLines = 4
         subjectsLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)
         subjectsLabel.textColor = .black
-        subjectsLabel.text = "Предметы:\n\(firstSubject)\n\(secondSubject)\n\(thirdSubject)"
-        subjectsLabel.frame = CGRect(x: 10, y: 10, width: 150, height: 200)
+        subjectsLabel.text = {(subjects: [String?])->String in
+            var text: String = "Предметы:"
+            for string in  subjects{
+                if string != nil{
+                    text.append("\n\(string!)")
+                }
+            }
+            return text
+        }(subjects)
+
+        subjectsLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        subjectsLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: leftConstraint).isActive = true
+        subjectsLabel.topAnchor.constraint(equalTo: universityName.bottomAnchor, constant: 10).isActive = true
+        subjectsLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 5).isActive = true
+        subjectsLabel.widthAnchor.constraint(equalToConstant: 150).isActive = true
     }
     
     func setFollowersLabel(departmentName: String,followersCount: Int){
@@ -145,8 +191,6 @@ class DropdownCell: UITableViewCell{
         var textColor = UIColor()
         if followersCount == 0{
                    textColor = .red
-               }else if followersCount == 1 {
-                   textColor = .darkGray
                }else{
                    textColor = .black
                }
@@ -160,7 +204,13 @@ class DropdownCell: UITableViewCell{
         atributedString.addAttributes(firstAttributes, range: NSRange(location: 0, length: 13))
         atributedString.addAttributes(secondAttributes, range: NSRange(location: 13, length: 2))
         followers.attributedText = atributedString
-        followers.frame = CGRect(x: universityName.frame.minX + subjectsLabel.bounds.width + 10, y: universityName.frame.maxY + 10, width: 150, height: 20)
+        
+        followers.translatesAutoresizingMaskIntoConstraints = false
+        
+        followers.topAnchor.constraint(equalTo: universityName.bottomAnchor, constant: 5).isActive = true
+        followers.leftAnchor.constraint(equalTo: subjectsLabel.rightAnchor, constant: 10).isActive = true
+        followers.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        followers.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
     
 //    func openMaps(adress: String) {

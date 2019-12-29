@@ -22,7 +22,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
  
 //        window?.rootViewController = MainNavigationController()
         let sb = UIStoryboard(name: "Main", bundle: nil)
-        var initialVC = sb.instantiateViewController(identifier: "Onboarding")
+//        var initialVC = sb.instantiateViewController(identifier: "Onboarding")
+        
+        var initialVC = Database()
 
         let userDefaults = UserDefaults.standard
         if  userDefaults.bool(forKey: "Onboarding Complete"){

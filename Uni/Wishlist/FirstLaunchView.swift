@@ -9,6 +9,7 @@
 import UIKit
 import paper_onboarding
 import CircleMenu
+import Firebase
 
 final class FirstLaunchView: UIViewController {
 
@@ -32,6 +33,7 @@ final class FirstLaunchView: UIViewController {
     
      override func viewDidLoad() {
             super.viewDidLoad()
+
             onboardingView.dataSource = self
             onboardingView.delegate = self
         }

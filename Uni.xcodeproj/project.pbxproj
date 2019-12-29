@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A00BC1F23B9176800915C98 /* DataBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A00BC1E23B9176800915C98 /* DataBase.swift */; };
+		9A00BC2223B9189E00915C98 /* University.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A00BC2123B9189E00915C98 /* University.swift */; };
+		9A00BC2423B918AB00915C98 /* Faculty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A00BC2323B918AB00915C98 /* Faculty.swift */; };
+		9A00BC2623B918B700915C98 /* Department.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A00BC2523B918B700915C98 /* Department.swift */; };
 		9A0AEC422370916C009434A6 /* Uni.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9A0AEC402370916C009434A6 /* Uni.xcdatamodeld */; };
 		9A1F40D623749EC200D5E424 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1F40D523749EC200D5E424 /* OnboardingView.swift */; };
 		9A1F40D923749FCB00D5E424 /* FirstLaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1F40D823749FCB00D5E424 /* FirstLaunchView.swift */; };
@@ -50,6 +54,10 @@
 /* Begin PBXFileReference section */
 		1DA5BC9E9A6BDEACD675B48B /* Pods_Uni.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Uni.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		716B6D93B372032C18CA374D /* Pods-Uni.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Uni.release.xcconfig"; path = "Target Support Files/Pods-Uni/Pods-Uni.release.xcconfig"; sourceTree = "<group>"; };
+		9A00BC1E23B9176800915C98 /* DataBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBase.swift; sourceTree = "<group>"; };
+		9A00BC2123B9189E00915C98 /* University.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = University.swift; sourceTree = "<group>"; };
+		9A00BC2323B918AB00915C98 /* Faculty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Faculty.swift; sourceTree = "<group>"; };
+		9A00BC2523B918B700915C98 /* Department.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Department.swift; sourceTree = "<group>"; };
 		9A0AEC412370916C009434A6 /* Uni.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Uni.xcdatamodel; sourceTree = "<group>"; };
 		9A1F40D523749EC200D5E424 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		9A1F40D823749FCB00D5E424 /* FirstLaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstLaunchView.swift; sourceTree = "<group>"; };
@@ -104,6 +112,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9A00BC2023B9188500915C98 /* DataBase */ = {
+			isa = PBXGroup;
+			children = (
+				9A00BC1E23B9176800915C98 /* DataBase.swift */,
+				9A00BC2123B9189E00915C98 /* University.swift */,
+				9A00BC2323B918AB00915C98 /* Faculty.swift */,
+				9A00BC2523B918B700915C98 /* Department.swift */,
+			);
+			path = DataBase;
+			sourceTree = "<group>";
+		};
 		9A1F40D723749F5F00D5E424 /* First Launch */ = {
 			isa = PBXGroup;
 			children = (
@@ -190,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				9A9CAFAC233FC8A700258AB8 /* Main.storyboard */,
+				9A00BC2023B9188500915C98 /* DataBase */,
 				9A692B9323B556A300A94940 /* Shared */,
 				9A9A2C9023A4EFFA0084E87B /* Sort */,
 				9A1F40D723749F5F00D5E424 /* First Launch */,
@@ -418,6 +438,9 @@
 				9A9A2C9223A4F0450084E87B /* a.swift in Sources */,
 				9A88D5E923AF78EE0097B2A2 /* SortStruct.swift in Sources */,
 				9AB858B6234F51FB00F5217B /* FacultyStruct.swift in Sources */,
+				9A00BC2223B9189E00915C98 /* University.swift in Sources */,
+				9A00BC2423B918AB00915C98 /* Faculty.swift in Sources */,
+				9A00BC2623B918B700915C98 /* Department.swift in Sources */,
 				9AF60EE6236E2819007AF8F6 /* WishlistTableView.swift in Sources */,
 				9A3637DD2353926200F730DC /* DepartmentStruct.swift in Sources */,
 				9A0AEC422370916C009434A6 /* Uni.xcdatamodeld in Sources */,
@@ -437,6 +460,7 @@
 				9AB858B9234F523800F5217B /* FacultyCell.swift in Sources */,
 				9A3637E2235392C000F730DC /* DepartmentCell.swift in Sources */,
 				9A1F40D623749EC200D5E424 /* OnboardingView.swift in Sources */,
+				9A00BC1F23B9176800915C98 /* DataBase.swift in Sources */,
 				9A79FEA323983AA6006D8474 /* TabBarController.swift in Sources */,
 				CE51B3E7237DC96300707B33 /* FilterSize.swift in Sources */,
 				9A9CAFA9233FC8A700258AB8 /* SceneDelegate.swift in Sources */,

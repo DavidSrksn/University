@@ -228,7 +228,7 @@ extension TableViewUniversities: UISearchBarDelegate {
             Manager.shared.UFD = Manager.shared.dataUFD
         } else {
             Manager.shared.UFD = Manager.shared.dataUFD.filter {
-                return $0.key.fullName.contains(searchText)
+                return $0.key.fullName.contains(searchText) || $0.key.name.contains(searchText)
             }
         }
         tableView.reloadData()

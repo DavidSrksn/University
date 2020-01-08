@@ -50,6 +50,7 @@ class TableViewUniversities: UIViewController {
     
     private func setupNavigationItem() {
         searchTitle.text = "University"
+        searchTitle.textAlignment = .center
         searchTitle.textColor = .white
         searchTitle.font = UIFont(name: "Baskerville-Bold", size: 24)
         

@@ -103,10 +103,15 @@ class FilterViewController: UIViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        Manager.shared.flagFilterChanged = false
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         self.fillDataFilter()
         presenter.updateFilterSettings()
         firstUsage = false
+        presenter.checkFilterChanged()
         Manager.shared.updateController(controller: presentingViewController!)
     }
     

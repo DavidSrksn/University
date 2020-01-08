@@ -31,7 +31,13 @@ final class FacultyCell: UITableViewCell {
 
         facultyLabel.textAlignment = .center
         facultyLabel.font = UIFont(name: "AvenirNext-Bold", size: 20)!
+        
+        if faculty.name != ""{
         self.facultyLabel.text = faculty.name
+        }else {
+            facultyLabel.font = UIFont(name: "AvenirNext-Regular", size: 50)!
+            self.facultyLabel.text = "–"
+        }
     }
     
     func setupFacultyFullNameLabel(faculty: Faculty){

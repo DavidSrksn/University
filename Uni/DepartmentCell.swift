@@ -23,7 +23,7 @@ final class DepartmentCell: UITableViewCell {
         if Manager.shared.departmentStatus(department:  Manager.shared.choosed[2] as! Department){
             Manager.shared.addToWishlist(sender: sender)
         } else {
-            Manager.shared.deleteFromWishlist(sender: sender, setImage: UIImage(systemName: "star")!)
+            Manager.shared.deleteFromWishlist(sender: sender, setImage: UIImage(systemName: "star")!, departmentFullName: (Manager.shared.choosed[2] as! Department).fullName)
         }
     }
     

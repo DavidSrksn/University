@@ -21,6 +21,10 @@ struct FilterPresenter {
         Manager.shared.updateFilterSettings(with: self.model)
     }
     
+    func checkFilterChanged(){
+        Manager.shared.filterSettingsChanged(filter: self.model)
+    }
+    
     func fillFields(country: inout String?, subjects: inout [subjectData], minPoints: inout Float, military: inout Bool, campus: inout Bool) {
         country = self.model.country
         

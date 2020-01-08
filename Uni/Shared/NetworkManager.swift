@@ -14,7 +14,7 @@ class NetworkManager{
     
     let db = Firestore.firestore()
     
-    private init(){}
+    private  init(){}
     
     static var shared = NetworkManager()
     
@@ -44,7 +44,6 @@ class NetworkManager{
                                         print("\(error.localizedDescription)")
                                         completion?()
                                     }else{
-                                        Manager.shared.warningCheck(parameter: querySnapshot2?.documents.count ?? 0, viewController: viewcontroller, warningLabel: warningLabel, tableView: tableView)
                                         for document2 in (querySnapshot2?.documents)!{
                                             self.db.collection("Universities")
                                                 .document("\(document1.documentID)")
@@ -67,6 +66,7 @@ class NetworkManager{
                                                             }
 //                                                            NetworkManager.shared.semaphore.signal()
                                                         }
+                                                        Manager.shared.warningCheck(parameter: querySnapshot3?.documents.count ?? 0, viewController: viewcontroller, warningLabel: warningLabel, tableView: tableView)
                                                         completion?()
                                                  }
                                             }
@@ -172,7 +172,7 @@ class NetworkManager{
 //        }
 //    }
     
-   @objc func changeFollower(occasion: String, universityname: String,facultyFullName: String, departmentFullName: String) {  //occasion =  "add" или "remove"
+    func changeFollower(occasion: String, universityname: String,facultyFullName: String, departmentFullName: String) {  //occasion =  "add" или "remove"
         var difference: Int
         
         if occasion == "remove"{
@@ -180,46 +180,33 @@ class NetworkManager{
         }else{ difference = 1 }
         
         db.collection("Universities")
-            .document((Manager.shared.choosed[0] as! University).name)
-            .collection("\((Manager.shared.choosed[0] as! University).name)faculties")
-            .whereField("name", isEqualTo: (Manager.shared.choosed[1] as! Faculty).name)
-            .getDocuments { (querySnapshot2, error) in
+            .document(universityname)
+            .collection("\(universityname)faculties")
+            .document(facultyFullName)
+            .collection("departments")
+            .document(departmentFullName)
+            .getDocument { (querySnapshot, error) in
                 if let error = error {
                     print("\(error.localizedDescription)")
-                }
-                else{
+                }else{
+                    let currentFollowers = (querySnapshot!.data()!["followers"] as! Int)
                     self.db.collection("Universities")
                         .document(universityname)
                         .collection("\(universityname)faculties")
                         .document(facultyFullName)
                         .collection("departments")
                         .document(departmentFullName)
-                        .getDocument { (querySnapshot, error) in
+                        .updateData(["followers": currentFollowers + difference]) { (error) in
                             if let error = error {
                                 print("\(error.localizedDescription)")
                             }else{
-                                let currentFollowers = (querySnapshot!.data()!["followers"] as! Int)
-                                self.db.collection("Universities")
-                                    .document(universityname)
-                                    .collection("\(universityname)faculties")
-                                    .document(facultyFullName)
-                                    .collection("departments")
-                                    .document(departmentFullName)
-                                    .updateData(["followers": currentFollowers + difference]) { (error) in
-                                        if let error = error {
-                                            print("\(error.localizedDescription)")
-                                        }else{
-                                            print("Updating is completed")
-                                        }
-                                }
-                                
+                                print("Updating is completed")
                             }
                     }
+                    
                 }
         }
     }
-    
-    
     
     func listenFollowers(universityName: String, facultyFullName: String, departmentFullName: String, completion: ((Int)-> Void)?){
         db.collection("Universities")

@@ -48,15 +48,15 @@ struct FilterPresenter {
         model.subjects = newSubjects
     }
     
-    mutating func changeMinPoint(for value: Int) {
+    mutating func changeMinPoint(for value: Int?) {
         model.minPoint = value
     }
     
-    mutating func changeMilitary(for value: Bool) {
+    mutating func changeMilitary(for value: Bool?) {
         model.military = value
     }
     
-    mutating func changeCampus(for value: Bool) {
+    mutating func changeCampus(for value: Bool?) {
         model.campus = value
     }
     

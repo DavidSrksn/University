@@ -13,6 +13,8 @@ class FilterViewController: UIViewController {
     
     private var presenter = FilterPresenter()
     
+    private var firstUsage: Bool = true
+    
     private let constraints = Size() // sizes and coordinates for views
     private let dataView = FilterViewData() // some data about colors, corner radiuses, text colors for views
     private var barHeight: CGFloat = 0 // height of status bar if in future we prefer opening filter window using navigation controller
@@ -104,6 +106,7 @@ class FilterViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         self.fillDataFilter()
         presenter.updateFilterSettings()
+        firstUsage = false
         Manager.shared.updateController(controller: presentingViewController!)
     }
     
@@ -120,9 +123,15 @@ class FilterViewController: UIViewController {
         
         presenter.updateSubject(newSubjects: subjectsData == [] ? nil : subjectsData)
         presenter.changeCountry(newCountry: countryLabel.text == "Город" ? nil : countryLabel.text)
-        presenter.changeMinPoint(for: Int(pointsSlider.value))
-        presenter.changeMilitary(for: militaryButton.isOn)
-        presenter.changeCampus(for: campusButton.isOn)
+        if firstUsage {
+            presenter.changeMinPoint(for: Int(pointsSlider.value) == 0 ? nil : Int(pointsSlider.value))
+            presenter.changeMilitary(for: !militaryButton.isOn ? nil : true)
+            presenter.changeCampus(for: !campusButton.isOn ? nil : true)
+        } else {
+            presenter.changeMinPoint(for: Int(pointsSlider.value))
+            presenter.changeMilitary(for: militaryButton.isOn)
+            presenter.changeCampus(for: campusButton.isOn)
+        }
     }
     
     // MARK: targets

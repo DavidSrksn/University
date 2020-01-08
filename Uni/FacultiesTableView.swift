@@ -236,7 +236,7 @@ final class FacultiesTableView: UIViewController {
 
         
         func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            return 70
+            return 90
         }
 
         func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {

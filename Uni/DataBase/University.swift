@@ -13,14 +13,14 @@ struct UniversityDocument {
     
     static let university = UniversityDocument()
     
-    let name: String = "МГТУ"                      // Короткое название универа (например МГТУ)
+    let name: String = "СПбГУ"                      // Короткое название универа (например МГТУ)
     
-    let fullName: String = "Московски и так далее"                  // Полное имя
+    let fullName: String = "Test"                  // Полное имя
     
     let dormitory: Bool = true                 // Наличие общежития
     
     let militaryDepartment: Bool = false       // Наличие военной кафедры
     
-    let city: String = "Москва"                      // Город в котором университет (писать также как и города в фильтрах)
+    let city: String = "Test"                      // Город в котором университет (писать также как и города в фильтрах)
     
 }

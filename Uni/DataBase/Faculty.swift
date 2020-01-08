@@ -12,8 +12,8 @@ struct FacultyDocument {
     
     static let faculty = FacultyDocument()
     
-    let name: String = ""          // Короткое название универа (например ИУ)
+    let name: String = "Test"          // Короткое название универа (например ИУ)
     
-    let fullName: String = ""      // Полное имя
+    let fullName: String = "Test"      // Полное имя
     
 }

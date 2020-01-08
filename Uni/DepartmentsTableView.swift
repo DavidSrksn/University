@@ -32,14 +32,12 @@ final class DepartmentsTableView: UIViewController {
             Manager.shared.sort(type: Notification.userInfo!["type"] as! Int, tableView: self.tableView)
         }
         
-        if ((Manager.shared.UFD[Manager.shared.choosed[0] as! University]?[Manager.shared.choosed[1] as? Faculty]!?.count)!) == 0 {
-            NetworkManager.shared.loadDepartments(subjects: Manager.shared.filterSettings.subjects ,minPoints: Manager.shared.filterSettings.minPoint, completion: { [weak self] in
-                DispatchQueue.main.async{
-                    Loader.shared.removeActivityIndicator(blurView: Loader.shared.blurView, loadingView: Loader.shared.loadingView, actInd: Loader.shared.actInd)
-                    self?.tableView.reloadData()
-                }
-            })
-        }
+        NetworkManager.shared.loadDepartments(subjects: Manager.shared.filterSettings.subjects ,minPoints: Manager.shared.filterSettings.minPoint, completion: { [weak self] in
+            DispatchQueue.main.async{
+                Loader.shared.removeActivityIndicator(blurView: Loader.shared.blurView, loadingView: Loader.shared.loadingView, actInd: Loader.shared.actInd)
+                self?.tableView.reloadData()
+            }
+        })
         
         setupTable()
         setupOpenSortButton()
@@ -127,6 +125,11 @@ final class DepartmentsTableView: UIViewController {
         
         tableView.frame = view.bounds
         
+        tableView.separatorColor = .black
+        tableView.separatorStyle = .singleLine
+        tableView.separatorInset = .zero
+        tableView.tableFooterView = UIView.init(frame: .zero)
+        
 //        tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.estimatedSectionHeaderHeight = 50
     }
@@ -182,11 +185,11 @@ extension DepartmentsTableView : UITableViewDataSource,UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 100
+        return 90
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        return 100
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

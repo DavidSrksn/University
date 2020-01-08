@@ -18,16 +18,42 @@ final class Database: UIViewController {     // ТУТ НИЧЕГО НЕ ТРО�
     let department = DepartmentDocument.department
     
     override func viewDidLoad() {
-        addUniversity()
+        renameDepartments(university: "СПбГУ", oldName: "2ehbVf54nlD1U3mDQnzW")
         
-        addFaculty()
-
-        addDepartment()
+//        addUniversity()
+        
+//        addFaculty()
+//
+//        addDepartment()
     }
 
+    func rename(university: String, oldName: String){
+        NetworkManager.shared.db.collection("Universities").document(oldName).collection(university+"faculties").getDocuments(completion: { (documentSnapshot, error) in
+            let data = documentSnapshot?.documents;
+            for i in 0...data!.count - 1{
+                NetworkManager.shared.db.collection("Universities").document(university).collection("\(university)faculties").document(data![i].data()["fullName"] as! String).setData(data![i].data())
+            }
+//            NetworkManager.shared.db.collection("Universities").document(oldName).delete()
+        })
+    }
+    
+    func renameDepartments(university: String, oldName: String){
+        NetworkManager.shared.db.collection("Universities").document(oldName).collection(university+"faculties").getDocuments(completion: { (documentSnapshot, error) in
+            let data = documentSnapshot?.documents;
+            for i in 0...data!.count - 1{
+           NetworkManager.shared.db.collection("Universities").document(oldName).collection(university+"faculties").document(data![i].documentID).collection((data![i].data()["name"] as! String) + "departments").getDocuments { (querySnapshot, error) in
+                    let data2 = querySnapshot?.documents;
+                    for j in 0...data2!.count - 1{
+                        NetworkManager.shared.db.collection("Universities").document(university).collection("\(university)faculties").document(data![i].data()["fullName"] as! String).collection("departments").document(data2![j].data()["fullName"] as! String).setData(data2![j].data())
+                    }
+                }
+            }
+            //            NetworkManager.shared.db.collection("Universities").document(oldName).delete()
+        })
+    }
     
     func addUniversity(){
-        NetworkManager.shared.db.collection("Universities").addDocument(data: [
+        NetworkManager.shared.db.collection("Universities").document(university.name).setData([
             "name": university.name,
             "fullName": university.fullName,
             "city": university.city,
@@ -42,8 +68,7 @@ final class Database: UIViewController {     // ТУТ НИЧЕГО НЕ ТРО�
     
     
     func addFaculty(){
-        NetworkManager.shared.db.collection("Universities").whereField("name", isEqualTo: university.name).getDocuments(completion: { (querySnapshot, error) in
-            for document in (querySnapshot?.documents)!{ NetworkManager.shared.db.collection("Universities").document("\(document.documentID)").collection("\(document.data()["name"]!)faculties").addDocument(data: [
+        NetworkManager.shared.db.collection("Universities").document(university.name).collection("\(university.name)faculties").document(faculty.fullName).setData([
                 "name": self.faculty.name,
                 "fullName": self.faculty.fullName
                 ]) { err in
@@ -51,30 +76,23 @@ final class Database: UIViewController {     // ТУТ НИЧЕГО НЕ ТРО�
                         print("Error adding document: \(err)")
                     }
                 }
-            }
-        })
     }
 
     
     func addDepartment(){
-        NetworkManager.shared.db.collection("Universities").whereField("name", isEqualTo: university.name).getDocuments(completion: { (querySnapshot, error) in
-            for document in (querySnapshot?.documents)!{ NetworkManager.shared.db.collection("Universities").document("\(document.documentID)").collection("\(document.data()["name"]!)faculties").whereField("name", isEqualTo: self.faculty.name).getDocuments(completion: { (querySnapshot2, error2) in
-                for document2 in (querySnapshot2?.documents)!{ NetworkManager.shared.db.collection("Universities").document("\(document.documentID)").collection("\(document.data()["name"]!)faculties").document("\(document2.documentID)").collection("\(document2.data()["name"]!)departments").addDocument(data: [
-                    "name": self.department.name,
-                    "fullName": self.department.fullName,
-                    "link": self.department.link,
-                    "minPoints": self.department.minPoints,
-                    "subjects": self.department.subjects,
-                    "followers": self.department.followers
-                ]) { err in
-                    if let err = err {
-                        print("Error adding document: \(err)")
-                    }
-                    }
-                }
-            })
+        NetworkManager.shared.db.collection("Universities").document(university.name).collection("\(university.name)faculties").document(faculty.fullName).collection("departments").document(department.fullName).setData( [
+            "name": self.department.name,
+            "fullName": self.department.fullName,
+            "link": self.department.link,
+            "minPoints": self.department.minPoints,
+            "subjects": self.department.subjects,
+            "followers": self.department.followers
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
             }
-        })
+        }
     }
+
 
 }

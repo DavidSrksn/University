@@ -24,10 +24,12 @@ final class FacultyCell: UITableViewCell {
         
         facultyLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        facultyLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
-        facultyLabel.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -10).isActive = true
-        facultyLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 10).isActive = true
+        facultyLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5).isActive = true
+        facultyLabel.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -5).isActive = true
+        facultyLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        facultyLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true // Центрирование
 
+        facultyLabel.textAlignment = .center
         facultyLabel.font = UIFont(name: "AvenirNext-Bold", size: 20)!
         self.facultyLabel.text = faculty.name
     }
@@ -40,13 +42,13 @@ final class FacultyCell: UITableViewCell {
         facultyFullNameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         facultyFullNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 2).isActive = true
-        facultyFullNameLabel.leftAnchor.constraint(equalTo: facultyLabel.rightAnchor, constant: 30).isActive = true
+        facultyFullNameLabel.leftAnchor.constraint(equalTo: facultyLabel.rightAnchor, constant: 15).isActive = true
         facultyFullNameLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -2).isActive = true
         facultyFullNameLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
         
         facultyFullNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        facultyLabel.centerYAnchor.constraint(equalTo: facultyFullNameLabel.centerYAnchor).isActive = true // Центрирование
-        
+        facultyFullNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: self.frame.width - facultyLabel.bounds.width - 15).isActive = true
+                
         facultyFullNameLabel.font = UIFont(name: "AvenirNext-Regular", size: 17)!
         self.facultyFullNameLabel.text = faculty.fullName
     }

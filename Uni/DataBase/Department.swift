@@ -12,9 +12,9 @@ struct DepartmentDocument {
     
     static let department = DepartmentDocument()
     
-    let name: String = "ИУ7"          // Короткое название (например ИУ7)
+    let name: String = "Test"          // Короткое название (например ИУ7)
     
-    let fullName: String = ""      // Полное название
+    let fullName: String = "Test"      // Полное название
     
     let link: String = ""          // Просто ссылка по которой будет открываться в сафари
     

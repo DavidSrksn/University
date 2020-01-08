@@ -14,9 +14,11 @@ final class DepartmentCell: UITableViewCell {
     @IBOutlet weak var departmentNameLabel: UILabel!
     @IBOutlet weak var departmentFullNameLabel: UILabel!
     
+    var followersLabel = UILabel()
+    
     @IBAction func addToWishlistButton(_ sender: UIButton) {
          Manager.shared.choosed[2] = (Manager.shared.UFD[Manager.shared.choosed[0] as! University]?[Manager.shared.choosed[1] as? Faculty]!)!.first { (department) -> Bool in
-            return department.name == self.departmentNameLabel.text
+            return department.fullName == self.departmentFullNameLabel.text
         }
         if Manager.shared.departmentStatus(department:  Manager.shared.choosed[2] as! Department){
             Manager.shared.addToWishlist(sender: sender)
@@ -29,14 +31,15 @@ final class DepartmentCell: UITableViewCell {
         setupDepartmentNameLabel(department: department)
         setupDepartmentFullNameLabel(department: department)
         setupAddToWishlistButton(department: department)
+        setupFollowersLabel(department: department)
     }
     
     func setupDepartmentNameLabel(department: Department){
 
         departmentNameLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        departmentNameLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 40).isActive = true
-        departmentNameLabel.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+        departmentNameLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
+        departmentNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20).isActive = true
         departmentNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5).isActive = true
         departmentNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 2).isActive = true
         
@@ -45,6 +48,32 @@ final class DepartmentCell: UITableViewCell {
         
         departmentNameLabel.text = department.name
         
+    }
+    
+    func setupFollowersLabel(department: Department){
+         
+        self.addSubview(followersLabel)
+        
+        followersLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        followersLabel.topAnchor.constraint(equalTo: departmentNameLabel.bottomAnchor).isActive = true
+        followersLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -2).isActive = true
+        followersLabel.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        followersLabel.rightAnchor.constraint(equalTo: departmentFullNameLabel.leftAnchor).isActive = true
+        
+        followersLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)!
+        followersLabel.textAlignment = .center
+        
+        followersLabel.text = "\(department.followers)"
+        
+        NetworkManager.shared.listenFollowers(universityName: (Manager.shared.choosed[0] as? University)!.name, facultyFullName: (Manager.shared.choosed[1] as? Faculty)!.fullName, departmentFullName: department.fullName) { (followers) in
+            self.followersLabel.text = "\(followers)"
+            if Int(self.followersLabel.text ?? "1") != 0{
+                self.followersLabel.textColor = UIColor(red: 0, green: 128/256, blue: 0, alpha: 1)
+            }else{
+                self.followersLabel.textColor = UIColor(red: 255/256, green: 0, blue: 0, alpha: 1)
+            }
+        }
     }
     
     func setupDepartmentFullNameLabel(department: Department){

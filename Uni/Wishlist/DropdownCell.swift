@@ -10,12 +10,15 @@ import Foundation
 import UIKit
 import MapKit
 import CoreLocation
+import Alamofire
 
 class DropdownCell: UITableViewCell{
     
     var cellExists: Bool = false
     
     let leftConstraint: CGFloat = 5
+    
+    var facultyFullNameLabel = UILabel()
     
     @IBOutlet weak var open: UIButton!
     
@@ -24,10 +27,9 @@ class DropdownCell: UITableViewCell{
     @IBOutlet weak var followers: UILabel!
     
     @IBAction func deleteButton(_ sender: UIButton){
-        
         do {
             try Manager.shared.realm.write {
-                Manager.shared.realm.delete(Manager.shared.realm.objects(RealmWishlistObject.self).filter("departmentName = '\((self.departmentNameLabel.text)!)'"))
+                Manager.shared.realm.delete(Manager.shared.realm.objects(RealmObject.self).filter("departmentFullName = '\((self.departmentNameLabel.text)!)'"))
             }
         } catch{
             print(error.localizedDescription)
@@ -72,25 +74,28 @@ class DropdownCell: UITableViewCell{
         })
     }
     
-    func setWishlistCell(universityName: String, departmentName:String, subjects: [String?], cell: UITableViewCell) {
+    func setWishlistCell(universityName: String, departmentFullName:String, facultyFullName: String, subjects: [String?], cell: UITableViewCell) {
         
-        cell.preservesSuperviewLayoutMargins = false
+//        cell.preservesSuperviewLayoutMargins = false
         cell.separatorInset = UIEdgeInsets.zero
-        cell.layoutMargins = UIEdgeInsets.zero
+//        cell.layoutMargins = UIEdgeInsets.zero
         
-        setDeleteButton(cell: cell)
-        setMapButton()
-        setDepartmentLable(departmentName: departmentName)
-        setUniversityName(universityName: universityName)
         setOpenView(cell: cell)
         setView(cell: cell)
+        setDeleteButton(universityname: universityName, facultyFullName: departmentFullName, departmentFullName: facultyFullName)
+        setMapButton()
+        setDepartmentLabel(departmentFullName: departmentFullName)
+        setUniversityName(universityname: universityName)
+        setupFacultyLabel(facultyFullName: facultyFullName)
         setSubjects(subjects: subjects)
-        setFollowersLabel(departmentName: departmentName, followersCount: 2)
+        setFollowersLabel(departmentFullName: departmentFullName, universityName: universityName, facultyFullName: facultyFullName)
         
         open.setTitle("", for: .normal)
     }
     
-    func setDeleteButton(cell: UITableViewCell){
+    func setDeleteButton(universityname: String, facultyFullName: String, departmentFullName: String){
+//        deleteButton.addTarget(.none, action: #selector(NetworkManager.shared.changeFollower(occasion:"remove",universityname: universityname, facultyFullName: facultyFullName ,departmentFullName: departmentFullName)), for: .touchUpInside)
+        
         deleteButton.layer.cornerRadius = 5
         deleteButton.setTitle("Удалить", for: .normal)
         deleteButton.setTitleColor(.black, for: .normal)
@@ -105,46 +110,72 @@ class DropdownCell: UITableViewCell{
         
     }
     
-    func setDepartmentLable(departmentName: String){
+    func setDepartmentLabel(departmentFullName: String){
         
-//        departmentNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        departmentNameLabel.translatesAutoresizingMaskIntoConstraints = false
 
-//        departmentNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 2).isActive = true
-//        departmentNameLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5).isActive = true
-//        departmentNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5).isActive = true
-//        departmentNameLabel.bottomAnchor.constraint(greaterThanOrEqualTo: self.bottomAnchor, constant: -2 ).isActive = true
+        departmentNameLabel.topAnchor.constraint(equalTo: openView.topAnchor, constant: 2).isActive = true
+        departmentNameLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5).isActive = true
+        departmentNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5).isActive = true
+        departmentNameLabel.bottomAnchor.constraint(greaterThanOrEqualTo: openView.bottomAnchor, constant: -2 ).isActive = true
         
-//        departmentNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        departmentNameLabel.centerYAnchor.constraint(equalTo: openView.centerYAnchor).isActive = true
         
         departmentNameLabel.numberOfLines = 0
         departmentNameLabel.textAlignment = .center
-        self.departmentNameLabel.text = departmentName
+        self.departmentNameLabel.text = departmentFullName
         departmentNameLabel.textColor = UIColor.white
     }
     
     func setOpenView(cell: UITableViewCell){
         openView.frame = cell.bounds
-        openView.layer.masksToBounds = true
-        openView.translatesAutoresizingMaskIntoConstraints = false
+        open.frame = openView.frame
         openView.frame = CGRect(x: cell.bounds.origin.x, y: cell.bounds.origin.y, width: cell.bounds.size.width, height: cell.bounds.size.height)
         self.openView.backgroundColor = .darkGray
     }
     
     func setView(cell: UITableViewCell){
         view.layer.masksToBounds = true
-//        openView.translatesAutoresizingMaskIntoConstraints = false
-
-//        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        
         
         view.frame = CGRect(x: openView.frame.minX, y: openView.frame.maxY, width: cell.bounds.size.width - 8, height: 210)
         view.frame.size.width = openView.frame.size.width
         self.view.backgroundColor = #colorLiteral(red: 0.7747164369, green: 0.9268901944, blue: 0.880443871, alpha: 1)
     }
     
-    func setUniversityName(universityName: String){
-        self.universityName.text = universityName
+    func setUniversityName(universityname: String){
+        
+        universityName.translatesAutoresizingMaskIntoConstraints = false
+        
+        universityName.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        universityName.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        universityName.widthAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
+        universityName.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        universityName.textAlignment = .center
+        universityName.font = UIFont(name: "AvenirNext-Regular", size: 15)
+        universityName.textColor = .black
+        
+        universityName.text = universityname
+    }
+    
+    func setupFacultyLabel(facultyFullName: String){
+        
+        view.addSubview(facultyFullNameLabel)
+        
+        facultyFullNameLabel.font =  UIFont(name: "AvenirNext-Regular", size: 15)
+        facultyFullNameLabel.numberOfLines = 0
+        facultyFullNameLabel.textColor = .black
+        facultyFullNameLabel.textAlignment = .center
+        
+        facultyFullNameLabel.text = facultyFullName
+        
+        facultyFullNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        facultyFullNameLabel.leftAnchor.constraint(equalTo: universityName.rightAnchor, constant: 5).isActive = true
+        facultyFullNameLabel.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        facultyFullNameLabel.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        facultyFullNameLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        
     }
     
     func setMapButton() {
@@ -180,39 +211,62 @@ class DropdownCell: UITableViewCell{
         subjectsLabel.translatesAutoresizingMaskIntoConstraints = false
 
         subjectsLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: leftConstraint).isActive = true
-        subjectsLabel.topAnchor.constraint(equalTo: universityName.bottomAnchor, constant: 10).isActive = true
+        subjectsLabel.topAnchor.constraint(equalTo: facultyFullNameLabel.bottomAnchor, constant: 5).isActive = true
         subjectsLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 5).isActive = true
         subjectsLabel.widthAnchor.constraint(equalToConstant: 150).isActive = true
     }
     
-    func setFollowersLabel(departmentName: String,followersCount: Int){
+    func setFollowersLabel(departmentFullName: String, universityName: String,facultyFullName: String){
+        var message: String = ""
+        
         followers.backgroundColor = view.backgroundColor
         followers.font = UIFont(name: "AvenirNext-Regular", size: 15)
         var textColor = UIColor()
-        if followersCount == 0{
-                   textColor = .red
-               }else{
-                   textColor = .black
-               }
-        let atributedString =  NSMutableAttributedString(string: "Подписчиков : \(followersCount)")
-        let firstAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.black,
-            .backgroundColor: view.backgroundColor!]
-        let secondAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: textColor,
-            .backgroundColor: view.backgroundColor!]
-        atributedString.addAttributes(firstAttributes, range: NSRange(location: 0, length: 13))
-        atributedString.addAttributes(secondAttributes, range: NSRange(location: 13, length: 2))
-        followers.attributedText = atributedString
-        
+        Manager.shared.notificationCentre.addObserver(forName: NSNotification.Name(rawValue: "Internet Connection Status Changed"), object: .none, queue: .main) { (Notification) in
+            if NetworkReachabilityManager()!.isReachable{
+                NetworkManager.shared.listenFollowers(universityName: universityName, facultyFullName: facultyFullName, departmentFullName: departmentFullName, completion: { (followersNumber) in
+                    message = String(followersNumber)
+                    
+                    if followersNumber != 0{
+                        textColor = .black
+                    }else{
+                        textColor = .red
+                    }
+                    
+                    let atributedString =  NSMutableAttributedString(string: "Подписчиков: "+"\(message)")
+                    
+                    let firstAttributes: [NSAttributedString.Key: Any] = [
+                        .foregroundColor: UIColor.black,
+                        .backgroundColor: self.view.backgroundColor!]
+                    let secondAttributes: [NSAttributedString.Key: Any] = [
+                        .foregroundColor: textColor,
+                        .backgroundColor: self.view.backgroundColor!]
+                    atributedString.addAttributes(firstAttributes, range: NSRange(location: 0, length: 13))
+                    atributedString.addAttributes(secondAttributes, range: NSRange(location: 13, length: self.countDigits(number: followersNumber)))
+                    
+                    self.followers.attributedText = atributedString
+                })
+            }else{
+                self.followers.text = "Подписчиков: Нет соединения"
+            }
+        }
         followers.translatesAutoresizingMaskIntoConstraints = false
         
-        followers.topAnchor.constraint(equalTo: universityName.bottomAnchor, constant: 5).isActive = true
+        followers.topAnchor.constraint(equalTo: facultyFullNameLabel.bottomAnchor, constant: 5).isActive = true
         followers.leftAnchor.constraint(equalTo: subjectsLabel.rightAnchor, constant: 10).isActive = true
-        followers.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        followers.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         followers.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
     
+    func countDigits(number: Int) -> Int{
+        var count = 0
+        var tempNumber = number
+        while (tempNumber != 0) {
+            tempNumber = tempNumber / 10;
+            count += 1;
+        }
+        return count;
+    }
 //    func openMaps(adress: String) {
 //        let geocoder = CLGeocoder()
 //        let str = adress // A string of the address info you already have

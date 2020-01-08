@@ -20,7 +20,7 @@ final class WishlistTableView: UIViewController {
     var button_tag:Int = -1  // tag открытой ячейки, если такая есть (иначе -1)
     
     override func viewDidAppear(_ animated: Bool) {
-        if Manager.shared.realm.objects(RealmWishlistObject.self).count == 0{
+        if Manager.shared.realm.objects(RealmObject.self).count == 0{
             Manager.shared.warningLabel(label: warninglabel, warning: "Список пуст", viewController: self, tableView: tableView)
         }
         else{
@@ -42,16 +42,19 @@ final class WishlistTableView: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-       if Manager.shared.realm.objects(RealmWishlistObject.self).count != 0 {
-        self.tableView.separatorColor = .white
+        if Manager.shared.realm.objects(RealmObject.self).count != 0 {
+            self.tableView.separatorColor = .white
         }
+        Manager.shared.notificationCentre.post(Notification(name: Notification.Name(rawValue: "Internet Connection Status Changed")))
     }
+    
+    
 }
 
 extension WishlistTableView : UITableViewDataSource,UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Manager.shared.realm.objects(RealmWishlistObject.self).count
+        return Manager.shared.realm.objects(RealmObject.self).count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -63,10 +66,10 @@ extension WishlistTableView : UITableViewDataSource,UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let object = Array(Manager.shared.realm.objects(RealmWishlistObject.self))[indexPath.row]
+        let object = Array(Manager.shared.realm.objects(RealmObject.self))[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "DropdownCell", for: indexPath) as! DropdownCell
         if !cell.cellExists{
-            cell.setWishlistCell(universityName: object.universityName, departmentName: object.departmentName, subjects: Array(object.subjects), cell: cell)
+            cell.setWishlistCell(universityName: object.universityName, departmentFullName: object.departmentFullName, facultyFullName: object.facultyFullName , subjects: Array(object.subjects), cell: cell)
             cell.open.tag = t_count
             cell.open.addTarget(self, action: #selector(cellOpened(sender:)), for: .touchUpInside)
             t_count += 1
@@ -79,11 +82,29 @@ extension WishlistTableView : UITableViewDataSource,UITableViewDelegate{
         return cell
     }
     
+//    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+//        return true
+//    }
+    
+//    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+//        let objectToMove = Array(Manager.shared.realm.objects(RealmWishlistObject.self))[sourceIndexPath.row]
+//
+//        do {
+//            try Manager.shared.realm.write {
+//                Manager.shared.realm.objects(WishlistHashValue.self)
+//                self.tableView.reloadData()
+//            }
+//        } catch{
+//            print(error.localizedDescription)
+//        }
+//
+//    }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
             if editingStyle == .delete {
                 do {
                     try Manager.shared.realm.write {
-                        Manager.shared.realm.delete(Manager.shared.realm.objects(RealmWishlistObject.self).filter("departmentName = '\(((tableView.cellForRow(at: indexPath) as? DropdownCell)?.departmentNameLabel.text)!)'"))
+                        Manager.shared.realm.delete(Manager.shared.realm.objects(RealmObject.self).filter("departmentName = '\(((tableView.cellForRow(at: indexPath) as? DropdownCell)?.departmentNameLabel.text)!)'"))
                     }
                 } catch{
                     print(error.localizedDescription)
@@ -141,7 +162,7 @@ extension WishlistTableView : UITableViewDataSource,UITableViewDelegate{
                 }
             }
         }
-        if Manager.shared.realm.objects(RealmWishlistObject.self).count == 0 {
+        if Manager.shared.realm.objects(RealmObject.self).count == 0 {
             Manager.shared.warningLabel(label: self.warninglabel, warning: "Список пуст", viewController: self, tableView: self.tableView)
         }
         self.lastCell = DropdownCell()

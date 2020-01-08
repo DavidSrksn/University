@@ -9,16 +9,18 @@
 import Foundation
 import RealmSwift
 
-final class RealmWishlistObject: Object{
+final class RealmObject: Object{
     
-    @objc dynamic var departmentName: String = ""
+    @objc dynamic var departmentFullName: String = ""
     @objc dynamic var universityName: String = ""
     @objc dynamic var minPoints: Int = 0
+    @objc dynamic var facultyFullName: String = ""
     var subjects = List<String?>()
     
-    convenience init(university: University ,department: Department) {
+    convenience init(university: University ,department: Department, faculty: Faculty) {
         self.init()
-        self.departmentName = department.fullName
+        self.departmentFullName = department.fullName
+        self.facultyFullName = faculty.fullName
         self.universityName = university.name
         self.minPoints = department.minPoints
         self.subjects = {()->List<String?> in

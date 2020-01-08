@@ -20,9 +20,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
  
-//        window?.rootViewController = MainNavigationController()
+        window?.rootViewController = MainNavigationController()
         let sb = UIStoryboard(name: "Main", bundle: nil)
         var initialVC = sb.instantiateViewController(identifier: "Onboarding")
+        
+//        var initialVC = Database()
 
         let userDefaults = UserDefaults.standard
         if  userDefaults.bool(forKey: "Onboarding Complete"){

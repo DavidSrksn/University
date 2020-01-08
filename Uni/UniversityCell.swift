@@ -9,16 +9,15 @@
 import UIKit
 
 final class UniversityCell: UITableViewCell {
-
-    let imageViewWidth: CGFloat = 130 // Задаем ширину картинки
     
     var universityImage = UIImageView()
     
     var universityLabel = UILabel()
     
     func setupUniversityCell(university: University){
-        setupUniversityImage(university: university)
         setupUniversityLabel(university: university)
+        setupUniversityImage(university: university)
+
     }
     
     func setupUniversityImage(university: University){
@@ -30,16 +29,18 @@ final class UniversityCell: UITableViewCell {
         
         universityImage.translatesAutoresizingMaskIntoConstraints = false
         
-        universityImage.centerXAnchor.constraint(equalTo: self.rightAnchor, constant: -imageViewWidth/2).isActive = true
-        
-        if heightRatio >= 1{
+        universityImage.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        universityImage.leftAnchor.constraint(equalTo: universityLabel.rightAnchor).isActive = true
+                
+        if (image?.size.height)! > (image?.size.width)!{
             universityImage.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -5).isActive = true
-            universityImage.widthAnchor.constraint(equalToConstant: imageViewWidth / heightRatio).isActive = true
+            universityImage.widthAnchor.constraint(equalToConstant: self.bounds.height / heightRatio).isActive = true
         }else{
-            universityImage.widthAnchor.constraint(equalToConstant: imageViewWidth).isActive = true
-            universityImage.heightAnchor.constraint(equalToConstant: imageViewWidth * heightRatio).isActive = true
+            universityImage.heightAnchor.constraint(equalTo: universityImage.widthAnchor, multiplier: heightRatio ).isActive = true
         }
         
+        universityImage.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+
         universityImage.layer.cornerRadius = 15
         universityImage.image = image
         
@@ -54,12 +55,11 @@ final class UniversityCell: UITableViewCell {
         universityLabel.translatesAutoresizingMaskIntoConstraints = false
         
         universityLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5).isActive = true
-        universityLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -imageViewWidth).isActive = true
+        universityLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -1/3*self.frame.width).isActive = true
         universityLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 2).isActive = true
         universityLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 40).isActive = true
         
         universityLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        universityImage.centerYAnchor.constraint(equalTo: universityLabel.centerYAnchor, constant: 0).isActive = true
         
         universityLabel.textColor = .black
         universityLabel.layer.cornerRadius = 15

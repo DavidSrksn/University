@@ -20,7 +20,9 @@ final class Manager {
     let wishlistQueue = DispatchQueue.main
 
     var workItem = DispatchWorkItem(qos: .utility, flags: .assignCurrentContext) {
-        
+    }
+    
+    var FollowersWorkItem = DispatchWorkItem(qos: .background, flags: .assignCurrentContext) {
     }
     
     let notificationCentre = NotificationCenter.default
@@ -117,8 +119,8 @@ final class Manager {
     }
     
     func addToWishlist (sender: UIButton){
-        let wishlistObject = RealmWishlistObject(university: Manager.shared.choosed[0] as! University, department: Manager.shared.choosed[2] as! Department)
-        if !self.realm.objects(RealmWishlistObject.self).contains(wishlistObject){
+        let wishlistObject = RealmObject(university: Manager.shared.choosed[0] as! University, department: Manager.shared.choosed[2] as! Department, faculty: Manager.shared.choosed[1] as! Faculty )
+        if !self.realm.objects(RealmObject.self).contains(wishlistObject){
             do {
                 try self.realm.write {
                     self.realm.add(wishlistObject)
@@ -127,27 +129,29 @@ final class Manager {
                 print(error.localizedDescription)
             }
         }
+        NetworkManager.shared.changeFollower(occasion: "add", universityname: (Manager.shared.choosed[0] as! University).name, facultyFullName: (Manager.shared.choosed[1] as! Faculty).fullName, departmentFullName: (Manager.shared.choosed[2] as! Department).fullName)
         print("fileURL = \(self.realm.configuration.fileURL)")
         sender.setImage(UIImage(systemName: "star.fill")?.withTintColor(.red), for: .normal)
     }
     
     func deleteFromWishlist (sender: UIButton,setImage: UIImage){
-        let wishlistObject = RealmWishlistObject(university: Manager.shared.choosed[0] as! University, department: Manager.shared.choosed[2] as! Department)
+        let wishlistObject = RealmObject(university: Manager.shared.choosed[0] as! University, department: Manager.shared.choosed[2] as! Department, faculty: (Manager.shared.choosed[1] as! Faculty))
         do{
             try self.realm.write {
 //              self.realm.deleteAll()
-                self.realm.delete(realm.objects(RealmWishlistObject.self).filter("departmentName = '\(wishlistObject.departmentName)'"))
+                self.realm.delete(realm.objects(RealmObject.self).filter("departmentFullName = '\(wishlistObject.departmentFullName)'"))
             }
         }
         catch{
             print(error.localizedDescription)
         }
+        NetworkManager.shared.changeFollower(occasion: "remove", universityname: (Manager.shared.choosed[0] as! University).name, facultyFullName: (Manager.shared.choosed[1] as! Faculty).fullName, departmentFullName: (Manager.shared.choosed[2] as! Department).fullName)
         sender.setImage(setImage, for: .normal)
     }
     
     func departmentStatus(department: Department) -> Bool {
-        if Manager.shared.realm.objects(RealmWishlistObject.self).contains(where: { (wishlistObject) -> Bool in
-            return wishlistObject.departmentName == department.fullName
+        if Manager.shared.realm.objects(RealmObject.self).contains(where: { (wishlistObject) -> Bool in
+            return wishlistObject.departmentFullName == department.fullName
         }){
             return false
         } else{
@@ -187,81 +191,5 @@ final class Manager {
         }
     }
     
-//    func followersMonitoring(department: Department){
-//
-//        db.collection("Universities")
-//            .whereField("name", isEqualTo: (Manager.shared.choosed[0] as! University).name)
-//            .getDocuments { (querySnapshot1, error) in
-//                if let error = error {
-//                    print("\(error.localizedDescription)")
-//                }else{
-//                    for document1 in (querySnapshot1?.documents)! {
-//                        self.db.collection("Universities")
-//                            .document(document1.documentID)
-//                            .collection("\((Manager.shared.choosed[0] as! University).name)faculties")
-//                            .getDocuments { (querySnapshot2, error) in
-//                                if let error = error {
-//                                    print("\(error.localizedDescription)")
-//                                }else{
-//                                    for document2 in (querySnapshot2?.documents)!{
-//                                        self.db.collection("Universities")
-//                                            .document("\(document1.documentID)")
-//                                            .collection("\(document1.data()["name"]!)faculties")
-//                                            .document("\(document2.documentID)")
-//                                            .collection("\(document2.data()["name"]!)departments")
-//                                            .whereField("name", isEqualTo: department.name)
-//                                            .getDocuments { (querySnapshot, error) in
-//                                                if let error = error{
-//                                                    print(error.localizedDescription)
-//                                                }else{
-//                                                    var tempDepartment = department
-//                                                    let departmentFollowers = (querySnapshot?.documents)![0].data()["followers"] as? Int
-//                                                    tempDepartment.followers = departmentFollowers!
-//                                                    ((Manager.shared.UFD[Manager.shared.choosed[0] as! University]?[Manager.shared.choosed[1] as? Faculty]?!)!.first(where: { (department) -> Bool in
-//                                                        return department.name == department.name
-//                                                    }))?.followers = departmentFollowers!
-//                                                }
-//                                        }
-//                                    }
-//
-//                                }
-//                        }
-//                    }
-//
-//                }
-//        }
-//    }
-    
-    
 }
-
-//             if !Manager.shared.wishlist.keys.contains(Manager.shared.choosed[0] as! University){
-//                   Manager.shared.wishlist[Manager.shared.choosed[0] as! University] = [:]
-//                Manager.shared.wishlist[Manager.shared.choosed[0] as! University]![Manager.shared.choosed[1] as! Faculty] = []
-//                   Manager.shared.wishlist[Manager.shared.choosed[0] as! University]?[Manager.shared.choosed[1] as! Faculty]?.append(Manager.shared.choosed[2] as! Department)
-//               }
-//               else if  Manager.shared.wishlist[Manager.shared.choosed[0] as! University]?[Manager.shared.choosed[1] as! Faculty] == nil{
-//                Manager.shared.wishlist[Manager.shared.choosed[0] as! University]![Manager.shared.choosed[1] as! Faculty] = []
-//                Manager.shared.wishlist[Manager.shared.choosed[0] as! University]?[Manager.shared.choosed[1] as! Faculty]?.append(Manager.shared.choosed[2] as! Department)
-//        }
-//               else {
-//                Manager.shared.wishlist[Manager.shared.choosed[0] as! University]?[Manager.shared.choosed[1] as! Faculty]?.append(Manager.shared.choosed[2] as! Department)
-//        }
-//        if !(Manager.shared.wishlist[Manager.shared.choosed[0] as! University]?[Manager.shared.choosed[1] as! Faculty]?.contains(where: { (Department) -> Bool in
-//                   return Department.name == department.name
-//               }) ?? false){
-//            return true
-//               } else {
-//                   return false
-//               }
-
-
-//  if Manager.shared.wishlist[Manager.shared.choosed[0] as! University]?[Manager.shared.choosed[1] as! Faculty]!.count == 1{
-//            Manager.shared.wishlist[Manager.shared.choosed[0] as! University]?.removeValue(forKey: Manager.shared.choosed[1] as! Faculty)
-//        }
-//        else  {
-//            Manager.shared.wishlist[Manager.shared.choosed[0] as! University]?[Manager.shared.choosed[1] as! Faculty]!.removeAll(where: { (department) -> Bool in
-//                return department.name == (Manager.shared.choosed[2] as? Department)?.name
-//            })
-//        }
 

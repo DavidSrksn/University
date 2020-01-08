@@ -26,14 +26,18 @@ class DropdownCell: UITableViewCell{
     
     @IBOutlet weak var followers: UILabel!
     
+    var minPointsLabel = UILabel()
+    
     @IBAction func deleteButton(_ sender: UIButton){
+        var objectToDelete: RealmObject = RealmObject()
         do {
             try Manager.shared.realm.write {
-                Manager.shared.realm.delete(Manager.shared.realm.objects(RealmObject.self).filter("departmentFullName = '\((self.departmentNameLabel.text)!)'"))
+              objectToDelete = Manager.shared.realm.objects(RealmObject.self).filter("departmentFullName = '\((self.departmentNameLabel.text)!)'")[0]
             }
         } catch{
             print(error.localizedDescription)
         }
+        Manager.shared.deleteFromWishlist(sender: nil, setImage: nil, departmentFullName: objectToDelete.departmentFullName)
         Manager.shared.notificationCentre.post(Notification(name: Notification.Name(rawValue: "Department Deleted")))
         Manager.shared.wishlistQueue.async(execute: Manager.shared.workItem)
     }
@@ -74,7 +78,7 @@ class DropdownCell: UITableViewCell{
         })
     }
     
-    func setWishlistCell(universityName: String, departmentFullName:String, facultyFullName: String, subjects: [String?], cell: UITableViewCell) {
+    func setWishlistCell(universityName: String, departmentFullName:String, facultyFullName: String, subjects: [String?], minPoints: Int ,cell: UITableViewCell) {
         
 //        cell.preservesSuperviewLayoutMargins = false
         cell.separatorInset = UIEdgeInsets.zero
@@ -89,8 +93,23 @@ class DropdownCell: UITableViewCell{
         setupFacultyLabel(facultyFullName: facultyFullName)
         setSubjects(subjects: subjects)
         setFollowersLabel(departmentFullName: departmentFullName, universityName: universityName, facultyFullName: facultyFullName)
-        
+        setupMinPointsLabel(minPoints: minPoints)
         open.setTitle("", for: .normal)
+    }
+    
+    func setupMinPointsLabel(minPoints: Int){
+        view.addSubview(minPointsLabel)
+        
+        minPointsLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        minPointsLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)
+        minPointsLabel.textColor = .black
+        minPointsLabel.text = "Проходной балл = \(minPoints)"
+        
+        minPointsLabel.topAnchor.constraint(equalTo: followers.bottomAnchor, constant: 5).isActive = true
+        minPointsLabel.leftAnchor.constraint(equalTo: followers.leftAnchor).isActive = true
+        minPointsLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        minPointsLabel.bottomAnchor.constraint(equalTo: mapButtonOutlet.topAnchor).isActive = true
     }
     
     func setDeleteButton(universityname: String, facultyFullName: String, departmentFullName: String){
@@ -175,6 +194,8 @@ class DropdownCell: UITableViewCell{
         facultyFullNameLabel.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         facultyFullNameLabel.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         facultyFullNameLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        
+        universityName.centerYAnchor.constraint(equalTo: facultyFullNameLabel.centerYAnchor).isActive = true // центрирование Label'ов
         
     }
     

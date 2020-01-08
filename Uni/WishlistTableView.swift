@@ -54,22 +54,22 @@ final class WishlistTableView: UIViewController {
 extension WishlistTableView : UITableViewDataSource,UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Manager.shared.realm.objects(RealmObject.self).count
+        return Manager.shared.realm.objects(RealmObject.self).filter("minPoints != -1").count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == button_tag {
-            return 300
+            return 290
         } else {
-            return 100
+            return 80
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let object = Array(Manager.shared.realm.objects(RealmObject.self))[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "DropdownCell", for: indexPath) as! DropdownCell
-        if !cell.cellExists{
-            cell.setWishlistCell(universityName: object.universityName, departmentFullName: object.departmentFullName, facultyFullName: object.facultyFullName , subjects: Array(object.subjects), cell: cell)
+        if !cell.cellExists && (object.minPoints >= 0) {
+            cell.setWishlistCell(universityName: object.universityName, departmentFullName: object.departmentFullName, facultyFullName: object.facultyFullName , subjects: Array(object.subjects), minPoints: object.minPoints, cell: cell)
             cell.open.tag = t_count
             cell.open.addTarget(self, action: #selector(cellOpened(sender:)), for: .touchUpInside)
             t_count += 1

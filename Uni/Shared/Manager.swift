@@ -98,6 +98,21 @@ final class Manager {
             let alert = UIAlertController(title: "Alert", message: "There is no internet. You can only use your wishlist info ", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "ok", style: .default, handler: nil))
             viewcontroller.present(alert, animated: true)
+        }else {
+            Manager.shared.wishlistQueue.async {
+                do{
+                    try self.realm.write {
+                        let objectsToDelete = self.realm.objects(RealmObject.self).filter("minPoints == -1")
+                        for object in objectsToDelete{
+                            NetworkManager.shared.changeFollower(occasion: "remove", universityname: object.universityName, facultyFullName: object.facultyFullName, departmentFullName: object.departmentFullName)
+                            Manager.shared.realm.delete(object)
+                        }
+                    }
+                }
+                catch{
+                    print(error.localizedDescription)
+                }
+            }
         }
     }
     
@@ -134,19 +149,33 @@ final class Manager {
         sender.setImage(UIImage(systemName: "star.fill")?.withTintColor(.red), for: .normal)
     }
     
-    func deleteFromWishlist (sender: UIButton,setImage: UIImage){
-        let wishlistObject = RealmObject(university: Manager.shared.choosed[0] as! University, department: Manager.shared.choosed[2] as! Department, faculty: (Manager.shared.choosed[1] as! Faculty))
-        do{
-            try self.realm.write {
-//              self.realm.deleteAll()
-                self.realm.delete(realm.objects(RealmObject.self).filter("departmentFullName = '\(wishlistObject.departmentFullName)'"))
+    func deleteFromWishlist (sender: UIButton?,setImage: UIImage?, departmentFullName: String){
+        if NetworkReachabilityManager()!.isReachable{
+            var objectToDelete: RealmObject = RealmObject()
+            do{
+                try self.realm.write {
+                    objectToDelete = Manager.shared.realm.objects(RealmObject.self).filter("departmentFullName = '\(departmentFullName)'")[0]
+                     NetworkManager.shared.changeFollower(occasion: "remove", universityname: objectToDelete.universityName, facultyFullName: objectToDelete.facultyFullName, departmentFullName: objectToDelete.departmentFullName)
+                    self.realm.delete(realm.objects(RealmObject.self).filter("departmentFullName = '\(departmentFullName)'"))
+                }
+            }
+            catch{
+                print(error.localizedDescription)
+            }
+        }else {
+            do{
+                try self.realm.write {
+                    let objectToFlag = self.realm.objects(RealmObject.self).filter("departmentFullName = '\(departmentFullName)'")[0]
+                    objectToFlag.minPoints = -1 // помечается -1 когда объект удален в оффлайне, чтобы при появлении сети удалить его из бд
+                }
+            }
+            catch{
+                print(error.localizedDescription)
             }
         }
-        catch{
-            print(error.localizedDescription)
+        if (sender != nil) && (setImage != nil){
+        sender!.setImage(setImage, for: .normal)
         }
-        NetworkManager.shared.changeFollower(occasion: "remove", universityname: (Manager.shared.choosed[0] as! University).name, facultyFullName: (Manager.shared.choosed[1] as! Faculty).fullName, departmentFullName: (Manager.shared.choosed[2] as! Department).fullName)
-        sender.setImage(setImage, for: .normal)
     }
     
     func departmentStatus(department: Department) -> Bool {

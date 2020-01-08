@@ -22,7 +22,7 @@ final class RealmObject: Object{
         self.departmentFullName = department.fullName
         self.facultyFullName = faculty.fullName
         self.universityName = university.name
-        self.minPoints = department.minPoints
+        self.minPoints = department.minPoints  // помечается -1 когда объект удален в оффлайне, чтобы при появлении сети удалить его из бд
         self.subjects = {()->List<String?> in
             let subjectsList = List<String?>()
             for subject in department.subjects{

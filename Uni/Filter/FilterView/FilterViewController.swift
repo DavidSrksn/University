@@ -478,7 +478,7 @@ extension FilterViewController {
                 subjectTableData[i].sectionData.append(subjectTableData[indexPath.row].title)
             }
             
-            subjectTableData.remove(at: indexPath.row)
+            subjectTableData.remove(at: indexPath.section)
             
             if (subjectTableData.count > 3) {
                 pointsSlider.maximumValue = Float(subjectTableData.count * 100)

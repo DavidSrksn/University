@@ -151,15 +151,17 @@ final class Manager {
     
     func deleteFromWishlist (sender: UIButton?,setImage: UIImage?, departmentFullName: String){
         if NetworkReachabilityManager()!.isReachable{
+            var objectToDelete: RealmObject = RealmObject()
             do{
                 try self.realm.write {
+                    objectToDelete = Manager.shared.realm.objects(RealmObject.self).filter("departmentFullName = '\(departmentFullName)'")[0]
+                     NetworkManager.shared.changeFollower(occasion: "remove", universityname: objectToDelete.universityName, facultyFullName: objectToDelete.facultyFullName, departmentFullName: objectToDelete.departmentFullName)
                     self.realm.delete(realm.objects(RealmObject.self).filter("departmentFullName = '\(departmentFullName)'"))
                 }
             }
             catch{
                 print(error.localizedDescription)
             }
-            NetworkManager.shared.changeFollower(occasion: "remove", universityname: (Manager.shared.choosed[0] as! University).name, facultyFullName: (Manager.shared.choosed[1] as! Faculty).fullName, departmentFullName: (Manager.shared.choosed[2] as! Department).fullName)
         }else {
             do{
                 try self.realm.write {

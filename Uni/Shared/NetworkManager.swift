@@ -172,7 +172,7 @@ class NetworkManager{
 //        }
 //    }
     
-    @objc func changeFollower(occasion: String, universityname: String,facultyFullName: String, departmentFullName: String) {  //occasion =  "add" или "remove"
+    func changeFollower(occasion: String, universityname: String,facultyFullName: String, departmentFullName: String) {  //occasion =  "add" или "remove"
         var difference: Int
         
         if occasion == "remove"{

@@ -8,18 +8,16 @@
 
 import UIKit
 
+/// An object that manages views in window for filter
 class FilterViewController: UIViewController {
-    
-    static let filterManager = FilterViewController()
     
     private var presenter = FilterPresenter()
     
-    private var constraintClosure: ((CGFloat)->(Void))?
+    private let constraints = Size() // sizes and coordinates for views
+    private let dataView = FilterViewData() // some data about colors, corner radiuses, text colors for views
+    private var barHeight: CGFloat = 0 // height of status bar if in future we prefer opening filter window using navigation controller
     
-    private let constraints = Size()
-    private let dataView = FilterViewData()
-    private var barHeight: CGFloat = 0
-    
+    // Constraints, that we will change in window, when user will add or remove subjects
     private var subjectConstraint = NSLayoutConstraint()
     private var contentConstraint = NSLayoutConstraint()
     
@@ -28,9 +26,9 @@ class FilterViewController: UIViewController {
     private let dataSourceSubject = ["Математика", "Русский", "Физика", "Химия", "История", "Обществознание", "Информатика", "Биология", "Георграфия", "Английский", "Немецкий", "Французсский", "Испанский", "Литература"]
     
     private let filterScrollView = UIScrollView()
-    private let filterContainerView = UIView()
+    private let filterContainerView = UIView() // Container to all views using in filter window
     
-    private var contentView = UIView()
+    private var contentView = UIView() // Container with views going after subjects for most comfortable layout managment
     
     private var subjectTableData = [subjectData]()
     private let subjectTableTitle = "Предметы"
@@ -50,15 +48,108 @@ class FilterViewController: UIViewController {
     private let campusButton = UISwitch()
     
     
-    
+    /// Updates constraints to table with subjects
+    /// - Parameter height: new height for subject table
     private func updateSubjectTableConstraints(height: CGFloat) {
         subjectConstraint.constant = height
     }
     
+    /// Updates constraints for container with views, that going after subjects
+    /// - Parameter y: method add parameter to current coordinate
     private func updateContentViewConstraints(to y: CGFloat) {
         contentConstraint.constant += y
     }
     
+    // MARK: filter view controller lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        filterScrollView.addSubview(filterContainerView)
+        filterContainerView.frame = view.bounds
+        
+        view.addSubview(filterScrollView)
+        filterScrollView.frame = filterContainerView.bounds
+        filterScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 500)
+        
+        view.backgroundColor = dataView.FilterViewColor
+//        barHeight = navigationController?.navigationBar.frame.size.height ?? 0
+        
+        setupCountry()
+        setupAddSubject()
+        setupSubjectTable()
+        
+        setupContentView()
+        setupPoints()
+        setupMilitary()
+        setupCampus()
+        
+        if (presenter.loadFilterSettings()) {
+            presenter.fillFields(country: &countryLabel.text,
+                                 subjects: &subjectTableData,
+                                 minPoints: &pointsSlider.value,
+                                 military: &militaryButton.isOn,
+                                 campus: &campusButton.isOn)
+            
+            if let row = dataSourceCountry.firstIndex(of: countryLabel.text ?? "nil") {
+                self.countryPicker.selectRow(row, inComponent: 0, animated: true)
+            }
+            
+            pointsSlider.maximumValue = Float(subjectTableData.count * 100)
+            pointsTextField.text = String(Int(pointsSlider.value))
+            
+            self.pointsTextField.text = "\(Int(pointsSlider.value))"
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.fillDataFilter()
+        presenter.updateFilterSettings()
+        Manager.shared.updateController(controller: presentingViewController!)
+    }
+    
+    private func fillDataFilter() {
+        var subjectsData: [String]? = []
+        
+        let subjectsStruct = subjectTableData.filter({ (data) -> Bool in
+            return data.title != subjectTableTitle
+        })
+        
+        for data in subjectsStruct {
+            subjectsData!.append(data.title)
+        }
+        
+        presenter.updateSubject(newSubjects: subjectsData == [] ? nil : subjectsData)
+        presenter.changeCountry(newCountry: countryLabel.text == "Город" ? nil : countryLabel.text)
+        presenter.changeMinPoint(for: Int(pointsSlider.value))
+        presenter.changeMilitary(for: militaryButton.isOn)
+        presenter.changeCampus(for: campusButton.isOn)
+    }
+    
+    // MARK: targets
+    
+    @objc private func changePoints() {
+        pointsTextField.text = " " + String(Int(pointsSlider.value))
+    }
+    
+    @objc private func pushSubject() {
+        subjectTableData.append(subjectData(opened: false,
+                                            title: subjectTableTitle,
+                                            sectionData: dataSourceSubject))
+        if (subjectTableData.count > 3) {
+            pointsSlider.maximumValue = Float(subjectTableData.count * 100)
+        } else {
+            pointsSlider.maximumValue = Float(300)
+        }
+        subjectTable.reloadData()
+        
+        updateSubjectTableConstraints(height: CGFloat(subjectTableData.count) * constraints.subjectTableCellHeight)
+        updateContentViewConstraints(to: constraints.subjectTableCellHeight)
+    }
+}
+
+// MARK: setups
+// All setups for views on filter window
+extension FilterViewController {
     private func setupContentView() {
         filterScrollView.addSubview(contentView)
         
@@ -253,93 +344,6 @@ class FilterViewController: UIViewController {
     private func setupCampus() {
         setupCampusLabel()
         setupCampusButton()
-    }
-    
-    // MARK: filter view controller lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        filterScrollView.addSubview(filterContainerView)
-        filterContainerView.frame = view.bounds
-        
-        view.addSubview(filterScrollView)
-        filterScrollView.frame = filterContainerView.bounds
-        filterScrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 500)
-        
-        view.backgroundColor = dataView.FilterViewColor
-//        barHeight = navigationController?.navigationBar.frame.size.height ?? 0
-        
-        setupCountry()
-        setupAddSubject()
-        setupSubjectTable()
-        
-        setupContentView()
-        setupPoints()
-        setupMilitary()
-        setupCampus()
-        
-        if (presenter.loadFilterSettings()) {
-            presenter.fillFields(country: &countryLabel.text,
-                                 subjects: &subjectTableData,
-                                 minPoints: &pointsSlider.value,
-                                 military: &militaryButton.isOn,
-                                 campus: &campusButton.isOn)
-            
-            if let row = dataSourceCountry.firstIndex(of: countryLabel.text ?? "nil") {
-                self.countryPicker.selectRow(row, inComponent: 0, animated: true)
-            }
-            
-            pointsSlider.maximumValue = Float(subjectTableData.count * 100)
-            pointsTextField.text = String(Int(pointsSlider.value))
-            
-            self.pointsTextField.text = "\(Int(pointsSlider.value))"
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        self.fillDataFilter()
-        presenter.updateFilterSettings()
-        Manager.shared.updateController(controller: presentingViewController!)
-    }
-    
-    private func fillDataFilter() {
-        var subjectsData: [String]? = []
-        
-        let subjectsStruct = subjectTableData.filter({ (data) -> Bool in
-            return data.title != subjectTableTitle
-        })
-        
-        for data in subjectsStruct {
-            subjectsData!.append(data.title)
-        }
-        
-        presenter.updateSubject(newSubjects: subjectsData == [] ? nil : subjectsData)
-        presenter.changeCountry(newCountry: countryLabel.text == "Город" ? nil : countryLabel.text)
-        presenter.changeMinPoint(for: Int(pointsSlider.value))
-        presenter.changeMilitary(for: militaryButton.isOn)
-        presenter.changeCampus(for: campusButton.isOn)
-    }
-    
-    // MARK: targets
-    
-    @objc private func changePoints() {
-        pointsTextField.text = " " + String(Int(pointsSlider.value))
-    }
-    
-    @objc private func pushSubject() {
-        subjectTableData.append(subjectData(opened: false,
-                                            title: subjectTableTitle,
-                                            sectionData: dataSourceSubject))
-        if (subjectTableData.count > 3) {
-            pointsSlider.maximumValue = Float(subjectTableData.count * 100)
-        } else {
-            pointsSlider.maximumValue = Float(300)
-        }
-        subjectTable.reloadData()
-        
-        updateSubjectTableConstraints(height: CGFloat(subjectTableData.count) * constraints.subjectTableCellHeight)
-        updateContentViewConstraints(to: constraints.subjectTableCellHeight)
     }
 }
 

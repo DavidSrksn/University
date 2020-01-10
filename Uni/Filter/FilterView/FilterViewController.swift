@@ -146,7 +146,7 @@ class FilterViewController: UIViewController {
     }
     
     @objc private func pushSubject() {
-        if dataSourceSubject == [] {
+        if subjectTableData.count == 14 {
             let noneSubjectsAlert = UIAlertController(title: "Предметы кончились!", message: "Вы добавили все возможные предметы.", preferredStyle: .alert)
             let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
             
@@ -442,8 +442,31 @@ extension FilterViewController: UITableViewDelegate {
         return subjectTableData.count
     }
     
+    private func removeSubject(at index: Int) {
+        if (index != 0) {
+            let dataIndex = index - 1;
+            
+            dataSourceSubject.remove(at: dataIndex)
+            for i in 0...(subjectTableData.count - 1) {
+                subjectTableData[i].sectionData.remove(at: dataIndex)
+            }
+            
+            subjectTable.reloadData()
+        }
+    }
+    
+    private func insertSubject(_ subj: String, at index: Int) {
+        if (subj != subjectTableTitle) {
+            dataSourceSubject.insert(subj, at: index)
+            for i in 0...(subjectTableData.count - 1) {
+                subjectTableData[i].sectionData.insert(subj, at: index)
+            }
+        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let dataIndex = indexPath.row - 1
+        let curTitle = subjectTableData[indexPath.section].title
         
         if indexPath.row != 0 {
             subjectTableData[indexPath.section].title = subjectTableData[indexPath.section].sectionData[dataIndex]
@@ -457,15 +480,9 @@ extension FilterViewController: UITableViewDelegate {
             updateSubjectTableConstraints(height: curHeight + constraints.subjectTableCellHeight * 4)
             updateContentViewConstraints(to: constraints.subjectTableCellHeight * 4)
         } else {
-            if (indexPath.row != 0) {
-                let dataIndex = indexPath.row - 1
-                
-                dataSourceSubject.remove(at: dataIndex)
-                for i in 0...(subjectTableData.count - 1) {
-                    subjectTableData[i].sectionData.remove(at: dataIndex)
-                }
-                
-                subjectTable.reloadData()
+            removeSubject(at: indexPath.row)
+            if indexPath.row != 0 {
+                insertSubject(curTitle, at: 0)
             }
             
             updateSubjectTableConstraints(height: curHeight - constraints.subjectTableCellHeight * 4)
@@ -487,9 +504,9 @@ extension FilterViewController {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
-            dataSourceSubject.append(subjectTableData[indexPath.row].title)
+            dataSourceSubject.insert(subjectTableData[indexPath.row].title, at: 0)
             for i in 0...(subjectTableData.count - 1) {
-                subjectTableData[i].sectionData.append(subjectTableData[indexPath.row].title)
+                subjectTableData[i].sectionData.insert(subjectTableData[indexPath.row].title, at: 0)
             }
             
             subjectTableData.remove(at: indexPath.section)

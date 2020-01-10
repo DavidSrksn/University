@@ -51,7 +51,6 @@ class NetworkManager{
                                                 .document("\(document2.documentID)")
                                                 .collection("departments")
                                                 .whereField("minPoints", isLessThanOrEqualTo: minPoints ?? 400)
-//                                                .order(by: "subjects")
                                                 .getDocuments { (querySnapshot3, error) in
                                                     if let error = error {
                                                         print("\(error.localizedDescription)")
@@ -62,15 +61,18 @@ class NetworkManager{
                                                             if (subjects == nil) || ( document3.data()["subjects"] as? [String] == subjects) {
                                                                 Manager.shared.UFD[University(dictionary: document1.data())!] = [:]
                                                                 flag = true
+//                                                                NetworkManager.shared.semaphore.signal()
                                                                 break
                                                             }
-//                                                            NetworkManager.shared.semaphore.signal()
                                                         }
+//                                                        NetworkManager.shared.semaphore.signal()
+                                                        
                                                         Manager.shared.warningCheck(parameter: querySnapshot3?.documents.count ?? 0, viewController: viewcontroller, warningLabel: warningLabel, tableView: tableView)
                                                         completion?()
                                                  }
                                             }
 //                                            NetworkManager.shared.semaphore.wait()
+                                            
                                             if flag == true{
                                                 break
                                             }
@@ -78,8 +80,8 @@ class NetworkManager{
                                         completion?()
                                     }
                             }
-                        }else{
-                        Manager.shared.warningCheck(parameter: 0, viewController: viewcontroller, warningLabel: warningLabel, tableView: tableView)
+                        } else{
+                           Manager.shared.warningCheck(parameter: 0, viewController: viewcontroller, warningLabel: warningLabel, tableView: tableView)
                         completion?()
                          }
                     }

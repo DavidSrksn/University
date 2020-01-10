@@ -13,6 +13,8 @@ final class DepartmentCell: UITableViewCell {
     @IBOutlet weak var addToWishlistButtonStatus: UIButton!
     @IBOutlet weak var departmentNameLabel: UILabel!
     @IBOutlet weak var departmentFullNameLabel: UILabel!
+    var minPointsLabel = UILabel()
+    var subjectsDifferenceLabel = UILabel()
     
     var followersLabel = UILabel()
     
@@ -31,7 +33,33 @@ final class DepartmentCell: UITableViewCell {
         setupDepartmentNameLabel(department: department)
         setupDepartmentFullNameLabel(department: department)
         setupAddToWishlistButton(department: department)
+        setupMinPoints(department: department)
         setupFollowersLabel(department: department)
+        setupSubjectsDifferenceLabel(department: department)
+    }
+    
+    
+    func setupSubjectsDifferenceLabel(department: Department){
+        self.addSubview(subjectsDifferenceLabel)
+        
+        subjectsDifferenceLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+    }
+    
+    func setupMinPoints(department: Department){
+        self.addSubview(minPointsLabel)
+        
+        minPointsLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        minPointsLabel.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        minPointsLabel.topAnchor.constraint(equalTo: departmentNameLabel.bottomAnchor).isActive = true
+        minPointsLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -2).isActive = true
+        minPointsLabel.widthAnchor.constraint(equalToConstant: 170).isActive = true
+        
+        minPointsLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)!
+        minPointsLabel.textColor = .black
+        minPointsLabel.text = "Проходной балл: \(department.minPoints)"
     }
     
     func setupDepartmentNameLabel(department: Department){
@@ -56,10 +84,10 @@ final class DepartmentCell: UITableViewCell {
         
         followersLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        followersLabel.topAnchor.constraint(equalTo: departmentNameLabel.bottomAnchor).isActive = true
-        followersLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -2).isActive = true
-        followersLabel.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        followersLabel.rightAnchor.constraint(equalTo: departmentFullNameLabel.leftAnchor).isActive = true
+        followersLabel.topAnchor.constraint(equalTo: minPointsLabel.topAnchor).isActive = true
+        followersLabel.bottomAnchor.constraint(equalTo:minPointsLabel.bottomAnchor).isActive = true
+        followersLabel.widthAnchor.constraint(equalTo: addToWishlistButtonStatus.widthAnchor).isActive = true
+        followersLabel.centerXAnchor.constraint(equalTo: addToWishlistButtonStatus.centerXAnchor).isActive = true
         
         followersLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)!
         followersLabel.textAlignment = .center

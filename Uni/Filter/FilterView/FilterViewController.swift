@@ -23,7 +23,7 @@ class FilterViewController: UIViewController {
     private var subjectConstraint = NSLayoutConstraint()
     private var contentConstraint = NSLayoutConstraint()
     
-    private let dataSourceCountry = ["Город", "Москва", "Санкт-Петербург", "Омск", "Волгоград", "Владимир", "Екатеринбург", "Уфа", "Владивосток"]
+    private let dataSourceCountry = ["Любой", "Москва", "Санкт-Петербург", "Омск", "Волгоград", "Владимир", "Екатеринбург", "Уфа", "Владивосток"]
     
     private var dataSourceSubject = ["Математика", "Русский", "Физика", "Химия", "История", "Обществознание", "Информатика", "Биология", "Георграфия", "Английский", "Немецкий", "Французсский", "Испанский", "Литература"]
     
@@ -127,7 +127,7 @@ class FilterViewController: UIViewController {
         }
         
         presenter.updateSubject(newSubjects: subjectsData == [] ? nil : subjectsData)
-        presenter.changeCountry(newCountry: countryLabel.text == "Город" ? nil : countryLabel.text)
+        presenter.changeCountry(newCountry: countryLabel.text == "Город" || countryLabel.text == "Любой" ? nil : countryLabel.text)
         if firstUsage {
             presenter.changeMinPoint(for: Int(pointsSlider.value) == 0 ? nil : Int(pointsSlider.value))
             presenter.changeMilitary(for: !militaryButton.isOn ? nil : true)

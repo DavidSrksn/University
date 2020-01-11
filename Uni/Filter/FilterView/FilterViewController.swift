@@ -179,6 +179,18 @@ class FilterViewController: UIViewController {
             return
         }
         
+        for data in subjectTableData {
+            if data.opened {
+                let chooseSubjectsAlert = UIAlertController(title: "Пожалуйста, выберите предмет!", message: "Прежде чем добавить новый предмет, необходимо выбрать предмет.", preferredStyle: .alert)
+                let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+                
+                chooseSubjectsAlert.addAction(ok);
+                present(chooseSubjectsAlert, animated: true, completion: nil)
+                
+                return
+            }
+        }
+        
         subjectTableData.append(subjectData(opened: false,
                                             title: subjectTableTitle,
                                             sectionData: dataSourceSubject))

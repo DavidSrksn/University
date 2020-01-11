@@ -511,9 +511,9 @@ extension FilterViewController: UITableViewDelegate {
             updateSubjectTableConstraints(height: curHeight - constraints.subjectTableCellHeight * 4)
             updateContentViewConstraints(to: -constraints.subjectTableCellHeight * 4)
         }
-        
-        let sections = IndexSet.init(integer: indexPath.section)
-        subjectTable.reloadSections(sections, with: .none)
+        subjectTable.reloadData()
+//        let sections = IndexSet.init(integer: indexPath.section)
+//        subjectTable.reloadSections(sections, with: .none)
     }
 }
 
@@ -527,9 +527,11 @@ extension FilterViewController {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
-            dataSourceSubject.insert(subjectTableData[indexPath.row].title, at: 0)
-            for i in 0...(subjectTableData.count - 1) {
-                subjectTableData[i].sectionData.insert(subjectTableData[indexPath.row].title, at: 0)
+            if subjectTableData[indexPath.section].title != subjectTableTitle {
+                dataSourceSubject.insert(subjectTableData[indexPath.section].title, at: 0)
+                for i in 0...(subjectTableData.count - 1) {
+                    subjectTableData[i].sectionData.insert(subjectTableData[indexPath.section].title, at: 0)
+                }
             }
             
             subjectTableData.remove(at: indexPath.section)

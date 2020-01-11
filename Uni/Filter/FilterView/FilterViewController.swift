@@ -113,6 +113,10 @@ class FilterViewController: UIViewController {
                 self.countryPicker.selectRow(row, inComponent: 0, animated: true)
             }
             
+            if countryLabel.text == nil {
+                countryLabel.text = "Город"
+            }
+            
             pointsSlider.maximumValue = Float(subjectTableData.count * 100)
             pointsTextField.text = String(Int(pointsSlider.value))
             

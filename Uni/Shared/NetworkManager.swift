@@ -19,10 +19,10 @@ class NetworkManager{
     static var shared = NetworkManager()
     
     let queue = DispatchQueue(label: "Not Main")
-    let semaphore = DispatchSemaphore(value: 0)
+    let semaphore = DispatchSemaphore(value: 1)
     
     
-     func loadUniversities(tableView: UITableView, warningLabel: UILabel, viewcontroller: UIViewController, city: String?, subjects: [String]?, minPoints: Int?, dormitory: Bool?, militaryDepartment: Bool?, completion: (() -> Void)?){
+    func loadUniversities(tableView: UITableView, warningLabel: UILabel, viewcontroller: UIViewController, city: String?, subjects: [String]?, minPoints: Int?, dormitory: Bool?, militaryDepartment: Bool?, completion: (() -> Void)?){
         
             Manager.shared.UFD.removeAll()
 
@@ -44,14 +44,13 @@ class NetworkManager{
                                         print("\(error.localizedDescription)")
                                         completion?()
                                     }else{
-                                        for document2 in (querySnapshot2?.documents)!{
+                                        for document2 in (querySnapshot2?.documents)!{ // Сделать очередь на постепенные запросы к firebase (мб DispatchGroup либо очередь)
                                             self.db.collection("Universities")
                                                 .document("\(document1.documentID)")
                                                 .collection("\(document1.data()["name"]!)faculties")
                                                 .document("\(document2.documentID)")
                                                 .collection("departments")
                                                 .whereField("minPoints", isLessThanOrEqualTo: minPoints ?? 400)
-//                                                .order(by: "subjects")
                                                 .getDocuments { (querySnapshot3, error) in
                                                     if let error = error {
                                                         print("\(error.localizedDescription)")
@@ -62,15 +61,19 @@ class NetworkManager{
                                                             if (subjects == nil) || ( document3.data()["subjects"] as? [String] == subjects) {
                                                                 Manager.shared.UFD[University(dictionary: document1.data())!] = [:]
                                                                 flag = true
+                                                                
+//                                                                 NetworkManager.shared.semaphore.signal()
                                                                 break
                                                             }
-//                                                            NetworkManager.shared.semaphore.signal()
                                                         }
+//                                                        NetworkManager.shared.semaphore.signal()
+                                                        
                                                         Manager.shared.warningCheck(parameter: querySnapshot3?.documents.count ?? 0, viewController: viewcontroller, warningLabel: warningLabel, tableView: tableView)
                                                         completion?()
                                                  }
                                             }
 //                                            NetworkManager.shared.semaphore.wait()
+                                            
                                             if flag == true{
                                                 break
                                             }
@@ -78,8 +81,8 @@ class NetworkManager{
                                         completion?()
                                     }
                             }
-                        }else{
-                        Manager.shared.warningCheck(parameter: 0, viewController: viewcontroller, warningLabel: warningLabel, tableView: tableView)
+                        } else{
+                           Manager.shared.warningCheck(parameter: 0, viewController: viewcontroller, warningLabel: warningLabel, tableView: tableView)
                         completion?()
                          }
                     }
@@ -172,7 +175,7 @@ class NetworkManager{
 //        }
 //    }
     
-    func changeFollower(occasion: String, universityname: String,facultyFullName: String, departmentFullName: String) {  //occasion =  "add" или "remove"
+   @objc func changeFollower(occasion: String, universityname: String,facultyFullName: String, departmentFullName: String) {  //occasion =  "add" или "remove"
         var difference: Int
         
         if occasion == "remove"{
@@ -216,8 +219,10 @@ class NetworkManager{
             .collection("departments")
             .document(departmentFullName)
             .addSnapshotListener { (documentSnapshot, error) in
+                if documentSnapshot?.data() != nil{
                 let followers = documentSnapshot?.data()!["followers"] as! Int
                     completion?(followers)
+                }
         }
     }
     

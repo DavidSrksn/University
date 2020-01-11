@@ -23,11 +23,11 @@ final class DepartmentsTableView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Loader.shared.showActivityIndicatory(uiView: tableView, blurView: Loader.shared.blurView, loadingView: Loader.shared.loadingView , actInd: Loader.shared.actInd)
-        Manager.shared.notificationCentre.addObserver(forName: NSNotification.Name(rawValue: "Department Deleted"), object: .none, queue: .main) { (Notification) in
+        Manager.shared.notificationCenter.addObserver(forName: NSNotification.Name(rawValue: "Department Deleted"), object: .none, queue: .main) { (Notification) in
             self.tableView.reloadData()
         }
         
-        Manager.shared.notificationCentre.addObserver(forName: NSNotification.Name(rawValue: "Sort Selected"), object: .none, queue: .main) { (Notification) in
+        Manager.shared.notificationCenter.addObserver(forName: NSNotification.Name(rawValue: "Sort Selected"), object: .none, queue: .main) { (Notification) in
             self.openSortButtonAction()
             Manager.shared.sort(type: Notification.userInfo!["type"] as! Int, tableView: self.tableView)
         }
@@ -155,12 +155,13 @@ extension DepartmentsTableView : UITableViewDataSource,UITableViewDelegate{
         let sizeDifference: CGFloat = 10
         
         let backgroundView = UIView()
+        let choosedSubjects = UILabel()
         
         backgroundView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 100)
         
         let label = UILabel()
         
-        label.frame = CGRect(x: sizeDifference, y: sizeDifference, width: backgroundView.frame.width - 2 * sizeDifference, height: backgroundView.frame.height - 2 * sizeDifference)
+        label.frame = CGRect(x: sizeDifference, y: sizeDifference, width: backgroundView.frame.width - 2 * sizeDifference, height: backgroundView.frame.height - 3 * sizeDifference ) // 40 - высота выбранных предметов
         
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -170,26 +171,40 @@ extension DepartmentsTableView : UITableViewDataSource,UITableViewDelegate{
         
         label.text = "\((Manager.shared.choosed[1] as! Faculty).fullName)"
         
-        label.layer.borderColor = UIColor.separator.cgColor
-        label.layer.borderWidth = 3
-        label.layer.cornerRadius = 10
-        backgroundView.layer.cornerRadius = label.layer.cornerRadius
-        
-        label.layer.shadowColor = UIColor.separator.cgColor
-        label.layer.shadowOpacity = 1
-        
+        backgroundView.layer.borderColor = UIColor.separator.cgColor
+        backgroundView.layer.borderWidth = 3
+        backgroundView.layer.cornerRadius = 10
+        label.layer.cornerRadius = backgroundView.layer.cornerRadius
         
         backgroundView.addSubview(label)
+        label.addSubview(choosedSubjects)
+        
+        choosedSubjects.translatesAutoresizingMaskIntoConstraints = false
+        
+        choosedSubjects.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor).isActive = true
+        choosedSubjects.leftAnchor.constraint(equalTo: backgroundView.leftAnchor,constant: sizeDifference).isActive = true
+        choosedSubjects.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        choosedSubjects.widthAnchor.constraint(greaterThanOrEqualToConstant: 100).isActive = true
+        
+        choosedSubjects.font = UIFont(name: "AvenirNext-Regular", size: 15)!
+        choosedSubjects.textColor = UIColor(red: 0, green: 128/256, blue: 0, alpha: 1)
+        choosedSubjects.text = ""
+        
+        for subject in Manager.shared.filterSettings.subjects ?? [""]{
+            if subject != ""{
+            choosedSubjects.text! += "+\(subject) ,"
+            }
+        }
         
         return backgroundView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 90
+        return 100
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 120
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

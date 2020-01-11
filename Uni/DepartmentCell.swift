@@ -31,21 +31,62 @@ final class DepartmentCell: UITableViewCell {
     
     func setDepartmentCell(department: Department){
         setupDepartmentNameLabel(department: department)
-        setupDepartmentFullNameLabel(department: department)
         setupAddToWishlistButton(department: department)
-        setupMinPoints(department: department)
         setupFollowersLabel(department: department)
+        setupDepartmentFullNameLabel(department: department)
         setupSubjectsDifferenceLabel(department: department)
+        setupMinPoints(department: department)
     }
     
     
     func setupSubjectsDifferenceLabel(department: Department){
+        
         self.addSubview(subjectsDifferenceLabel)
         
         subjectsDifferenceLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        subjectsDifferenceLabel.topAnchor.constraint(equalTo: departmentFullNameLabel.bottomAnchor, constant: 5).isActive = true
+        subjectsDifferenceLabel.leftAnchor.constraint(equalTo: departmentNameLabel.leftAnchor).isActive = true
+        subjectsDifferenceLabel.widthAnchor.constraint(equalToConstant: 170).isActive = true
+        subjectsDifferenceLabel.heightAnchor.constraint(equalToConstant: 20 ).isActive = true
         
+        subjectsDifferenceLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)!
+        subjectsDifferenceLabel.text = "ПРИВЕТ"
+//        subjectsDifferenceLabel.attributedText = findDifferenеSubjects(department: department)
     }
+    
+//    func findDifferenеSubjects(department: Department)-> NSAttributedString?{
+//        var result: NSMutableAttributedString?
+//
+//        var subjectsDifference: String
+//        var lastLetter = 0
+//
+//        let positiveDifference: [NSAttributedString.Key: Any] = [
+//            .foregroundColor:  UIColor(red: 255/256, green: 0, blue: 0, alpha: 1),
+//            .backgroundColor: self.backgroundColor!]
+//        let negativesecondAttributes: [NSAttributedString.Key: Any] = [
+//            .foregroundColor: UIColor(red: 0, green: 128/256, blue: 0, alpha: 1),
+//            .backgroundColor: self.backgroundColor!]
+//
+////        result?.addAttributes(firstAttributes, range: NSRange(location: 0, length: 1))
+////        result?.addAttributes(secondAttributes, range: NSRange(location: 13, length: 1))
+////
+//        if Manager.shared.filterSettings.subjects != nil{
+//            for subject in Manager.shared.filterSettings!.subjects{
+//                if !department.subjects.contains(subject){
+//                    result += subject
+//                }
+//            }
+//        } else{
+//            department.subjects.forEach { (subject) in
+//                result NSMutableAttributedString(string: "+ \(subject)" )
+//            }
+//        }
+//
+//        if result != nil{
+//            return result!
+//        } else{ return NSAttributedString(string: "")}
+//    }
     
     func setupMinPoints(department: Department){
         self.addSubview(minPointsLabel)
@@ -53,8 +94,8 @@ final class DepartmentCell: UITableViewCell {
         minPointsLabel.translatesAutoresizingMaskIntoConstraints = false
         
         minPointsLabel.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        minPointsLabel.topAnchor.constraint(equalTo: departmentNameLabel.bottomAnchor).isActive = true
-        minPointsLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -2).isActive = true
+        minPointsLabel.topAnchor.constraint(equalTo: subjectsDifferenceLabel.bottomAnchor).isActive = true
+        minPointsLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         minPointsLabel.widthAnchor.constraint(equalToConstant: 170).isActive = true
         
         minPointsLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)!
@@ -80,15 +121,20 @@ final class DepartmentCell: UITableViewCell {
     
     func setupFollowersLabel(department: Department){
          
-        self.addSubview(followersLabel)
+        addToWishlistButtonStatus.addSubview(followersLabel)
         
         followersLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        followersLabel.topAnchor.constraint(equalTo: minPointsLabel.topAnchor).isActive = true
-        followersLabel.bottomAnchor.constraint(equalTo:minPointsLabel.bottomAnchor).isActive = true
+        followersLabel.topAnchor.constraint(equalTo: addToWishlistButtonStatus.imageView!.topAnchor, constant: 5).isActive = true
+        followersLabel.bottomAnchor.constraint(equalTo: addToWishlistButtonStatus.bottomAnchor).isActive = true
         followersLabel.widthAnchor.constraint(equalTo: addToWishlistButtonStatus.widthAnchor).isActive = true
         followersLabel.centerXAnchor.constraint(equalTo: addToWishlistButtonStatus.centerXAnchor).isActive = true
         
+//        followersLabel.topAnchor.constraint(equalTo: minPointsLabel.topAnchor).isActive = true
+//        followersLabel.bottomAnchor.constraint(equalTo:minPointsLabel.bottomAnchor).isActive = true
+//        followersLabel.widthAnchor.constraint(equalTo: addToWishlistButtonStatus.widthAnchor).isActive = true
+//        followersLabel.centerXAnchor.constraint(equalTo: addToWishlistButtonStatus.centerXAnchor).isActive = true
+//
         followersLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)!
         followersLabel.textAlignment = .center
         
@@ -110,12 +156,11 @@ final class DepartmentCell: UITableViewCell {
         
         departmentFullNameLabel.leftAnchor.constraint(equalTo: departmentNameLabel.rightAnchor, constant: 10).isActive = true
         departmentFullNameLabel.topAnchor.constraint(equalTo: departmentNameLabel.topAnchor).isActive = true
-        departmentFullNameLabel.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        departmentFullNameLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -60).isActive = true
+        departmentFullNameLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
+        departmentFullNameLabel.rightAnchor.constraint(equalTo: addToWishlistButtonStatus.leftAnchor).isActive = true
         
-        departmentNameLabel.heightAnchor.constraint(equalTo: departmentFullNameLabel.heightAnchor).isActive = true // Ровняем  по высоте (для удобства)
-        departmentNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true // Выравниваем
-
+//        departmentNameLabel.centerYAnchor.constraint(equalTo: departmentFullNameLabel.centerYAnchor).isActive = true // Ровняем  по высоте (для удобства)
+        
         departmentFullNameLabel.numberOfLines = 0
         departmentFullNameLabel.font = UIFont(name: "AvenirNext-Regular", size: 18)!
         departmentFullNameLabel.textColor = .black
@@ -131,7 +176,7 @@ final class DepartmentCell: UITableViewCell {
         addToWishlistButtonStatus.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5).isActive = true
         addToWishlistButtonStatus.topAnchor.constraint(equalTo: self.topAnchor, constant: 2).isActive = true
         addToWishlistButtonStatus.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -2).isActive = true
-        addToWishlistButtonStatus.leftAnchor.constraint(equalTo: departmentFullNameLabel.rightAnchor, constant: 5).isActive = true
+        addToWishlistButtonStatus.widthAnchor.constraint(equalToConstant: 40).isActive = true
         addToWishlistButtonStatus.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
         
         if !Manager.shared.departmentStatus(department: department){

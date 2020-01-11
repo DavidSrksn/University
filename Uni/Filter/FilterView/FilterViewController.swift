@@ -538,7 +538,6 @@ extension FilterViewController {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            
             if subjectTableData[indexPath.section].title != subjectTableTitle {
                 dataSourceSubject.insert(subjectTableData[indexPath.section].title, at: 0)
                 for i in 0...(subjectTableData.count - 1) {

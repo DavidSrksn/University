@@ -211,8 +211,8 @@ final class Manager {
         ((controller as? UITabBarController)?.selectedViewController as? UINavigationController)?.viewControllers[0].viewDidLoad()
     }
     
-    func warningCheck(parameter: Int, viewController: UIViewController, warningLabel: UILabel, tableView: UITableView){
-        if parameter == 0{
+    func warningCheck(occasion: String, viewController: UIViewController, warningLabel: UILabel, tableView: UITableView){
+        if occasion == "show"{
             Manager.shared.warningLabel(label: warningLabel, warning: "По вашему запросу \n ничего не найдено", viewController:viewController, tableView: tableView)
         }else{
             warningLabel.alpha = 0

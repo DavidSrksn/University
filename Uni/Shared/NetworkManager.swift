@@ -21,28 +21,26 @@ class NetworkManager{
     let queue = DispatchQueue(label: "Not Main")
     let semaphore = DispatchSemaphore(value: 1)
     
-    
-    func loadUniversities(tableView: UITableView, warningLabel: UILabel, viewcontroller: UIViewController, city: String?, subjects: [String]?, minPoints: Int?, dormitory: Bool?, militaryDepartment: Bool?, completion: (() -> Void)?){
+    func loadUniversities(city: String?, subjects: [String]?, minPoints: Int?, dormitory: Bool?, militaryDepartment: Bool?, completion: ((_ currentUniversity: Int, _ allUniversitiesNumber: Int) -> Void)?){
+        var checkedUniversitiesCounter: Int = 0
+        Manager.shared.UFD.removeAll()
         
-            Manager.shared.UFD.removeAll()
-
-            db.collection("Universities")
+        db.collection("Universities")
             .getDocuments { (querySnapshot1, error) in
-             if let error = error {
-                print("\(error.localizedDescription)")
-                completion?()
-             }else{
-                for document1 in (querySnapshot1?.documents)!{
-                    var flag: Bool = false // Подходит ли универ (в этом случае перестаем рассматривать остальные его факультеты и кафедры)
-                    if ( (document1.data()["city"] as? String == city) || (city == nil) ) && ( (document1.data()["militaryDepartment"] as? Bool == militaryDepartment) || (militaryDepartment == nil) ) && ( (document1.data()["dormitory"] as? Bool == dormitory) || (dormitory == nil) ){
-                        self.db.collection("Universities")
-                            .document("\(document1.documentID)")
-                            .collection("\(document1.data()["name"]!)faculties")
-//                            .order(by: "name")
-                            .getDocuments { (querySnapshot2, error) in
+                if let error = error {
+                    print("\(error.localizedDescription)")
+                    completion?(0,0)
+                }else{
+                    for document1 in (querySnapshot1?.documents)!{
+                        checkedUniversitiesCounter += 1
+                        if ( (document1.data()["city"] as? String == city) || (city == nil) ) && ( (document1.data()["militaryDepartment"] as? Bool == militaryDepartment) || (militaryDepartment == nil) || (militaryDepartment == false)  ) && ( (document1.data()["dormitory"] as? Bool == dormitory) || (dormitory == nil) || (dormitory == false) ){
+                            self.db.collection("Universities")
+                                .document("\(document1.documentID)")
+                                .collection("\(document1.data()["name"]!)faculties")
+                                .getDocuments { (querySnapshot2, error) in
                                     if let error = error {
                                         print("\(error.localizedDescription)")
-                                        completion?()
+                                        completion?(0,0)
                                     }else{
                                         for document2 in (querySnapshot2?.documents)!{ // Сделать очередь на постепенные запросы к firebase (мб DispatchGroup либо очередь)
                                             self.db.collection("Universities")
@@ -50,44 +48,30 @@ class NetworkManager{
                                                 .collection("\(document1.data()["name"]!)faculties")
                                                 .document("\(document2.documentID)")
                                                 .collection("departments")
-                                                .whereField("minPoints", isLessThanOrEqualTo: minPoints ?? 400)
+                                                .whereField("minPoints", isGreaterThanOrEqualTo: minPoints ?? 0)
                                                 .getDocuments { (querySnapshot3, error) in
                                                     if let error = error {
                                                         print("\(error.localizedDescription)")
-                                                        completion?()
+                                                        completion?(0,0)
                                                     } else{
-                                                        Manager.shared.warningCheck(parameter: querySnapshot3?.documents.count ?? 0, viewController: viewcontroller, warningLabel: warningLabel, tableView: tableView)
                                                         for document3 in (querySnapshot3?.documents)!{
-                                                            if (subjects == nil) || ( document3.data()["subjects"] as? [String] == subjects) {
+                                                            if (subjects == nil) || ( (document3.data()["subjects"] as? [String])?.sorted() == subjects?.sorted()) {
                                                                 Manager.shared.UFD[University(dictionary: document1.data())!] = [:]
-                                                                flag = true
-                                                                
-//                                                                 NetworkManager.shared.semaphore.signal()
-                                                                break
                                                             }
                                                         }
-//                                                        NetworkManager.shared.semaphore.signal()
-                                                        
-                                                        Manager.shared.warningCheck(parameter: querySnapshot3?.documents.count ?? 0, viewController: viewcontroller, warningLabel: warningLabel, tableView: tableView)
-                                                        completion?()
-                                                 }
-                                            }
-//                                            NetworkManager.shared.semaphore.wait()
-                                            
-                                            if flag == true{
-                                                break
+                                                        completion?(checkedUniversitiesCounter,(querySnapshot1?.documents)!.count)
+                                                    }
                                             }
                                         }
-                                        completion?()
+                                        completion?(checkedUniversitiesCounter,(querySnapshot1?.documents)!.count)
                                     }
                             }
                         } else{
-                           Manager.shared.warningCheck(parameter: 0, viewController: viewcontroller, warningLabel: warningLabel, tableView: tableView)
-                        completion?()
-                         }
+                            completion?(checkedUniversitiesCounter,(querySnapshot1?.documents)!.count)
+                        }
                     }
-              }
-         }
+                }
+        }
     }
         
         

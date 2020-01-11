@@ -93,6 +93,22 @@ class FilterViewController: UIViewController {
                                  military: &militaryButton.isOn,
                                  campus: &campusButton.isOn)
             
+            updateSubjectTableConstraints(height: CGFloat(subjectTableData.count) * constraints.subjectTableCellHeight)
+            updateContentViewConstraints(to: CGFloat(subjectTableData.count - 1) * constraints.subjectTableCellHeight)
+            
+            dataSourceSubject = dataSourceSubject.filter({ (subj) -> Bool in
+                for data in subjectTableData {
+                    if data.title == subj {
+                        return false
+                    }
+                }
+                return true
+            })
+            
+            for i in 0...(subjectTableData.count - 1) {
+                subjectTableData[i].sectionData = dataSourceSubject
+            }
+            
             if let row = dataSourceCountry.firstIndex(of: countryLabel.text ?? "nil") {
                 self.countryPicker.selectRow(row, inComponent: 0, animated: true)
             }
@@ -101,6 +117,8 @@ class FilterViewController: UIViewController {
             pointsTextField.text = String(Int(pointsSlider.value))
             
             self.pointsTextField.text = "\(Int(pointsSlider.value))"
+            
+            
         }
     }
     

@@ -67,7 +67,7 @@ final class DepartmentCell: UITableViewCell {
         departmentNameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         departmentNameLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
-        departmentNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20).isActive = true
+        departmentNameLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         departmentNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5).isActive = true
         departmentNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 2).isActive = true
         
@@ -109,11 +109,12 @@ final class DepartmentCell: UITableViewCell {
         departmentFullNameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         departmentFullNameLabel.leftAnchor.constraint(equalTo: departmentNameLabel.rightAnchor, constant: 10).isActive = true
-        departmentFullNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 2).isActive = true
-        departmentFullNameLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 40).isActive = true
+        departmentFullNameLabel.topAnchor.constraint(equalTo: departmentNameLabel.topAnchor).isActive = true
+        departmentFullNameLabel.heightAnchor.constraint(equalToConstant: 70).isActive = true
         departmentFullNameLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -60).isActive = true
         
-        departmentNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
+        departmentNameLabel.heightAnchor.constraint(equalTo: departmentFullNameLabel.heightAnchor).isActive = true // Ровняем  по высоте (для удобства)
+        departmentNameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true // Выравниваем
 
         departmentFullNameLabel.numberOfLines = 0
         departmentFullNameLabel.font = UIFont(name: "AvenirNext-Regular", size: 18)!

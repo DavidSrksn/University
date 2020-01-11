@@ -41,7 +41,7 @@ extension SortTableView: UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        Manager.shared.notificationCentre.post(name: Notification.Name(rawValue: "Sort Selected"), object: nil, userInfo: ["type" : indexPath.row])
+        Manager.shared.notificationCenter.post(name: Notification.Name(rawValue: "Sort Selected"), object: nil, userInfo: ["type" : indexPath.row])
         
         choosedSortType = indexPath.row
     }

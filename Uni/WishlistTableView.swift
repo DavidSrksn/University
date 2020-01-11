@@ -45,7 +45,7 @@ final class WishlistTableView: UIViewController {
         if Manager.shared.realm.objects(RealmObject.self).count != 0 {
             self.tableView.separatorColor = .white
         }
-        Manager.shared.notificationCentre.post(Notification(name: Notification.Name(rawValue: "Internet Connection Status Changed")))
+        Manager.shared.notificationCenter.post(Notification(name: Notification.Name(rawValue: "Internet Connection Status Changed")))
     }
     
     
@@ -103,15 +103,9 @@ extension WishlistTableView : UITableViewDataSource,UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
             if editingStyle == .delete {
-                do {
-                    try Manager.shared.realm.write {
-                        Manager.shared.realm.delete(Manager.shared.realm.objects(RealmObject.self).filter("departmentName = '\(((tableView.cellForRow(at: indexPath) as? DropdownCell)?.departmentNameLabel.text)!)'"))
-                    }
-                } catch{
-                    print(error.localizedDescription)
-                }
+                Manager.shared.deleteFromWishlist(sender: nil, setImage: nil, departmentFullName: ((tableView.cellForRow(at: indexPath) as? DropdownCell)?.departmentNameLabel.text)!)
                 deleteMechanic(choosedRow: indexPath.row)
-                Manager.shared.notificationCentre.post(Notification(name: Notification.Name(rawValue: "Department Deleted")))
+                Manager.shared.notificationCenter.post(Notification(name: Notification.Name(rawValue: "Department Deleted")))
                 tableView.reloadData()
             }
     }

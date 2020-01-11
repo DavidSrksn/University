@@ -25,7 +25,7 @@ final class Manager {
     var FollowersWorkItem = DispatchWorkItem(qos: .background, flags: .assignCurrentContext) {
     }
     
-    let notificationCentre = NotificationCenter.default
+    let notificationCenter = NotificationCenter.default 
         
     static let shared = Manager()
     
@@ -82,7 +82,7 @@ final class Manager {
 //                    }else{return firstDep < secondDep }
                     return (sortType?.contains(firstDep.subjects.first(where: { (subject) -> Bool in
                         return (sortType?.contains(subject))!
-                    })!))!
+                    })!))! // ПОФИКСИТЬ  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 })
             }else{
                 break

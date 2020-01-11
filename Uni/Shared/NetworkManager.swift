@@ -19,10 +19,10 @@ class NetworkManager{
     static var shared = NetworkManager()
     
     let queue = DispatchQueue(label: "Not Main")
-    let semaphore = DispatchSemaphore(value: 0)
+    let semaphore = DispatchSemaphore(value: 1)
     
     
-     func loadUniversities(tableView: UITableView, warningLabel: UILabel, viewcontroller: UIViewController, city: String?, subjects: [String]?, minPoints: Int?, dormitory: Bool?, militaryDepartment: Bool?, completion: (() -> Void)?){
+    func loadUniversities(tableView: UITableView, warningLabel: UILabel, viewcontroller: UIViewController, city: String?, subjects: [String]?, minPoints: Int?, dormitory: Bool?, militaryDepartment: Bool?, completion: (() -> Void)?){
         
             Manager.shared.UFD.removeAll()
 
@@ -44,7 +44,7 @@ class NetworkManager{
                                         print("\(error.localizedDescription)")
                                         completion?()
                                     }else{
-                                        for document2 in (querySnapshot2?.documents)!{
+                                        for document2 in (querySnapshot2?.documents)!{ // Сделать очередь на постепенные запросы к firebase (мб DispatchGroup либо очередь)
                                             self.db.collection("Universities")
                                                 .document("\(document1.documentID)")
                                                 .collection("\(document1.data()["name"]!)faculties")
@@ -61,7 +61,8 @@ class NetworkManager{
                                                             if (subjects == nil) || ( document3.data()["subjects"] as? [String] == subjects) {
                                                                 Manager.shared.UFD[University(dictionary: document1.data())!] = [:]
                                                                 flag = true
-//                                                                NetworkManager.shared.semaphore.signal()
+                                                                
+//                                                                 NetworkManager.shared.semaphore.signal()
                                                                 break
                                                             }
                                                         }
@@ -174,7 +175,7 @@ class NetworkManager{
 //        }
 //    }
     
-    func changeFollower(occasion: String, universityname: String,facultyFullName: String, departmentFullName: String) {  //occasion =  "add" или "remove"
+   @objc func changeFollower(occasion: String, universityname: String,facultyFullName: String, departmentFullName: String) {  //occasion =  "add" или "remove"
         var difference: Int
         
         if occasion == "remove"{
@@ -218,8 +219,10 @@ class NetworkManager{
             .collection("departments")
             .document(departmentFullName)
             .addSnapshotListener { (documentSnapshot, error) in
+                if documentSnapshot?.data() != nil{
                 let followers = documentSnapshot?.data()!["followers"] as! Int
                     completion?(followers)
+                }
         }
     }
     

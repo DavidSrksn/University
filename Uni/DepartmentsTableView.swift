@@ -23,11 +23,11 @@ final class DepartmentsTableView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Loader.shared.showActivityIndicatory(uiView: tableView, blurView: Loader.shared.blurView, loadingView: Loader.shared.loadingView , actInd: Loader.shared.actInd)
-        Manager.shared.notificationCentre.addObserver(forName: NSNotification.Name(rawValue: "Department Deleted"), object: .none, queue: .main) { (Notification) in
+        Manager.shared.notificationCenter.addObserver(forName: NSNotification.Name(rawValue: "Department Deleted"), object: .none, queue: .main) { (Notification) in
             self.tableView.reloadData()
         }
         
-        Manager.shared.notificationCentre.addObserver(forName: NSNotification.Name(rawValue: "Sort Selected"), object: .none, queue: .main) { (Notification) in
+        Manager.shared.notificationCenter.addObserver(forName: NSNotification.Name(rawValue: "Sort Selected"), object: .none, queue: .main) { (Notification) in
             self.openSortButtonAction()
             Manager.shared.sort(type: Notification.userInfo!["type"] as! Int, tableView: self.tableView)
         }

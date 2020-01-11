@@ -129,9 +129,6 @@ final class DepartmentsTableView: UIViewController {
         tableView.separatorStyle = .singleLine
         tableView.separatorInset = .zero
         tableView.tableFooterView = UIView.init(frame: .zero)
-        
-//        tableView.sectionHeaderHeight = UITableView.automaticDimension
-        tableView.estimatedSectionHeaderHeight = 50
     }
     
 }

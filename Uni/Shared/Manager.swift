@@ -193,7 +193,7 @@ final class Manager {
     }
     
     func filterSettingsChanged(filter: Filter){
-        if filter.country == Manager.shared.filterSettings.country && filter.campus == Manager.shared.filterSettings.campus && filter.minPoint == Manager.shared.filterSettings.minPoint && filter.campus == Manager.shared.filterSettings.campus && filter.subjects == Manager.shared.filterSettings.subjects {
+        if filter.country == Manager.shared.filterSettings.country && filter.campus == Manager.shared.filterSettings.campus && filter.minPoint == Manager.shared.filterSettings.minPoint && filter.military == Manager.shared.filterSettings.military && filter.subjects == Manager.shared.filterSettings.subjects {
             Manager.shared.flagFilterChanged = false
         } else{
             Manager.shared.flagFilterChanged = true

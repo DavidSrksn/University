@@ -25,7 +25,7 @@ class FilterViewController: UIViewController {
     
     private let dataSourceCountry = ["Любой", "Москва", "Санкт-Петербург", "Омск", "Волгоград", "Владимир", "Екатеринбург", "Уфа", "Владивосток"]
     
-    private var dataSourceSubject = ["Математика", "Русский", "Физика", "Химия", "История", "Обществознание", "Информатика", "Биология", "Георграфия", "Английский", "Немецкий", "Французсский", "Испанский", "Литература"]
+    private var dataSourceSubject = ["математика", "русский", "физика", "химия", "история", "обществознание", "информатика", "биология", "георграфия", "английский", "немецкий", "французсский", "испанский", "литература"]
     
     private let filterScrollView = UIScrollView()
     private let filterContainerView = UIView() // Container to all views using in filter window
@@ -93,14 +93,36 @@ class FilterViewController: UIViewController {
                                  military: &militaryButton.isOn,
                                  campus: &campusButton.isOn)
             
+            updateSubjectTableConstraints(height: CGFloat(subjectTableData.count) * constraints.subjectTableCellHeight)
+            updateContentViewConstraints(to: CGFloat(subjectTableData.count - 1) * constraints.subjectTableCellHeight)
+            
+            dataSourceSubject = dataSourceSubject.filter({ (subj) -> Bool in
+                for data in subjectTableData {
+                    if data.title == subj {
+                        return false
+                    }
+                }
+                return true
+            })
+            
+            for i in 0...(subjectTableData.count - 1) {
+                subjectTableData[i].sectionData = dataSourceSubject
+            }
+            
             if let row = dataSourceCountry.firstIndex(of: countryLabel.text ?? "nil") {
                 self.countryPicker.selectRow(row, inComponent: 0, animated: true)
+            }
+            
+            if countryLabel.text == nil {
+                countryLabel.text = "Город"
             }
             
             pointsSlider.maximumValue = Float(subjectTableData.count * 100)
             pointsTextField.text = String(Int(pointsSlider.value))
             
             self.pointsTextField.text = "\(Int(pointsSlider.value))"
+            
+            
         }
     }
     
@@ -155,6 +177,18 @@ class FilterViewController: UIViewController {
             present(noneSubjectsAlert, animated: true, completion: nil)
             
             return
+        }
+        
+        for data in subjectTableData {
+            if data.opened {
+                let chooseSubjectsAlert = UIAlertController(title: "Пожалуйста, выберите предмет!", message: "Прежде чем добавить новый предмет, необходимо выбрать предмет.", preferredStyle: .alert)
+                let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+                
+                chooseSubjectsAlert.addAction(ok);
+                present(chooseSubjectsAlert, animated: true, completion: nil)
+                
+                return
+            }
         }
         
         subjectTableData.append(subjectData(opened: false,
@@ -489,9 +523,9 @@ extension FilterViewController: UITableViewDelegate {
             updateSubjectTableConstraints(height: curHeight - constraints.subjectTableCellHeight * 4)
             updateContentViewConstraints(to: -constraints.subjectTableCellHeight * 4)
         }
-        
-        let sections = IndexSet.init(integer: indexPath.section)
-        subjectTable.reloadSections(sections, with: .none)
+        subjectTable.reloadData()
+//        let sections = IndexSet.init(integer: indexPath.section)
+//        subjectTable.reloadSections(sections, with: .none)
     }
 }
 
@@ -504,10 +538,11 @@ extension FilterViewController {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            
-            dataSourceSubject.insert(subjectTableData[indexPath.row].title, at: 0)
-            for i in 0...(subjectTableData.count - 1) {
-                subjectTableData[i].sectionData.insert(subjectTableData[indexPath.row].title, at: 0)
+            if subjectTableData[indexPath.section].title != subjectTableTitle {
+                dataSourceSubject.insert(subjectTableData[indexPath.section].title, at: 0)
+                for i in 0...(subjectTableData.count - 1) {
+                    subjectTableData[i].sectionData.insert(subjectTableData[indexPath.section].title, at: 0)
+                }
             }
             
             subjectTableData.remove(at: indexPath.section)

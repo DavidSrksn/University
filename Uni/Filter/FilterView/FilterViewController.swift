@@ -65,6 +65,7 @@ class FilterViewController: UIViewController {
     // MARK: filter view controller lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        firstUsage = Manager.shared.flagFilterFirstUsage
         
         filterScrollView.addSubview(filterContainerView)
         filterContainerView.frame = view.bounds
@@ -111,7 +112,7 @@ class FilterViewController: UIViewController {
         self.fillDataFilter()
         presenter.checkFilterChanged()
         presenter.updateFilterSettings()
-        firstUsage = false
+        Manager.shared.flagFilterFirstUsage = false
         Manager.shared.updateController(controller: presentingViewController!)
     }
     

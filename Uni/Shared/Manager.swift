@@ -37,6 +37,7 @@ final class Manager {
     let realm = try! Realm()
     
     var flagFilterChanged = true
+    var flagFilterFirstUsage = true
     var sortType: String?
     
     var filterSettings = Filter(country: nil, subjects: nil, minPoint: nil, military: nil, campus: nil)

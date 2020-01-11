@@ -25,7 +25,7 @@ class FilterViewController: UIViewController {
     
     private let dataSourceCountry = ["Любой", "Москва", "Санкт-Петербург", "Омск", "Волгоград", "Владимир", "Екатеринбург", "Уфа", "Владивосток"]
     
-    private var dataSourceSubject = ["Математика", "Русский", "Физика", "Химия", "История", "Обществознание", "Информатика", "Биология", "Георграфия", "Английский", "Немецкий", "Французсский", "Испанский", "Литература"]
+    private var dataSourceSubject = ["математика", "русский", "физика", "химия", "история", "обществознание", "информатика", "биология", "георграфия", "английский", "немецкий", "французсский", "испанский", "литература"]
     
     private let filterScrollView = UIScrollView()
     private let filterContainerView = UIView() // Container to all views using in filter window

@@ -20,6 +20,8 @@ class DropdownCell: UITableViewCell{
     
     var facultyFullNameLabel = UILabel()
     
+    @objc var completionBlock: (() -> ())?
+    
     @IBOutlet weak var open: UIButton!
     
     @IBOutlet weak var subjectsLabel: UILabel!
@@ -38,7 +40,7 @@ class DropdownCell: UITableViewCell{
             print(error.localizedDescription)
         }
         Manager.shared.deleteFromWishlist(sender: nil, setImage: nil, departmentFullName: objectToDelete.departmentFullName)
-        Manager.shared.notificationCentre.post(Notification(name: Notification.Name(rawValue: "Department Deleted")))
+        Manager.shared.notificationCenter.post(Notification(name: Notification.Name(rawValue: "Department Deleted")))
         Manager.shared.wishlistQueue.async(execute: Manager.shared.workItem)
     }
     
@@ -113,7 +115,12 @@ class DropdownCell: UITableViewCell{
     }
     
     func setDeleteButton(universityname: String, facultyFullName: String, departmentFullName: String){
-//        deleteButton.addTarget(.none, action: #selector(NetworkManager.shared.changeFollower(occasion:"remove",universityname: universityname, facultyFullName: facultyFullName ,departmentFullName: departmentFullName)), for: .touchUpInside)
+        
+        completionBlock = {
+            NetworkManager.shared.changeFollower(occasion:"remove",universityname: universityname, facultyFullName: facultyFullName ,departmentFullName: departmentFullName)
+        }
+        
+        deleteButton.addTarget(.none, action: #selector(myselector), for: .touchUpInside)
         
         deleteButton.layer.cornerRadius = 5
         deleteButton.setTitle("Удалить", for: .normal)
@@ -129,6 +136,12 @@ class DropdownCell: UITableViewCell{
         
     }
     
+    @objc func myselector() {
+        if let completion = completionBlock {
+            completion()
+        }
+    }
+    
     func setDepartmentLabel(departmentFullName: String){
         
         departmentNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -142,7 +155,7 @@ class DropdownCell: UITableViewCell{
         
         departmentNameLabel.numberOfLines = 0
         departmentNameLabel.textAlignment = .center
-        self.departmentNameLabel.text = departmentFullName
+        departmentNameLabel.text = departmentFullName
         departmentNameLabel.textColor = UIColor.white
     }
     
@@ -243,7 +256,7 @@ class DropdownCell: UITableViewCell{
         followers.backgroundColor = view.backgroundColor
         followers.font = UIFont(name: "AvenirNext-Regular", size: 15)
         var textColor = UIColor()
-        Manager.shared.notificationCentre.addObserver(forName: NSNotification.Name(rawValue: "Internet Connection Status Changed"), object: .none, queue: .main) { (Notification) in
+        Manager.shared.notificationCenter.addObserver(forName: NSNotification.Name(rawValue: "Internet Connection Status Changed"), object: .none, queue: .main) { (Notification) in // При первом запуске не выполняет код внутри
             if NetworkReachabilityManager()!.isReachable{
                 NetworkManager.shared.listenFollowers(universityName: universityName, facultyFullName: facultyFullName, departmentFullName: departmentFullName, completion: { (followersNumber) in
                     message = String(followersNumber)

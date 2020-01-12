@@ -117,12 +117,10 @@ class FilterViewController: UIViewController {
                 countryLabel.text = "Город"
             }
             
-            pointsSlider.maximumValue = Float(subjectTableData.count * 100)
+            pointsSlider.maximumValue = Float(510)
             pointsTextField.text = String(Int(pointsSlider.value))
             
-            self.pointsTextField.text = "\(Int(pointsSlider.value))"
-            
-            
+            self.pointsTextField.text = " \(Int(pointsSlider.value))"
         }
     }
     
@@ -194,11 +192,11 @@ class FilterViewController: UIViewController {
         subjectTableData.append(subjectData(opened: false,
                                             title: subjectTableTitle,
                                             sectionData: dataSourceSubject))
-        if (subjectTableData.count > 3) {
-            pointsSlider.maximumValue = Float(subjectTableData.count * 100)
-        } else {
-            pointsSlider.maximumValue = Float(300)
-        }
+//        if (subjectTableData.count > 3) {
+//            pointsSlider.maximumValue = Float(subjectTableData.count * 100 + 10)
+//        } else {
+//            pointsSlider.maximumValue = Float(310)
+//        }
         subjectTable.reloadData()
         
         updateSubjectTableConstraints(height: CGFloat(subjectTableData.count) * constraints.subjectTableCellHeight)
@@ -303,7 +301,7 @@ extension FilterViewController {
         pointsSlider.tintColor = dataView.sliderColor
         
         pointsSlider.minimumValue = 0
-        pointsSlider.maximumValue = Float(300)
+        pointsSlider.maximumValue = Float(510)
         
         pointsSlider.isContinuous = true
         pointsSlider.addTarget(self, action: #selector(changePoints), for: .valueChanged)
@@ -547,11 +545,11 @@ extension FilterViewController {
             
             subjectTableData.remove(at: indexPath.section)
             
-            if (subjectTableData.count > 3) {
-                pointsSlider.maximumValue = Float(subjectTableData.count * 100)
-            } else {
-                pointsSlider.maximumValue = Float(300)
-            }
+//            if (subjectTableData.count > 3) {
+//                pointsSlider.maximumValue = Float(subjectTableData.count * 100)
+//            } else {
+//                pointsSlider.maximumValue = Float(510)
+//            }
             
             self.changePoints()
             

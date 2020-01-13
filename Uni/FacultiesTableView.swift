@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 import SkeletonView
-import CoreLocation
+import MapKit
 
 final class FacultiesTableView: UIViewController {
     
@@ -150,9 +150,9 @@ final class FacultiesTableView: UIViewController {
     
     @objc func mapButtonAction(){
         let geocoder = CLGeocoder()
-        let universityName = (Manager.shared.choosed[0] as! University).name
+        let university = (Manager.shared.choosed[0] as! University)
         
-        geocoder.geocodeAddressString(universityName) { (placemarkOptions, error) in
+        geocoder.geocodeAddressString("Университет - " + university.name) { (placemarkOptions, error) in
             if let placemarks = placemarkOptions {
                 if let location = placemarks.first?.location {
                     
@@ -160,8 +160,14 @@ final class FacultiesTableView: UIViewController {
                     let path = "http://maps.apple.com/" + query
                     if let url = URL(string: path) {
                         UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    } else {
+                        print("DEBUG #0")
                     }
+                } else {
+                    print("DEBUG #1")
                 }
+            } else {
+                print("DEBUG #2")
             }
         }
     }

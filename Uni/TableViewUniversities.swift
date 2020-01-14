@@ -85,7 +85,7 @@ class TableViewUniversities: UIViewController {
         if  Manager.shared.flagFilterChanged {
             Loader.shared.showActivityIndicatory(uiView: view, blurView: Loader.shared.blurView, loadingView: Loader.shared.loadingView, actInd: Loader.shared.actInd)
             
-            NetworkManager.shared.loadUniversities(city: Manager.shared.filterSettings.country, subjects: Manager.shared.filterSettings.subjects , minPoints: Manager.shared.filterSettings.minPoint, dormitory: Manager.shared.filterSettings.campus, militaryDepartment: Manager.shared.filterSettings.campus, completion: { (currentUniversity, allUniversitiesNumber) in
+            NetworkManager.shared.loadUniversities(city: Manager.shared.filterSettings.country, subjects: Manager.shared.filterSettings.subjects , minPoints: Manager.shared.filterSettings.minPoint, dormitory: Manager.shared.filterSettings.campus, militaryDepartment: Manager.shared.filterSettings.military, completion: { (currentUniversity, allUniversitiesNumber) in
                 DispatchQueue.main.async{
                     Manager.shared.dataUFD = Manager.shared.UFD
                     self.tableView.reloadData()

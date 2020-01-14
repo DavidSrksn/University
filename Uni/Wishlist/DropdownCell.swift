@@ -39,8 +39,8 @@ class DropdownCell: UITableViewCell{
         } catch{
             print(error.localizedDescription)
         }
-        Manager.shared.deleteFromWishlist(sender: nil, setImage: nil, departmentFullName: objectToDelete.departmentFullName)
         Manager.shared.notificationCenter.post(Notification(name: Notification.Name(rawValue: "Department Deleted from wishlist")))
+        Manager.shared.deleteFromWishlist(sender: nil, setImage: nil, departmentFullName: objectToDelete.departmentFullName)
         Manager.shared.wishlistQueue.async(execute: Manager.shared.workItem)
     }
     
@@ -101,8 +101,8 @@ class DropdownCell: UITableViewCell{
         setDeleteButton(universityname: universityName, facultyFullName: departmentFullName, departmentFullName: facultyFullName)
         setMapButton()
         setDepartmentLabel(departmentFullName: departmentFullName)
-        setUniversityName(universityname: universityName)
         setupFacultyLabel(facultyFullName: facultyFullName)
+        setUniversityName(universityname: universityName)
         setSubjects(subjects: subjects)
         setFollowersLabel(departmentFullName: departmentFullName, universityName: universityName, facultyFullName: facultyFullName)
         setupMinPointsLabel(minPoints: minPoints)
@@ -159,7 +159,7 @@ class DropdownCell: UITableViewCell{
         departmentNameLabel.topAnchor.constraint(equalTo: openView.topAnchor, constant: 2).isActive = true
         departmentNameLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5).isActive = true
         departmentNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5).isActive = true
-        departmentNameLabel.bottomAnchor.constraint(greaterThanOrEqualTo: openView.bottomAnchor, constant: -2 ).isActive = true
+        departmentNameLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
         
         departmentNameLabel.centerYAnchor.constraint(equalTo: openView.centerYAnchor).isActive = true
         
@@ -189,9 +189,10 @@ class DropdownCell: UITableViewCell{
         universityName.translatesAutoresizingMaskIntoConstraints = false
         
         universityName.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        universityName.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        universityName.widthAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
+        universityName.rightAnchor.constraint(equalTo: facultyFullNameLabel.leftAnchor).isActive = true
+//        universityName.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         universityName.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        universityName.centerYAnchor.constraint(equalTo: facultyFullNameLabel.centerYAnchor).isActive = true
         
         universityName.textAlignment = .center
         universityName.font = UIFont(name: "AvenirNext-Regular", size: 15)
@@ -213,12 +214,12 @@ class DropdownCell: UITableViewCell{
         
         facultyFullNameLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        facultyFullNameLabel.leftAnchor.constraint(equalTo: universityName.rightAnchor, constant: 5).isActive = true
+        facultyFullNameLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 60).isActive = true
         facultyFullNameLabel.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        facultyFullNameLabel.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        facultyFullNameLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        facultyFullNameLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 5).isActive = true
+        facultyFullNameLabel.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
-        universityName.centerYAnchor.constraint(equalTo: facultyFullNameLabel.centerYAnchor).isActive = true // центрирование Label'ов
+//        universityName.centerYAnchor.constraint(equalTo: facultyFullNameLabel.centerYAnchor).isActive = true // центрирование Label'ов
         
     }
     
@@ -239,7 +240,7 @@ class DropdownCell: UITableViewCell{
     
     func setSubjects(subjects: [String?]) {
         subjectsLabel.backgroundColor = view.backgroundColor
-        subjectsLabel.numberOfLines = 4
+        subjectsLabel.numberOfLines = 5
         subjectsLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)
         subjectsLabel.textColor = .black
         subjectsLabel.text = {(subjects: [String?])->String in
@@ -256,8 +257,9 @@ class DropdownCell: UITableViewCell{
 
         subjectsLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: leftConstraint).isActive = true
         subjectsLabel.topAnchor.constraint(equalTo: facultyFullNameLabel.bottomAnchor, constant: 5).isActive = true
-        subjectsLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 5).isActive = true
-        subjectsLabel.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        subjectsLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 70).isActive = true
+//        subjectsLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        subjectsLabel.rightAnchor.constraint(equalTo: mapButtonOutlet.leftAnchor).isActive = true
     }
     
     func setFollowersLabel(departmentFullName: String, universityName: String,facultyFullName: String){
@@ -271,7 +273,7 @@ class DropdownCell: UITableViewCell{
         }
         followers.translatesAutoresizingMaskIntoConstraints = false
         
-        followers.topAnchor.constraint(equalTo: facultyFullNameLabel.bottomAnchor, constant: 5).isActive = true
+        followers.topAnchor.constraint(equalTo: subjectsLabel.topAnchor).isActive = true
         followers.leftAnchor.constraint(equalTo: subjectsLabel.rightAnchor, constant: 10).isActive = true
         followers.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         followers.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -318,28 +320,7 @@ class DropdownCell: UITableViewCell{
         }
         return count;
     }
-//    func openMaps(adress: String) {
-//        let geocoder = CLGeocoder()
-//        let str = adress // A string of the address info you already have
-//        geocoder.geocodeAddressString(str) { (placemarksOptional, error) -> Void in
-//          if let placemarks = placemarksOptional {
-//            print("placemark| \(String(describing: placemarks.first))")
-//            if let location = placemarks.first?.location {
-//              let query = "?ll=\(location.coordinate.latitude),\(location.coordinate.longitude)"
-//              let path = "http://maps.apple.com/" + query
-//              if let url = NSURL(string: path) {
-//                UIApplication.shared.open(url as URL, options: nil, completionHandler: nil)              } else {
-//                // Could not construct url. Handle error.
-//              }
-//            } else {
-//              // Could not get a location from the geocode request. Handle error.
-//            }
-//          } else {
-//            // Didn't get any placemarks. Handle error.
-//          }
-//        }
-//    }
-//
+
     override func awakeFromNib() {
     }
     

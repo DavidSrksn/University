@@ -62,7 +62,7 @@ class LaunchView: UIViewController {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         var initialVC = sb.instantiateViewController(identifier: "Onboarding")
         let userDefaults = UserDefaults.standard
-        if  !userDefaults.bool(forKey: "Onboarding Complete"){
+        if  userDefaults.bool(forKey: "Onboarding Complete"){
             initialVC = sb.instantiateViewController(identifier: "TabBarController")
         }
         return initialVC

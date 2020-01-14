@@ -11,9 +11,13 @@ import UIKit
 final class DepartmentCell: UITableViewCell {
 
     @IBOutlet weak var addToWishlistButtonStatus: UIButton!
+    
     @IBOutlet weak var departmentNameLabel: UILabel!
+    
     @IBOutlet weak var departmentFullNameLabel: UILabel!
+    
     var minPointsLabel = UILabel()
+    
     var subjectsDifferenceLabel = UILabel()
     
     var followersLabel = UILabel()

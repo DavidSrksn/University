@@ -18,7 +18,6 @@ struct University: Hashable {
     var city: String
     var militaryDepartment: Bool
     var dormitory: Bool
-    var adress: String
     var fullName: String
     
     var dictionary : [String : Any]{
@@ -27,8 +26,7 @@ struct University: Hashable {
             "fullName": fullName,
             "city" : city,
             "militaryDepartment" : militaryDepartment,
-            "dormitory" : dormitory,
-            "adress": adress
+            "dormitory" : dormitory
         ]
       }
     }
@@ -39,11 +37,10 @@ extension University: DocumentSerializable{
             let city = dictionary["city"] as? String,
             let militaryDepartment = dictionary["militaryDepartment"] as? Bool,
             let dormitory = dictionary["dormitory"] as? Bool,
-            let adress = dictionary["adress"] as? String,
             let fullName = dictionary["fullName"] as? String
             else { return nil }
         
-        self.init(name: name, city: city, militaryDepartment: militaryDepartment, dormitory: dormitory, adress: adress, fullName: fullName)
+        self.init(name: name, city: city, militaryDepartment: militaryDepartment, dormitory: dormitory, fullName: fullName)
     }
 }
 

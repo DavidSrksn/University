@@ -20,14 +20,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
  
-//        window?.rootViewController = MainNavigationController()
-        let sb = UIStoryboard(name: "Main", bundle: nil)
-        var initialVC = sb.instantiateViewController(identifier: "Onboarding")
-
-        let userDefaults = UserDefaults.standard
-        if  userDefaults.bool(forKey: "Onboarding Complete"){
-            initialVC = sb.instantiateViewController(identifier: "TabBarController")
-        }
+        window?.rootViewController = MainNavigationController()
+//        let sb = UIStoryboard(name: "Main", bundle: nil)
+        
+        let initialVC = LaunchView()
+        
+//        var initialVC = sb.instantiateViewController(identifier: "Onboarding")
+//        
+////        var initialVC = Database()
+//
+//        let userDefaults = UserDefaults.standard
+//        if  userDefaults.bool(forKey: "Onboarding Complete"){
+//            initialVC = sb.instantiateViewController(identifier: "TabBarController")
+//        }
 
         window?.rootViewController = initialVC
         window?.makeKeyAndVisible()

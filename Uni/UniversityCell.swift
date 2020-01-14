@@ -9,53 +9,70 @@
 import UIKit
 
 final class UniversityCell: UITableViewCell {
-
     
     var universityImage = UIImageView()
     
     var universityLabel = UILabel()
     
-    func setUniversityCell(university: University){
-        setUniversityLabel(university: university)
-        setUniversityImage(university: university)
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    func setupUniversityCell(university: University){
+        let selectedCellview = UIView()
+        selectedCellview.backgroundColor = UIColor(red: 28/256, green: 28/256, blue: 30/256, alpha: 1)
+        self.selectedBackgroundView = selectedCellview
         
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(false, animated: false)
+        setupUniversityLabel(university: university)
+        setupUniversityImage(university: university)
     }
     
-    func setUniversityImage(university: University){
-        let image = UIImage(named: "\(university.name).jpg")
-        let widthRatio = Float((image?.size.width)!) / Float((image?.size.height)!)
-        let heightRatio = Float((image?.size.height)!) / Float((image?.size.width)!)
+    func setupUniversityImage(university: University){
+        
         self.addSubview(universityImage)
         
-        if widthRatio >= 1{
-             universityImage.frame = CGRect(x: self.bounds.maxX - universityImage.bounds.width, y: self.bounds.minY , width: self.bounds.width * 2/6, height: CGFloat(100/widthRatio))
-        }else{
-            universityImage.frame = CGRect(x: self.bounds.maxX - universityImage.bounds.width, y: self.bounds.minY , width: CGFloat((Float(self.bounds.width) * 2/6)/heightRatio), height: (image?.size.height)!)
-        }
-        universityImage.center = CGPoint(x: self.bounds.maxX - universityImage.bounds.width/2, y: self.bounds.maxY/2)
+        let image = UIImage(named: "\(university.name).jpg")
+        
+        universityImage.contentMode = .scaleAspectFit
+        
+        universityImage.translatesAutoresizingMaskIntoConstraints = false
+        
+        universityImage.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        universityImage.leftAnchor.constraint(equalTo: universityLabel.rightAnchor).isActive = true
+        universityImage.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        universityImage.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+
         universityImage.layer.cornerRadius = 15
         universityImage.image = image
-
+        
     }
     
-    func setUniversityLabel(university: University){
-        self.universityLabel.numberOfLines = 0
-        universityLabel.font = UIFont(name: "AvenirNext-Regular", size: 20)
-        self.universityLabel.text = university.fullName
-        universityLabel.frame = CGRect(x: self.bounds.minX + 8, y: self.bounds.minY, width: self.bounds.width * 3.5/6, height: 10)
-        universityLabel.textColor = .black
-        self.universityLabel.sizeToFit()
-        universityLabel.layer.cornerRadius = 50
-        universityLabel.center = CGPoint(x: self.bounds.minX + universityLabel.bounds.width/2 + 8, y: self.bounds.height/2)
-//        universityLabel.lineBreakMode = .byWordWrapping
+    func setupUniversityLabel(university: University){
+        
         self.addSubview(universityLabel)
+        
+        self.universityLabel.numberOfLines = 0
+        
+        universityLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        universityLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5).isActive = true
+        universityLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -1/3*self.frame.width).isActive = true
+        universityLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 2).isActive = true
+        universityLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 40).isActive = true
+        
+        universityLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        
+        universityLabel.textColor = .black
+        universityLabel.layer.cornerRadius = 15
+        universityLabel.font = UIFont(name: "AvenirNext-Regular", size: 20)
+        universityLabel.textAlignment = .center
+        self.universityLabel.text = university.fullName
+        
     }
+    
+      override func awakeFromNib() {
+          super.awakeFromNib()
+          
+      }
+
+      override func setSelected(_ selected: Bool, animated: Bool) {
+          super.setSelected(false, animated: false)
+      }
+    
 }

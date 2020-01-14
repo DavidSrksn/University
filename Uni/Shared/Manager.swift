@@ -12,6 +12,7 @@ import RealmSwift
 import CircleMenu
 import paper_onboarding
 import UIKit
+import MapKit
 
 final class Manager {
     
@@ -113,6 +114,35 @@ final class Manager {
                 catch{
                     print(error.localizedDescription)
                 }
+            }
+        }
+    }
+    
+    func openMaps(university: University) {
+        let geocoder = CLGeocoder()
+        var name: String
+        if (university.city == "Москва") {
+            name = university.fullName
+        } else {
+            name = university.name
+        }
+        
+        geocoder.geocodeAddressString("МГТУ им Н.Э. Баумана") { (placemarkOptions, error) in
+            if let placemarks = placemarkOptions {
+                if let location = placemarks.first?.location {
+                    
+                    let query = "?daddr=\(location.coordinate.latitude),\(location.coordinate.longitude)"
+                    let path = "http://maps.apple.com/" + query
+                    if let url = URL(string: path) {
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    } else {
+                        print("DEBUG #0")
+                    }
+                } else {
+                    print("DEBUG #1")
+                }
+            } else {
+                print("DEBUG #2")
             }
         }
     }

@@ -36,7 +36,7 @@ class DropdownCell: UITableViewCell{
             try Manager.shared.realm.write {
               objectToDelete = Manager.shared.realm.objects(RealmObject.self).filter("departmentFullName = '\((self.departmentNameLabel.text)!)'")[0]
             }
-        } catch{
+        } catch {
             print(error.localizedDescription)
         }
         Manager.shared.deleteFromWishlist(sender: nil, setImage: nil, departmentFullName: objectToDelete.departmentFullName)
@@ -49,7 +49,22 @@ class DropdownCell: UITableViewCell{
     @IBOutlet weak var mapButtonOutlet: UIButton!
     
     @IBAction func mapButton(_ sender: UIButton) {
+        var department: RealmObject = RealmObject()
         
+        do {
+            try Manager.shared.realm.write {
+                department = Manager.shared.realm.objects(RealmObject.self).filter("departmentFullName = '\((self.departmentNameLabel.text)!)'")[0]
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        for val in Manager.shared.UFD {
+            if val.key.name == department.universityName {
+                Manager.shared.openMaps(university: val.key)
+                return
+            }
+        }
     }
     
     @IBOutlet weak var openView: UIView!
@@ -318,28 +333,7 @@ class DropdownCell: UITableViewCell{
         }
         return count;
     }
-//    func openMaps(adress: String) {
-//        let geocoder = CLGeocoder()
-//        let str = adress // A string of the address info you already have
-//        geocoder.geocodeAddressString(str) { (placemarksOptional, error) -> Void in
-//          if let placemarks = placemarksOptional {
-//            print("placemark| \(String(describing: placemarks.first))")
-//            if let location = placemarks.first?.location {
-//              let query = "?ll=\(location.coordinate.latitude),\(location.coordinate.longitude)"
-//              let path = "http://maps.apple.com/" + query
-//              if let url = NSURL(string: path) {
-//                UIApplication.shared.open(url as URL, options: nil, completionHandler: nil)              } else {
-//                // Could not construct url. Handle error.
-//              }
-//            } else {
-//              // Could not get a location from the geocode request. Handle error.
-//            }
-//          } else {
-//            // Didn't get any placemarks. Handle error.
-//          }
-//        }
-//    }
-//
+
     override func awakeFromNib() {
     }
     

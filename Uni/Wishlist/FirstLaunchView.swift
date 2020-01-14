@@ -123,10 +123,17 @@ extension FirstLaunchView: PaperOnboardingDataSource, PaperOnboardingDelegate{
         
         let transparentImage =  UIImageView(image: UIImage(named: "Transparent.jpg"))
         
-        return[OnboardingItemInfo(informationImage: UIImage(named: "МГТУ.jpg")!, title: "Выбери университет на свой вкус", description: "Выбери университет, основываясь на личных требованиях и предпочтениях", pageIcon: transparentImage.image!, color: backgroundColourOne, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
-               OnboardingItemInfo(informationImage: UIImage(named: "МФТИ.jpg")!, title: "Test", description: "Test", pageIcon: transparentImage.image!, color: backgroundColourTwo, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
-               OnboardingItemInfo(informationImage: UIImage(named: "РУДН.jpg")!, title: "Testing", description: "Плохой альбом", pageIcon: transparentImage.image!, color: backgroundColourThree, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
-               OnboardingItemInfo(informationImage: transparentImage.image!, title: "Выбери свои предпочтения", description: "черная - технарь \n белая - гуманитарий \n (пример)", pageIcon: transparentImage.image!, color: .carrot, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont)
+        UIGraphicsEndImageContext()
+//        let secondImage = setupSecondImage()
+        let thirdImage = UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysTemplate)
+        thirdImage?.withTintColor(.black)
+//        let fourthImage = UIImage(named: "Add to wishlist Example")!
+        
+        
+        return[OnboardingItemInfo(informationImage: UIImage(named: "FirstLaunch Image1")!, title: "Выбирайте университет по личным предпочтениям", description: "", pageIcon: transparentImage.image!, color: backgroundColourOne, titleColor: UIColor.black, descriptionColor: UIColor.black, titleFont: titleFont, descriptionFont: descriptionFont),
+               OnboardingItemInfo(informationImage: UIImage(systemName: "map.fill")!, title: "Рассчитывайте время маршрута до выбранного университета", description: "", pageIcon: transparentImage.image!, color: backgroundColourTwo, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
+               OnboardingItemInfo(informationImage: thirdImage!, title: "Добавляйте понравившиеся кафедры в избранное и просматривайте их offline", description: "", pageIcon: transparentImage.image!, color: backgroundColourThree, titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
+               OnboardingItemInfo(informationImage: transparentImage.image!, title: "Выберите свои интересы", description: "черная - гуманитарные науки \n белая - технические науки \n голубая - естественные науки", pageIcon: transparentImage.image!, color: #colorLiteral(red: 0.9334822297, green: 0.9955082536, blue: 0.9193486571, alpha: 1), titleColor: UIColor.black, descriptionColor: UIColor.black, titleFont: titleFont, descriptionFont: descriptionFont)
             ][index]
     }
     
@@ -159,7 +166,7 @@ extension FirstLaunchView: PaperOnboardingDataSource, PaperOnboardingDelegate{
            setupCircleButton()
         }else{
             circleButton.hideButtons(0.25)
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: 0.1) {
                       self.circleButton.alpha = 0
                   }
         }

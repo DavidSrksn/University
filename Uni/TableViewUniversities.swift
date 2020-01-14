@@ -49,10 +49,10 @@ class TableViewUniversities: UIViewController {
     }
     
     private func setupNavigationItem() {
-        searchTitle.text = "University"
+        searchTitle.text = "Uni"
         searchTitle.textAlignment = .center
         searchTitle.textColor = .white
-        searchTitle.font = UIFont(name: "Baskerville-Bold", size: 24)
+        searchTitle.font = UIFont(name: "Georgia", size: 24)
         
         navigationItem.titleView = searchTitle
     }
@@ -100,6 +100,7 @@ class TableViewUniversities: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.setNeedsStatusBarAppearanceUpdate()
         filterButton.isHidden = false
         filterButton.isEnabled = true
     }
@@ -130,8 +131,9 @@ class TableViewUniversities: UIViewController {
     }
   
     func setupTable(){
-        self.title = "University"
+        self.title = "Uni"
         
+        self.tabBarController?.tabBar.items?[0].title = NSLocalizedString("Home", comment: "")
         tableView.clipsToBounds = true
         tableView.tableFooterView = UIView()
         
@@ -197,6 +199,7 @@ extension TableViewUniversities :  SkeletonTableViewDataSource, SkeletonTableVie
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             Manager.shared.choosed[0] = Array(Manager.shared.UFD.keys)[indexPath.row]
             let viewController = storyboard?.instantiateViewController(identifier: "факультет") as! FacultiesTableView
+            tableView.deselectRow(at: indexPath, animated: true)
             navigationController?.pushViewController(viewController, animated: true)
     }
     

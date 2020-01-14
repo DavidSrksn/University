@@ -23,7 +23,7 @@ final class DepartmentsTableView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Loader.shared.showActivityIndicatory(uiView: tableView, blurView: Loader.shared.blurView, loadingView: Loader.shared.loadingView , actInd: Loader.shared.actInd)
-        Manager.shared.notificationCenter.addObserver(forName: NSNotification.Name(rawValue: "Department Deleted"), object: .none, queue: .main) { (Notification) in
+        Manager.shared.notificationCenter.addObserver(forName: NSNotification.Name(rawValue: "Department Deleted from wishlist"), object: .none, queue: .main) { (Notification) in
             self.tableView.reloadData()
         }
         
@@ -44,7 +44,6 @@ final class DepartmentsTableView: UIViewController {
     }
     
     func setupOpenSortButton(){
-          
           navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Сортировать", style: .plain, target: self, action: #selector(openSortButtonAction))
           navigationItem.rightBarButtonItem?.tintColor = .white
       }
@@ -99,7 +98,7 @@ final class DepartmentsTableView: UIViewController {
         sortHeader.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         sortHeader.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        sortHeader.backgroundColor = .systemBlue
+        sortHeader.backgroundColor = UIColor(red: 28/256, green: 28/256, blue: 30/256, alpha: 1)
         sortHeader.textColor = .white
         sortHeader.text = "Выберите тип сортировки"
         sortHeader.font = UIFont(name: "AvenirNext-Regular", size: 18)!
@@ -148,51 +147,26 @@ extension DepartmentsTableView : UITableViewDataSource,UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        let sizeDifference: CGFloat = 10
-        
         let backgroundView = UIView()
-        let choosedSubjects = UILabel()
+        let label = UILabel()
         
         backgroundView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 100)
         
-        let label = UILabel()
-        
-        label.frame = CGRect(x: sizeDifference, y: sizeDifference, width: backgroundView.frame.width - 2 * sizeDifference, height: backgroundView.frame.height - 3 * sizeDifference ) // 40 - высота выбранных предметов
+        label.frame = CGRect(x: 10, y: 10, width: view.frame.width - 20, height: 80)
+        label.layer.masksToBounds = true
         
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.textColor = .black
-        label.backgroundColor = view.backgroundColor
+        label.textColor = .white
+        label.backgroundColor = UIColor(red: 28/256, green: 28/256, blue: 30/256, alpha: 1)
         label.font = UIFont(name: "AvenirNext-Bold", size: 20)!
         
         label.text = "\((Manager.shared.choosed[1] as! Faculty).fullName)"
-        
-        backgroundView.layer.borderColor = UIColor.separator.cgColor
-        backgroundView.layer.borderWidth = 3
-        backgroundView.layer.cornerRadius = 10
-        label.layer.cornerRadius = backgroundView.layer.cornerRadius
+
+        label.layer.cornerRadius = 10
         
         backgroundView.addSubview(label)
-        label.addSubview(choosedSubjects)
-        
-        choosedSubjects.translatesAutoresizingMaskIntoConstraints = false
-        
-        choosedSubjects.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor).isActive = true
-        choosedSubjects.leftAnchor.constraint(equalTo: backgroundView.leftAnchor,constant: sizeDifference).isActive = true
-        choosedSubjects.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        choosedSubjects.widthAnchor.constraint(greaterThanOrEqualToConstant: 100).isActive = true
-        
-        choosedSubjects.font = UIFont(name: "AvenirNext-Regular", size: 15)!
-        choosedSubjects.textColor = UIColor(red: 0, green: 128/256, blue: 0, alpha: 1)
-        choosedSubjects.text = ""
-        
-        for subject in Manager.shared.filterSettings.subjects ?? [""]{
-            if subject != ""{
-            choosedSubjects.text! += "+\(subject) ,"
-            }
-        }
-        
+
         return backgroundView
     }
     
@@ -201,16 +175,20 @@ extension DepartmentsTableView : UITableViewDataSource,UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 120
+        return 150
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let department = Manager.shared.UFD[Manager.shared.choosed[0] as! University]?[Manager.shared.choosed[1] as? Faculty]!![indexPath.row]
         
         var alert = UIAlertController()
+        var name = department?.fullName
         
-        if (department?.name) != nil{
-            alert = UIAlertController(title: "", message: "Перейти на сайт кафедры \(department!.name)?", preferredStyle: .alert)
+        if (department?.name) != ""{
+            name = department?.name
+        }
+        if department?.link != "" {
+            alert = UIAlertController(title: "", message: "Перейти на сайт кафедры \(name!)?", preferredStyle: .alert)
             
             alert.addAction(UIAlertAction(title: "Ок", style: .default, handler: { (alert: UIAlertAction) -> Void in
                 if let url = URL(string: "\(department!.link)") {

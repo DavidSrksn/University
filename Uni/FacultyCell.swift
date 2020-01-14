@@ -14,6 +14,10 @@ final class FacultyCell: UITableViewCell {
     var facultyFullNameLabel = UILabel()
     
     func setFacultyCell(faculty: Faculty){
+        let selectedCellview = UIView()
+        selectedCellview.backgroundColor = UIColor(red: 28/256, green: 28/256, blue: 30/256, alpha: 1)
+        self.selectedBackgroundView = selectedCellview
+        
         setupFacultyLabel(faculty: faculty)
         setupFacultyFullNameLabel(faculty: faculty)
        }

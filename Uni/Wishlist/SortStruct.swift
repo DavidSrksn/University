@@ -13,7 +13,7 @@ struct Sort {
     static var shared = Sort()
     
     enum Occasions: String, CaseIterable{
-        case defaultSort = "По умолчанию"
+        case defaultSort = "По интересам"
         case minPointAscending = "По баллам (возрастанию)"
         case minPointDescending = "По баллам (убыванию)"
     }

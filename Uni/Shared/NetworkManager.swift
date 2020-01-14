@@ -22,7 +22,15 @@ class NetworkManager{
     let semaphore = DispatchSemaphore(value: 1)
     
     func loadUniversities(city: String?, subjects: [String]?, minPoints: Int?, dormitory: Bool?, militaryDepartment: Bool?, completion: ((_ currentUniversity: Int, _ allUniversitiesNumber: Int) -> Void)?){
+        
+        var minPoint: Int?
+        if (minPoints == 0) || (minPoints == nil){
+             minPoint = nil
+        }else{  minPoint = minPoints}
+        
         var checkedUniversitiesCounter: Int = 0
+        var passedUniversitiesCounter: Int = 100
+        
         Manager.shared.UFD.removeAll()
         
         db.collection("Universities")
@@ -31,43 +39,52 @@ class NetworkManager{
                     print("\(error.localizedDescription)")
                     completion?(0,0)
                 }else{
-                    for document1 in (querySnapshot1?.documents)!{
+                    passedUniversitiesCounter = 0
+                    for university in (querySnapshot1?.documents)!{
                         checkedUniversitiesCounter += 1
-                        if ( (document1.data()["city"] as? String == city) || (city == nil) ) && ( (document1.data()["militaryDepartment"] as? Bool == militaryDepartment) || (militaryDepartment == nil) || (militaryDepartment == false)  ) && ( (document1.data()["dormitory"] as? Bool == dormitory) || (dormitory == nil) || (dormitory == false) ){
+                        if ( (university.data()["city"] as? String == city) || (city == nil) ) && ( (university.data()["militaryDepartment"] as? Bool == militaryDepartment) || (militaryDepartment == nil) || (militaryDepartment == false)  ) && ( (university.data()["dormitory"] as? Bool == dormitory) || (dormitory == nil) || (dormitory == false) ){
+                            
+                            passedUniversitiesCounter += 1
                             self.db.collection("Universities")
-                                .document("\(document1.documentID)")
-                                .collection("\(document1.data()["name"]!)faculties")
+                                .document("\(university.documentID)")
+                                .collection("\(university.data()["name"]!)faculties")
                                 .getDocuments { (querySnapshot2, error) in
                                     if let error = error {
                                         print("\(error.localizedDescription)")
                                         completion?(0,0)
                                     }else{
-                                        for document2 in (querySnapshot2?.documents)!{ // Сделать очередь на постепенные запросы к firebase (мб DispatchGroup либо очередь)
+                                        for faculty in (querySnapshot2?.documents)!{ // Сделать очередь на постепенные запросы к firebase (мб DispatchGroup либо очередь)
                                             self.db.collection("Universities")
-                                                .document("\(document1.documentID)")
-                                                .collection("\(document1.data()["name"]!)faculties")
-                                                .document("\(document2.documentID)")
+                                                .document("\(university.documentID)")
+                                                .collection("\(university.data()["name"]!)faculties")
+                                                .document("\(faculty.documentID)")
                                                 .collection("departments")
-                                                .whereField("minPoints", isGreaterThanOrEqualTo: minPoints ?? 0)
+                                                .whereField("minPoints", isLessThanOrEqualTo: minPoint ?? 500)
                                                 .getDocuments { (querySnapshot3, error) in
                                                     if let error = error {
                                                         print("\(error.localizedDescription)")
                                                         completion?(0,0)
                                                     } else{
-                                                        for document3 in (querySnapshot3?.documents)!{
-                                                            if (subjects == nil) || ( (document3.data()["subjects"] as? [String])?.sorted() == subjects?.sorted()) {
-                                                                Manager.shared.UFD[University(dictionary: document1.data())!] = [:]
+                                                        for department in (querySnapshot3?.documents)!{
+                                                            if (subjects == nil) ||  ((department.data()["subjects"] as? [String])?.sorted().contains(where: { (subject) -> Bool in
+                                                                for filterSubject in (subjects?.sorted())!{
+                                                                    if subject == filterSubject{
+                                                                        return true
+                                                                    }
+                                                                }
+                                                                return false
+                                                            }))! {
+                                                                Manager.shared.UFD[University(dictionary: university.data())!] = [:]
                                                             }
                                                         }
-                                                        completion?(checkedUniversitiesCounter,(querySnapshot1?.documents)!.count)
+                                                        completion?(checkedUniversitiesCounter,(querySnapshot1?.documents)?.count ?? 0)
                                                     }
                                             }
                                         }
-                                        completion?(checkedUniversitiesCounter,(querySnapshot1?.documents)!.count)
                                     }
                             }
-                        } else{
-                            completion?(checkedUniversitiesCounter,(querySnapshot1?.documents)!.count)
+                        } else if passedUniversitiesCounter == 0{
+                            completion?(checkedUniversitiesCounter,(querySnapshot1?.documents)?.count ?? 0)
                         }
                     }
                 }
@@ -76,6 +93,12 @@ class NetworkManager{
         
         
     func loadFaculties(minPoints: Int?, subjects: [String]?, completion: (() -> Void)?) {
+        
+        var minPoint: Int?
+        if (minPoints == 0) || (minPoints == nil){
+             minPoint = nil
+        }else{  minPoint = minPoints}
+        
         db.collection("Universities")
             .document((Manager.shared.choosed[0] as! University).name)
             .collection("\((Manager.shared.choosed[0] as! University).name)faculties")
@@ -83,29 +106,32 @@ class NetworkManager{
                 if let error = error {
                     print("\(error.localizedDescription)")
                     completion?()
-                }else {
-                    for document1 in (querySnapshot1?.documents)!{
+                } else{
+                    for faculty in (querySnapshot1?.documents)!{
                         self.db.collection("Universities")
                             .document((Manager.shared.choosed[0] as! University).name)
                             .collection("\((Manager.shared.choosed[0] as! University).name)faculties")
-                            .document("\(document1.documentID)")
+                            .document("\(faculty.documentID)")
                             .collection("departments")
-                            .whereField("minPoints", isLessThanOrEqualTo: minPoints ?? 400)
-//                            .order(by: "subjects")
+                            .whereField("minPoints", isLessThanOrEqualTo: minPoint ?? 500)
                             .getDocuments { (querySnapshot3, error) in
                                 if let error = error {
                                     print("\(error.localizedDescription)")
+                                    completion?()
                                 }else{
-                                    for document2 in (querySnapshot3?.documents)!{
-                                        if subjects != nil{
-                                            if document2.data()["subjects"] as? [String] == subjects {
-                                                Manager.shared.UFD[University(dictionary: document1.data())!]?[Faculty(dictionary: document1.data())] = []
+                                    for department in (querySnapshot3?.documents)!{
+                                        if (subjects == nil) ||  ((department.data()["subjects"] as? [String])?.sorted().contains(where: { (subject) -> Bool in
+                                            for filterSubject in (subjects?.sorted())!{
+                                                if subject == filterSubject{
+                                                    return true
+                                                }
                                             }
-                                        }else{
-                                            Manager.shared.UFD[(Manager.shared.choosed[0] as! University)]?[Faculty(dictionary: document1.data())] = []
+                                            return false
+                                        }))!{
+                                            Manager.shared.UFD[(Manager.shared.choosed[0] as! University)]?[Faculty(dictionary: faculty.data())] = []
                                         }
-                                        completion?()
                                     }
+                                    completion?()
                                 }
                         }
                     }
@@ -114,52 +140,42 @@ class NetworkManager{
     }
         
     func loadDepartments(subjects: [String]? ,minPoints: Int?, completion: (() -> Void)?) {
+        var minPoint: Int?
+        if (minPoints == 0) || (minPoints == nil){
+             minPoint = nil
+        }else{  minPoint = minPoints}
+        
         db.collection("Universities")
             .document((Manager.shared.choosed[0] as! University).name)
             .collection("\((Manager.shared.choosed[0] as! University).name)faculties")
             .document((Manager.shared.choosed[1] as! Faculty).fullName)
             .collection("departments")
-            .whereField("minPoints", isLessThanOrEqualTo: minPoints ?? 400)
+            .whereField("minPoints", isLessThanOrEqualTo: minPoint ?? 500)
             .getDocuments { (querySnapshot, error) in
                 var arrayOfDepartmnets = [Department]()
                 if let error = error {
                     print("\(error.localizedDescription)")
+                    completion?()
                 }else{
-                    for document in (querySnapshot?.documents)! {
- 
-                            arrayOfDepartmnets.append(Department(dictionary: document.data())!)
-
+                    for department in (querySnapshot?.documents)! {
+                        if (subjects == nil) ||  ((department.data()["subjects"] as? [String])?.sorted().contains(where: { (subject) -> Bool in
+                            for filterSubject in (subjects?.sorted())!{
+                                if subject == filterSubject{
+                                    return true
+                                }
+                            }
+                            return false
+                        }))!{
+                            arrayOfDepartmnets.append(Department(dictionary: department.data())!)
+                        }
                     }
                     Manager.shared.UFD[(Manager.shared.choosed[0] as! University)]?[(Manager.shared.choosed[1] as! Faculty)] =  arrayOfDepartmnets
                     completion?()
                 }
         }
     }
-                         
     
-    
-//    func followersMonitoring(departmentFullName: String, universityName: String, departmentFollowers: inout Int?, facultyFullName: String, completion: ((Int)->Void)? ){
-//
-//        var followersNumber: Int?
-//
-//        db.collection("Universities")
-//            .document(universityName)
-//            .collection("\(universityName)faculties")
-//            .document(facultyFullName)
-//            .collection("\(facultyFullName)departments")
-//            .document(departmentFullName)
-//
-//            .getDocument { (querySnapshot, error) in
-//                if let error = error{
-//                    print(error.localizedDescription)
-//                }else{
-//                    followersNumber = querySnapshot?.data()!["followers"] as? Int
-//                    completion?(followersNumber!)
-//                }
-//        }
-//    }
-    
-   @objc func changeFollower(occasion: String, universityname: String,facultyFullName: String, departmentFullName: String) {  //occasion =  "add" или "remove"
+    @objc func changeFollower(occasion: String, universityname: String,facultyFullName: String, departmentFullName: String) {  //occasion =  "add" или "remove"
         var difference: Int
         
         if occasion == "remove"{
@@ -176,21 +192,22 @@ class NetworkManager{
                 if let error = error {
                     print("\(error.localizedDescription)")
                 }else{
-                    let currentFollowers = (querySnapshot!.data()!["followers"] as! Int)
-                    self.db.collection("Universities")
-                        .document(universityname)
-                        .collection("\(universityname)faculties")
-                        .document(facultyFullName)
-                        .collection("departments")
-                        .document(departmentFullName)
-                        .updateData(["followers": currentFollowers + difference]) { (error) in
-                            if let error = error {
-                                print("\(error.localizedDescription)")
-                            }else{
-                                print("Updating is completed")
-                            }
+                    if let data = querySnapshot!.data(){
+                        let currentFollowers = data["followers"] as! Int
+                        self.db.collection("Universities")
+                            .document(universityname)
+                            .collection("\(universityname)faculties")
+                            .document(facultyFullName)
+                            .collection("departments")
+                            .document(departmentFullName)
+                            .updateData(["followers": currentFollowers + difference]) { (error) in
+                                if let error = error {
+                                    print("\(error.localizedDescription)")
+                                }else{
+                                    print("Updating is completed")
+                                }
+                        }
                     }
-                    
                 }
         }
     }

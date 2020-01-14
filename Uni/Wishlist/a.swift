@@ -62,7 +62,7 @@ class SortCell: UITableViewCell {
                 choosedView.backgroundColor = self.backgroundColor
                 
                 choosedView.image = UIImage(systemName: "checkmark")
-                choosedView.tintColor = .systemBlue
+                choosedView.tintColor = UIColor(red: 28/256, green: 28/256, blue: 30/256, alpha: 1)
             }else{
                 choosedView.image = UIImage(named: "Transparent.jpg")
             }

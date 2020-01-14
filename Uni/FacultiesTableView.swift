@@ -280,6 +280,7 @@ final class FacultiesTableView: UIViewController {
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             Manager.shared.choosed[1] = Array((Manager.shared.UFD[Manager.shared.choosed[0] as! University]?.keys)!)[indexPath.row]
             let viewController = storyboard?.instantiateViewController(identifier: "кафедра") as! DepartmentsTableView
+            tableView.deselectRow(at: indexPath, animated: true)
             navigationController?.pushViewController(viewController, animated: true)
         }
 }

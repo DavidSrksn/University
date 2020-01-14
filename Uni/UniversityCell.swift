@@ -15,9 +15,12 @@ final class UniversityCell: UITableViewCell {
     var universityLabel = UILabel()
     
     func setupUniversityCell(university: University){
+        let selectedCellview = UIView()
+        selectedCellview.backgroundColor = UIColor(red: 28/256, green: 28/256, blue: 30/256, alpha: 1)
+        self.selectedBackgroundView = selectedCellview
+        
         setupUniversityLabel(university: university)
         setupUniversityImage(university: university)
-
     }
     
     func setupUniversityImage(university: University){

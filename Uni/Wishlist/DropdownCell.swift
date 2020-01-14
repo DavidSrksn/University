@@ -40,7 +40,7 @@ class DropdownCell: UITableViewCell{
             print(error.localizedDescription)
         }
         Manager.shared.deleteFromWishlist(sender: nil, setImage: nil, departmentFullName: objectToDelete.departmentFullName)
-        Manager.shared.notificationCenter.post(Notification(name: Notification.Name(rawValue: "Department Deleted")))
+        Manager.shared.notificationCenter.post(Notification(name: Notification.Name(rawValue: "Department Deleted from wishlist")))
         Manager.shared.wishlistQueue.async(execute: Manager.shared.workItem)
     }
     
@@ -64,6 +64,16 @@ class DropdownCell: UITableViewCell{
             view.alpha = 0
         }
     }
+    
+//    func checkCellExists() -> Bool{
+//        let realmObjects = Array(Manager.shared.realm.objects(RealmObject.self).filter("minPoints != -1"))
+//        
+//        if realmObjects.contains(where: { (object) -> Bool in
+//            return object.departmentFullName == self.departmentNameLabel.text
+//        }){
+//            return true
+//        }else{ return false}
+//    }
     
     func animate(duration:Double, c: @escaping () -> Void) {
         UIView.animateKeyframes(withDuration: duration, delay: 0, options: .calculationModePaced, animations: {
@@ -106,7 +116,7 @@ class DropdownCell: UITableViewCell{
         
         minPointsLabel.font = UIFont(name: "AvenirNext-Regular", size: 15)
         minPointsLabel.textColor = .black
-        minPointsLabel.text = "Проходной балл = \(minPoints)"
+        minPointsLabel.text = "Проходной балл: \(minPoints)"
         
         minPointsLabel.topAnchor.constraint(equalTo: followers.bottomAnchor, constant: 5).isActive = true
         minPointsLabel.leftAnchor.constraint(equalTo: followers.leftAnchor).isActive = true
@@ -163,7 +173,7 @@ class DropdownCell: UITableViewCell{
         openView.frame = cell.bounds
         open.frame = openView.frame
         openView.frame = CGRect(x: cell.bounds.origin.x, y: cell.bounds.origin.y, width: cell.bounds.size.width, height: cell.bounds.size.height)
-        self.openView.backgroundColor = .darkGray
+        self.openView.backgroundColor = UIColor(red: 28/256, green: 28/256, blue: 30/256, alpha: 1)
     }
     
     func setView(cell: UITableViewCell){
@@ -171,7 +181,7 @@ class DropdownCell: UITableViewCell{
         
         view.frame = CGRect(x: openView.frame.minX, y: openView.frame.maxY, width: cell.bounds.size.width - 8, height: 210)
         view.frame.size.width = openView.frame.size.width
-        self.view.backgroundColor = #colorLiteral(red: 0.7747164369, green: 0.9268901944, blue: 0.880443871, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 0.9334822297, green: 0.9955082536, blue: 0.9193486571, alpha: 1)
     }
     
     func setUniversityName(universityname: String){
@@ -251,38 +261,13 @@ class DropdownCell: UITableViewCell{
     }
     
     func setFollowersLabel(departmentFullName: String, universityName: String,facultyFullName: String){
-        var message: String = ""
         
         followers.backgroundColor = view.backgroundColor
         followers.font = UIFont(name: "AvenirNext-Regular", size: 15)
-        var textColor = UIColor()
+        setFollowersLabelAttributedText(departmentFullName: departmentFullName, universityName: universityName,facultyFullName: facultyFullName)
+        
         Manager.shared.notificationCenter.addObserver(forName: NSNotification.Name(rawValue: "Internet Connection Status Changed"), object: .none, queue: .main) { (Notification) in // При первом запуске не выполняет код внутри
-            if NetworkReachabilityManager()!.isReachable{
-                NetworkManager.shared.listenFollowers(universityName: universityName, facultyFullName: facultyFullName, departmentFullName: departmentFullName, completion: { (followersNumber) in
-                    message = String(followersNumber)
-                    
-                    if followersNumber != 0{
-                        textColor = .black
-                    }else{
-                        textColor = .red
-                    }
-                    
-                    let atributedString =  NSMutableAttributedString(string: "Подписчиков: "+"\(message)")
-                    
-                    let firstAttributes: [NSAttributedString.Key: Any] = [
-                        .foregroundColor: UIColor.black,
-                        .backgroundColor: self.view.backgroundColor!]
-                    let secondAttributes: [NSAttributedString.Key: Any] = [
-                        .foregroundColor: textColor,
-                        .backgroundColor: self.view.backgroundColor!]
-                    atributedString.addAttributes(firstAttributes, range: NSRange(location: 0, length: 13))
-                    atributedString.addAttributes(secondAttributes, range: NSRange(location: 13, length: self.countDigits(number: followersNumber)))
-                    
-                    self.followers.attributedText = atributedString
-                })
-            }else{
-                self.followers.text = "Подписчиков: Нет соединения"
-            }
+            self.setFollowersLabelAttributedText(departmentFullName: departmentFullName, universityName: universityName,facultyFullName: facultyFullName)
         }
         followers.translatesAutoresizingMaskIntoConstraints = false
         
@@ -290,6 +275,38 @@ class DropdownCell: UITableViewCell{
         followers.leftAnchor.constraint(equalTo: subjectsLabel.rightAnchor, constant: 10).isActive = true
         followers.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         followers.heightAnchor.constraint(equalToConstant: 20).isActive = true
+    }
+    
+    func setFollowersLabelAttributedText(departmentFullName: String, universityName: String,facultyFullName: String){
+        var message: String = ""
+        var textColor = UIColor()
+        
+        if NetworkReachabilityManager()!.isReachable{
+            NetworkManager.shared.listenFollowers(universityName: universityName, facultyFullName: facultyFullName, departmentFullName: departmentFullName, completion: { (followersNumber) in
+                message = String(followersNumber)
+                
+                if followersNumber != 0{
+                    textColor = .black
+                }else{
+                    textColor = .red
+                }
+                
+                let atributedString =  NSMutableAttributedString(string: "Подписчиков: "+"\(message)")
+                
+                let firstAttributes: [NSAttributedString.Key: Any] = [
+                    .foregroundColor: UIColor.black,
+                    .backgroundColor: self.view.backgroundColor!]
+                let secondAttributes: [NSAttributedString.Key: Any] = [
+                    .foregroundColor: textColor,
+                    .backgroundColor: self.view.backgroundColor!]
+                atributedString.addAttributes(firstAttributes, range: NSRange(location: 0, length: 13))
+                atributedString.addAttributes(secondAttributes, range: NSRange(location: 13, length: self.countDigits(number: followersNumber)))
+                
+                self.followers.attributedText = atributedString
+            })
+        }else{
+            self.followers.text = "Подписчиков: Нет соединения"
+        }
     }
     
     func countDigits(number: Int) -> Int{

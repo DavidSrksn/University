@@ -180,7 +180,7 @@ final class Manager {
     }
     
     func departmentStatus(department: Department) -> Bool {
-        if Manager.shared.realm.objects(RealmObject.self).contains(where: { (wishlistObject) -> Bool in
+        if Manager.shared.realm.objects(RealmObject.self).filter("minPoints != -1").contains(where: { (wishlistObject) -> Bool in
             return wishlistObject.departmentFullName == department.fullName
         }){
             return false

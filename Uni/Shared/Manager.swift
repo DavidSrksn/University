@@ -32,6 +32,12 @@ final class Manager {
     
     var UFD = [ University : [Faculty? : [Department]?]]()
     var dataUFD = [University : [Faculty? : [Department]?]]()
+    var uniaddr: [String : String] = ["МГТУ" : "2-я Бауманская ул., д.5, стр.1, Москва, 105005",
+                   "МФТИ" : "141701, Московская область, г. Долгопрудный, Институтский переулок, д.9",
+                   "ИТМО" : "Кронверкский пр., 49, Санкт-Петербург, 197101",
+                   "СПбГУ" : "Университетская наб., 7/9, Санкт-Петербург, 199034",
+                   "РУДН" : "ул. Миклухо-Маклая, 6, Москва, 117198",
+                   "РГГУ" : "Миусская пл., 6, Москва, 125993"]
     
     var choosed: [Any?] = [nil,nil,nil]
     
@@ -120,14 +126,8 @@ final class Manager {
     
     func openMaps(university: University) {
         let geocoder = CLGeocoder()
-        var name: String
-        if (university.city == "Москва") {
-            name = university.fullName
-        } else {
-            name = university.name
-        }
         
-        geocoder.geocodeAddressString("МГТУ им Н.Э. Баумана") { (placemarkOptions, error) in
+        geocoder.geocodeAddressString(uniaddr[university.name] ?? "") { (placemarkOptions, error) in
             if let placemarks = placemarkOptions {
                 if let location = placemarks.first?.location {
                     

@@ -38,9 +38,9 @@ final class WishlistTableView: UIViewController {
         setTable()
         Manager.shared.workItem = DispatchWorkItem(qos: .userInteractive, flags: .barrier, block: {
             self.deleteMechanic(choosedRow: self.button_tag)
+            self.tableView.reloadData()
         })
         Manager.shared.workItem.notify(queue: .main) {
-            self.tableView.reloadData()
         }
         
         Manager.shared.notificationCenter.addObserver(forName: NSNotification.Name(rawValue: "Department Deleted from Departments"), object: .none, queue: .main) { (Notification) in
@@ -97,6 +97,12 @@ extension WishlistTableView : UITableViewDataSource,UITableViewDelegate{
         }
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if !lastCell.cellExists{
+            return true
+        }else { return false }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let objects = Manager.shared.realm.objects(RealmObject.self).filter("minPoints != -1")
         let object = Array(objects)[indexPath.row]
@@ -128,17 +134,6 @@ extension WishlistTableView : UITableViewDataSource,UITableViewDelegate{
                 Manager.shared.deleteFromWishlist(sender: nil, setImage: nil, departmentFullName: objectToDelete.departmentFullName)
                 Manager.shared.notificationCenter.post(Notification(name: Notification.Name(rawValue: "Department Deleted from wishlist")))
                 tableView.reloadData()
-//                var objectToDelete: RealmObject = RealmObject()
-//                       do {
-//                           try Manager.shared.realm.write {
-//                             objectToDelete = Manager.shared.realm.objects(RealmObject.self).filter("departmentFullName = '\((self.departmentNameLabel.text)!)'")[0]
-//                           }
-//                       } catch{
-//                           print(error.localizedDescription)
-//                       }
-//                       Manager.shared.deleteFromWishlist(sender: nil, setImage: nil, departmentFullName: objectToDelete.departmentFullName)
-//                       Manager.shared.notificationCenter.post(Notification(name: Notification.Name(rawValue: "Department Deleted from wishlist")))
-//                       Manager.shared.wishlistQueue.async(execute: Manager.shared.workItem)
             }
     }
     
@@ -205,7 +200,6 @@ extension WishlistTableView : UITableViewDataSource,UITableViewDelegate{
         view.addSubview(tableView)
         tableView.frame = view.frame
         tableView.register(UINib(nibName: "DropdownCell", bundle: nil), forCellReuseIdentifier: "DropdownCell")
-//        tableView.backgroundColor = #colorLiteral(red: 0.9334822297, green: 0.9955082536, blue: 0.9193486571, alpha: 1)
         tableView.separatorStyle = .singleLine
         tableView.separatorColor = .white
         tableView.dataSource = self
@@ -214,33 +208,3 @@ extension WishlistTableView : UITableViewDataSource,UITableViewDelegate{
 }
 
 
-
-//            if !Manager.shared.wishlist.isEmpty{
-//                let wishedUniversity = Array(Manager.shared.wishlist.keys)[universityIndex]
-//                let wishedFaculty = Array(Manager.shared.wishlist[wishedUniversity]!.keys)[facultyIndex]
-//                let wishedDepartment = (Manager.shared.wishlist[wishedUniversity]?[wishedFaculty])![departmentIndex]
-//                print("index (wishedDepartment) = \(wishedDepartment)")
-//                departmentIndex += 1
-//                if departmentIndex == ((Manager.shared.wishlist[Array(Manager.shared.wishlist.keys)[universityIndex]]?[Array(Manager.shared.wishlist[Array(Manager.shared.wishlist.keys)[universityIndex]]!.keys)[facultyIndex]]!.count)!){
-//                    departmentIndex = 0
-//                    facultyIndex = +1
-//                    if  facultyIndex == (Manager.shared.wishlist[Array(Manager.shared.wishlist.keys)[universityIndex]]?.keys.count)!{
-//                        facultyIndex = 0
-//                         universityIndex += 1
-//                    }
-//            }
-//                let cell = tableView.dequeueReusableCell(withIdentifier: "WishlistCell", for: indexPath) as! WishlistCell
-//                cell.setWishlistCell(wishedUniversity: wishedUniversity.name, wishedDepartment: wishedDepartment.name)
-//                return cell
-//            }
-
-
-
-// weak var warning: UILabel? = {()->UILabel in
-//    let warningLabel = UILabel(frame: .init(x: 100, y: 100, width: 200, height: 120))
-//    warningLabel.center = self.view.center
-//    warningLabel.textAlignment = .center
-//    warningLabel.font = UIFont(name: "AvenirNext-Regular", size: 18)!
-//    warningLabel.text = "Список пуст"
-//    return warningLabel
-//    }()

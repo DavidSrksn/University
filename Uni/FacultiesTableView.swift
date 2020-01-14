@@ -180,6 +180,7 @@ final class FacultiesTableView: UIViewController {
     
     func setupTable(){
         self.title = "Факультеты"
+        self.navigationController!.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "Georgia", size: 24)!, NSAttributedString.Key.foregroundColor: UIColor.white]
         
         tableView.tableFooterView = UIView.init(frame: .zero)
         tableView.translatesAutoresizingMaskIntoConstraints = false

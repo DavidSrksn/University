@@ -151,12 +151,18 @@ final class FacultiesTableView: UIViewController {
     @objc func mapButtonAction(){
         let geocoder = CLGeocoder()
         let university = (Manager.shared.choosed[0] as! University)
+        var name: String
+        if (university.city == "Москва") {
+            name = university.fullName
+        } else {
+            name = university.name
+        }
         
-        geocoder.geocodeAddressString("Университет - " + university.name) { (placemarkOptions, error) in
+        geocoder.geocodeAddressString("МГТУ им Н.Э. Баумана") { (placemarkOptions, error) in
             if let placemarks = placemarkOptions {
                 if let location = placemarks.first?.location {
                     
-                    let query = "?ll=\(location.coordinate.latitude),\(location.coordinate.longitude)"
+                    let query = "?daddr=\(location.coordinate.latitude),\(location.coordinate.longitude)"
                     let path = "http://maps.apple.com/" + query
                     if let url = URL(string: path) {
                         UIApplication.shared.open(url, options: [:], completionHandler: nil)

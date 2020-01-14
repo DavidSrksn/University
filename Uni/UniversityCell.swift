@@ -24,25 +24,19 @@ final class UniversityCell: UITableViewCell {
     }
     
     func setupUniversityImage(university: University){
+        
         self.addSubview(universityImage)
         
         let image = UIImage(named: "\(university.name).jpg")
         
-        let heightRatio = CGFloat((image?.size.height)!) / CGFloat((image?.size.width)!)
+        universityImage.contentMode = .scaleAspectFit
         
         universityImage.translatesAutoresizingMaskIntoConstraints = false
         
         universityImage.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         universityImage.leftAnchor.constraint(equalTo: universityLabel.rightAnchor).isActive = true
-                
-        if (image?.size.height)! > (image?.size.width)!{
-            universityImage.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -5).isActive = true
-            universityImage.widthAnchor.constraint(equalToConstant: self.bounds.height / heightRatio).isActive = true
-        }else{
-            universityImage.heightAnchor.constraint(equalTo: universityImage.widthAnchor, multiplier: heightRatio ).isActive = true
-        }
-        
-        universityImage.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        universityImage.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        universityImage.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
 
         universityImage.layer.cornerRadius = 15
         universityImage.image = image

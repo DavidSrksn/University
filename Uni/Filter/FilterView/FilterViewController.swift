@@ -324,6 +324,7 @@ extension FilterViewController {
         pointsTextField.layer.borderWidth = 1
         
         pointsTextField.placeholder = " Минимальный балл "
+        pointsTextField.textAlignment = .center
         pointsTextField.contentHorizontalAlignment = .left
         
         pointsTextField.delegate = self
